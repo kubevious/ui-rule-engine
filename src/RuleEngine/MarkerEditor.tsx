@@ -25,7 +25,6 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         //
         // isTesting ? undefined : { kind: 'marker' }
         //
-        console.log('isTesting :>> ', isTesting);
         super(props, null, isTesting ? undefined : { kind: 'marker' });
         this.state = {
             items: [],

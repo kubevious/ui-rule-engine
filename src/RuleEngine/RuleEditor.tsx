@@ -24,7 +24,6 @@ const isTesting = process.env.IS_TESTING;
 
 export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService> {
     constructor(props: {} | Readonly<{}>) {
-        console.log('isTesting :>> ', isTesting);
         //
         // During testing, we do not implement
         // registration of this service,
