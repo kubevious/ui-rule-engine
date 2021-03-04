@@ -6,12 +6,11 @@ import Codemirror from 'codemirror';
 import { snippets } from '../constants';
 import $ from 'jquery';
 
-import 'codemirror/addon/hint/javascript-hint';
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/theme/darcula.css';
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/mode/javascript/javascript';
+
 import { Log, EditorItem, RuleMainTabProps } from '../types';
 
 const LEFT_WINDOW_CODE_KEY = 91;
