@@ -47,6 +47,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
             <>
                 {type === EditorType.rule ? (
                     <RuleMainTab
+                        key={selectedItemId}
                         selectedItemId={selectedItemId}
                         selectedItem={selectedItem}
                         selectedItemData={selectedItemData}
