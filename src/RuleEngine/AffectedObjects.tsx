@@ -6,8 +6,9 @@ import { SelectedItemData } from '../types';
 export const AffectedObjects = ({ selectedItemData }: { selectedItemData: SelectedItemData }): JSX.Element => {
     return (
         <>
-            {selectedItemData.items.map((item: SelectedData) => (
+            {selectedItemData.items.map((item: SelectedData, index: number) => (
                 <DnShortcutComponent
+                    key={index}
                     dn={item.dn}
                     markers={item.markers}
                     errors={item.errors}
