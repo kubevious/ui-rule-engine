@@ -98,12 +98,12 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                     </div>
                     <div className="marker-area">
                         <div className="area-wrapper">
-                            {COLORS.map((item) => (
+                            {COLORS.map((item, index) => (
                                 <div
                                     className={cx('marker-wrapper', {
                                         selected: item === color,
                                     })}
-                                    key={item}
+                                    key={index}
                                     onClick={() => handleChangeColor(item)}
                                 >
                                     <div style={{ color: color }} className="icon-wrapper">

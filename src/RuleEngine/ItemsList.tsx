@@ -40,9 +40,9 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
 
             <div className={cx('rules', { markers: type === EditorType.marker })}>
                 {!isEmptyArray(items) &&
-                    items.map((item: EditorItem) => (
+                    items.map((item: EditorItem, index: number) => (
                         <button
-                            key={item.name}
+                            key={index}
                             className={cx('rule-item-button', {
                                 selected: item.name === selectedItemId,
                             })}
