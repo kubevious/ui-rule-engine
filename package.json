@@ -30,10 +30,8 @@
     "the-lodash": "^2.0.8"
   },
   "devDependencies": {
-    "ts-jest": "^26.5.2",
-    "jest": "^26.0.0",
-    "@rollup/plugin-typescript": "^8.2.0",
     "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-typescript": "^8.2.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@types/classnames": "^2.2.11",
@@ -51,6 +49,7 @@
     "babel-runtime": "^6.26.0",
     "eslint": "^7.7.0",
     "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.0.0",
     "prettier": "^2.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -58,6 +57,7 @@
     "rollup-plugin-sass": "^1.2.2",
     "rollup-plugin-typescript2": "^0.25.3",
     "should": "^13.2.3",
+    "ts-jest": "^26.5.2",
     "ts-node": "^9.0.0",
     "tslib": "^2.1.0",
     "typescript": "^4.1.3"
