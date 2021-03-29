@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './styles.scss';
+import styles from './styles.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import cx from 'classnames';
@@ -58,36 +58,36 @@ export const BurgerMenu = ({
     return (
         <div
             data-testid="burger-menu"
-            className="BurgerMenu-container"
+            className={styles.burgerMenuContainer}
             onMouseEnter={() => setIsMenuVisible(true)}
             onMouseLeave={() => setIsMenuVisible(false)}
         >
             <input type="file" id={`upload-${type}`} name={`upload-${type}`} onChange={() => uploadFile()} />
 
-            <div className={cx('button-wrapper', { hovered: isMenuVisible })}>
+            <div className={cx(styles.buttonWrapper, { hovered: isMenuVisible })}>
                 <FontAwesomeIcon icon={faBars} />
             </div>
 
-            <div className={cx('menu', { hidden: !isMenuVisible })}>
+            <div className={cx(styles.menu, { hidden: !isMenuVisible })}>
                 <a id="exportAnchor" style={{ display: 'none' }} />
 
-                <div className="menu-item" onClick={() => exportItems()}>
-                    <div className="icon">
+                <div className={styles.menuItem} onClick={() => exportItems()}>
+                    <div className={styles.icon}>
                         <FontAwesomeIcon icon={faFileExport} />
                     </div>
                     Export {type}s
                 </div>
-                <div className="menu-item">
+                <div className={styles.menuItem}>
                     <label htmlFor={`upload-${type}`} onClick={() => setDeleteExtra(false)}>
-                        <div className="icon">
+                    <div className={styles.icon}>
                             <FontAwesomeIcon icon={faFileImport} />
                         </div>
                         Import {type}s
                     </label>
                 </div>
-                <div className="menu-item">
+                <div className={styles.menuItem}>
                     <label htmlFor={`upload-${type}`} onClick={() => setDeleteExtra(true)}>
-                        <div className="icon">
+                    <div className={styles.icon}>
                             <FontAwesomeIcon icon={faFileDownload} />
                         </div>
                         Replace {type}s
