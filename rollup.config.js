@@ -1,6 +1,5 @@
 import typescript from 'rollup-plugin-typescript2'
 import babel from 'rollup-plugin-babel';
-import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
@@ -26,7 +25,6 @@ export default {
       use: ['sass'],
     }),
     babel({ exclude: 'node_modules/**' }),
-    resolve(),
     commonjs({
       include: 'node_modules/**',
       namedExports: {
