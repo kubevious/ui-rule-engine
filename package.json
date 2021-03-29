@@ -23,6 +23,7 @@
     "@kubevious/ui-components": "^1.0.40",
     "@kubevious/ui-framework": "^1.0.21",
     "@kubevious/ui-middleware": "^1.0.13",
+    "async_hooks": "^1.0.0",
     "classnames": "^2.2.6",
     "codemirror": "^5.54.0",
     "jquery": "^3.5.1",
