@@ -1,9 +1,9 @@
-.RuleEditor-container {
+.ruleEditorContainer {
     display: flex;
     height: 100%;
 }
 
-.no-rule {
+.noRule {
     height: 100%;
     display: flex;
     justify-content: center;
@@ -11,21 +11,7 @@
     color: #737888;
 }
 
-#rule-list {
-    width: 250px;
-    background: #35373e;
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-}
-
-#rule-editor {
-    min-width: calc(100% - 250px);
-    max-width: calc(100% - 255px);
-    position: relative;
-}
-
-.new-rule-btn {
+.newRuleBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +25,7 @@
     }
 }
 
-.circle-btn {
+.circleBtn {
     background: #4ecd77;
     width: 30px;
     height: 30px;
@@ -62,7 +48,7 @@
         overflow-y: overlay;
     }
 
-    .rule-item-button {
+    .ruleItemButton {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -87,11 +73,11 @@
 }
 
 .rules.markers {
-    .rule-item-button {
+    .ruleItemButton {
         justify-content: space-between;
         color: #737888;
 
-        .shape-wrapper {
+        .shapeWrapper {
             min-width: 30px;
             margin-right: 15px;
         }
@@ -106,7 +92,7 @@
     }
 }
 
-.rule-item-button.selected {
+.ruleItemButton.selected {
     background: #1e1e1e;
 }
 
@@ -134,7 +120,7 @@
     background: rgb(197, 6, 6);
 }
 
-.rule-container {
+.ruleContainer {
     overflow-y: hidden;
     height: 100%;
     padding: 20px 50px 10px;
@@ -144,14 +130,14 @@
     }
 }
 
-.rule-container.main {
+.ruleContainer.main {
     display: flex;
     justify-content: center;
     align-items: center;
     color: #737888;
 }
 
-.success-page {
+.successPage {
     height: 100%;
     display: flex;
     justify-content: center;
@@ -159,7 +145,7 @@
     color: white;
 }
 
-.success-page .check-icon {
+.successPage .checkIcon {
     color: #4ecd77;
     margin-right: 10px;
 }
@@ -170,7 +156,7 @@
     margin-bottom: 15px;
 }
 
-.marker-info-wrapper {
+.markerInfoWrapper {
     height: calc(100% - 175px);
     min-height: 450px;
     margin-bottom: 10px;
@@ -181,13 +167,7 @@
     }
 }
 
-#markerEditorComponent {
-    .field-name {
-        margin-bottom: 10px;
-    }
-}
-
-.field-input {
+.fieldInput {
     width: 100%;
     outline: none;
     padding: 10px 20px;
@@ -221,12 +201,12 @@
     }
 }
 
-.btn-group {
+.btnGroup {
     display: flex;
     align-items: center;
 }
 
-.rule-header {
+.ruleHeader {
     position: absolute;
     height: 80px;
     background: #35373f;
@@ -238,33 +218,33 @@
     border-bottom: 1px solid #4e515b;
     color: black;
 
-    .btn-group {
+    .btnGroup {
         width: 100%;
         justify-content: space-around;
 
-        .new-rule-btn {
+        .newRuleBtn {
             flex: 1;
         }
     }
 }
 
-.start-rule-container {
+.startRuleContainer {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    .start-btn-wrapper {
+    .startBtnWrapper {
         display: flex;
         justify-content: center;
     }
 
-    .links-container {
+    .linksContainer {
         display: flex;
         flex-direction: column;
 
-        .start-text {
+        .startText {
             text-align: center;
             margin-bottom: 15px;
 
@@ -275,7 +255,7 @@
         }
     }
 
-    .or-container {
+    .orContainer {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -314,7 +294,7 @@
     }
 }
 
-.list-btn {
+.listBtn {
     display: flex;
     justify-content: center;
     margin: 20px 0;
@@ -325,14 +305,14 @@ input[type="file"] {
     display: none;
 }
 
-.file-upload {
+.fileUpload {
     margin-bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.label-wrapper {
+.labelWrapper {
     margin-bottom: 10px;
 
     &.color {
@@ -346,21 +326,21 @@ input[type="file"] {
     }
 }
 
-.label-text {
+.labelText {
     width: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.label-arrow {
+.labelArrow {
     position: relative;
     width: 30px;
     height: 31px;
     background: #149b21;
 }
 
-.label-arrow:after {
+.labelArrow:after {
     content: "";
     top: 10px;
     left: 9px;
@@ -370,17 +350,7 @@ input[type="file"] {
     border-top: 12px solid white;
 }
 
-#import-container {
-    width: 200px;
-    position: absolute;
-    top: 10px;
-    left: 270px;
-    background: #557c9b;
-    border-radius: 3px;
-    color: white;
-}
-
-.import-caret {
+.importCaret {
     width: 12px;
     height: 12px;
     transform: rotate(45deg);
@@ -390,7 +360,7 @@ input[type="file"] {
     background: #557c9b;
 }
 
-.import-options {
+.importOptions {
     padding: 10px;
 }
 
@@ -415,46 +385,46 @@ input[type="file"] {
     cursor: pointer;
 }
 
-.option-btn {
+.optionBtn {
     border: none;
     background: none;
 }
 
-.option-desc {
+.optionDesc {
     font-size: 12px;
     padding: 0 5px;
 }
 
-.menu-btn {
+.menuBtn {
     border: none;
     background: #0efb5f;
     color: white;
     padding: 5px 15px;
 }
 
-.editor-title {
+.editorTitle {
     display: flex;
     font-size: 20px;
     margin-bottom: 5px;
 }
 
-.editor-title .tab {
+.editorTitle .tab {
     margin-right: 20px;
     color: #737888;
     font-size: 16px;
     padding: 0 20px;
 }
 
-.editor-title .tab:hover {
+.editorTitle .tab:hover {
     cursor: pointer;
 }
 
-.editor-title .tab.selected {
+.editorTitle .tab.selected {
     color: white;
     border-bottom: 1px solid #4ecd77;
 }
 
-.rule-summary-box {
+.ruleSummary-box {
     height: 200px;
     width: 200px;
     display: flex;
@@ -464,38 +434,38 @@ input[type="file"] {
     background: #35373e;
 }
 
-.summary-title {
+.summaryTitle {
     font-size: 16px;
 }
 
-.summary-value {
+.summaryValue {
     font-size: 96px;
 }
 
-.editor-errors {
+.editorErrors {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
 }
 
-.editor-errors:empty {
+.editorErrors:empty {
     margin: 0;
 }
 
-.editor-errors .err-box {
+.editorErrors .errBox {
     display: flex;
     margin-bottom: 10px;
 }
 
-.editor-errors .err-box:last-child {
+.editorErrors .errBox:last-child {
     margin-bottom: 0;
 }
 
-.editor-errors .err-box .alert-item {
+.editorErrors .errBox .alert-item {
     margin-right: 20px;
 }
 
-.editor-container {
+.editorContainer {
     height: calc(100% - 210px);
     min-height: 150px;
 
@@ -522,7 +492,7 @@ input[type="file"] {
             padding: 5px 0;
             margin-bottom: -1px;
 
-            .error-count {
+            .errorCount {
                 margin-left: 5px;
                 background: #e24c4b;
                 color: white;
@@ -550,10 +520,10 @@ input[type="file"] {
     }
 }
 
-.rule-item-button:hover,
-.new-rule-btn:hover,
-.file-upload:hover,
-.menu-btn:hover,
+.ruleItemButton:hover,
+.newRuleBtn:hover,
+.fileUpload:hover,
+.menuBtn:hover,
 .title:hover {
     cursor: pointer;
 }
@@ -562,7 +532,7 @@ input[type="file"] {
     cursor: not-allowed;
 }
 
-.busy-rule-indicator {
+.busyRuleIndicator {
     width: 16px;
     height: 16px;
     background-size: contain;
@@ -571,11 +541,11 @@ input[type="file"] {
     margin-right: 10px;
 }
 
-.name-wrapper {
+.nameWrapper {
     border: 1px solid #4e515b;
 }
 
-.marker-area {
+.markerArea {
     background: #35373e;
     border: 1px solid #4e515b;
     padding: 10px 10px;
@@ -587,20 +557,20 @@ input[type="file"] {
         overflow-y: overlay;
     }
 
-    .area-wrapper {
+    .areaWrapper {
         width: calc(100% - 10px);
         display: flex;
         flex-wrap: wrap;
     }
 
-    &.name-area {
+    &.nameArea {
         display: flex;
         align-items: center;
         padding: 0 10px;
         border: none;
         min-height: unset;
 
-        .field-input {
+        .fieldInput {
             width: calc(100% - 30px);
             border: none;
         }
@@ -617,7 +587,7 @@ input[type="file"] {
         }
     }
 
-    .marker-wrapper {
+    .markerWrapper {
         margin: 5px;
         padding: 5px;
         border: 1px solid transparent;
@@ -632,7 +602,7 @@ input[type="file"] {
             border: 1px solid white;
         }
 
-        .icon-wrapper {
+        .iconWrapper {
             width: 24px;
             height: 24px;
             display: flex;
@@ -646,14 +616,14 @@ input[type="file"] {
         }
     }
 
-    .marker-shape {
+    .markerShape {
         &:hover {
             cursor: pointer;
         }
     }
 }
 
-.custom-color {
+.customColor {
     border: none;
     background: none;
     width: 150px;
@@ -664,7 +634,7 @@ input[type="file"] {
     outline: none;
 }
 
-.color-popover {
+.colorPopover {
     position: absolute;
     left: 150px;
     z-index: 100;
@@ -679,9 +649,42 @@ input[type="file"] {
     }
 }
 
-.marker-shape {
+.markerShape {
     background-size: contain;
     background-repeat: no-repeat no-repeat;
     width: 20px;
     height: 20px;
+}
+
+//
+//styles by ID
+
+#rule-list {
+    width: 250px;
+    background: #35373e;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+#rule-editor {
+    min-width: calc(100% - 250px);
+    max-width: calc(100% - 255px);
+    position: relative;
+}
+
+#import-container {
+    width: 200px;
+    position: absolute;
+    top: 10px;
+    left: 270px;
+    background: #557c9b;
+    border-radius: 3px;
+    color: white;
+}
+
+#markerEditorComponent {
+    .fieldName {
+        margin-bottom: 10px;
+    }
 }

@@ -6,6 +6,7 @@ import { StartPage } from './StartPage';
 import { RuleMainTab } from './RuleMainTab';
 import { MarkerMainTab } from './MarkerMainTab';
 import { EditorType, EditorProps } from '../types';
+import styles from './styles.scss';
 
 export const Editor: React.FunctionComponent<EditorProps> = ({
     type,
@@ -76,20 +77,20 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
             !isNewItem &&
             selectedItemData &&
             type === EditorType.rule &&
-            !selectedItemData.is_current && <div className="busy-rule-indicator" />
+            !selectedItemData.is_current && <div className={styles.busyRuleIndicator} />
         );
     };
 
     const renderEditor = (): JSX.Element => {
         return (
             <>
-                <div className="editor-title">
+                <div className={styles.editorTitle}>
                     {renderLoading()}
-                    {isNewItem && <div className="editor-title">Create new {type}</div>}
+                    {isNewItem && <div className={styles.editorTitle} >Create new {type}</div>}
                     {!isNewItem && (
                         <>
                             <div
-                                className={cx('tab rule-tab', {
+                                className={cx(`${styles.tab} ${styles.ruleTab}`, {
                                     selected: selectedTab === 'main',
                                 })}
                                 onClick={() => setSelectedTab('main')}
@@ -97,7 +98,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
                                 Edit {type}
                             </div>
                             <div
-                                className={cx('tab object-tab', {
+                                className={cx(`${styles.tab} ${styles.objectTab}`, {
                                     selected: selectedTab === 'object',
                                 })}
                                 onClick={() => setSelectedTab('object')}
@@ -119,7 +120,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
 
     return (
         <div id="rule-editor">
-            <div className="rule-container">
+            <div className={styles.ruleContainer}>
                 {isEmptyObject(items) && isEmptyObject(selectedItem) && (
                     <StartPage type={type} createNewItem={createNewItem} />
                 )}

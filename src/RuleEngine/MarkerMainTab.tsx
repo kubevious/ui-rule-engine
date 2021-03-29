@@ -4,6 +4,7 @@ import { ChromePicker } from 'react-color';
 import cx from 'classnames';
 import { MarkerPreview } from '../MarkerPreview';
 import { EditorItem, MarkerMainTabProps } from '../types';
+import styles from './styles.scss';
 
 export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
     selectedItem,
@@ -38,18 +39,18 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
 
     return (
         <>
-            <div className="field-name">
-                <div className="label-wrapper">
+            <div className={styles.fieldName}>
+                <div className={styles.labelWrapper}>
                     <label>Name</label>
                 </div>
-                <div className="name-wrapper">
-                    <div className="marker-area name-area">
-                        <div className="shape">
+                <div className={styles.nameWrapper}>
+                    <div className={`${styles.markerArea} ${styles.nameArea}`}>
+                        <div className={styles.shape}>
                             <MarkerPreview shape={shape || ''} color={color || ''} />
                         </div>
                         <input
                             type="text"
-                            className="field-input name marker"
+                            className={`${styles.fieldInput} ${styles.marker} ${styles.name}`}
                             value={name || ''}
                             name="name"
                             onChange={(e) => handleChange(e)}
@@ -58,55 +59,55 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                 </div>
             </div>
 
-            <div className="marker-info-wrapper">
-                <div className="field">
-                    <div className="label-wrapper">
+            <div className={styles.markerInfoWrapper}>
+                <div className={styles.field}>
+                    <div className={styles.labelWrapper}>
                         <label>Shape</label>
                     </div>
-                    <div className="marker-area">
-                        <div className="area-wrapper">
+                    <div className={styles.markerArea}>
+                        <div className={styles.areaWrapper}>
                             {SHAPES.map((item, index) => (
                                 <div
-                                    className={cx('marker-wrapper', {
+                                    className={cx(styles.markerWrapper, {
                                         selected: item === shape,
                                     })}
                                     key={`${item}-${index}`}
                                     onClick={() => handleChangeShape(item)}
                                 >
-                                    <div key={item} style={{ color: color }} className="icon-wrapper">
+                                    <div key={item} style={{ color: color }} className={styles.iconWrapper}>
                                         <MarkerPreview shape={item} color={color || ''} />
                                     </div>
                                 </div>
                             ))}
-                            <span className="empty" />
+                            <span className={styles.empty} />
                         </div>
                     </div>
                 </div>
 
-                <div className="field">
-                    <div className="label-wrapper color">
+                <div className={styles.field}>
+                    <div className={`${styles.labelWrapper} ${styles.color}`}>
                         <label>Color</label>
-                        <button className="custom-color" onClick={() => setDisplayColorPicker(!displayColorPicker)}>
+                        <button className={styles.customColor} onClick={() => setDisplayColorPicker(!displayColorPicker)}>
                             Pick custom color
                         </button>
                         {displayColorPicker && (
-                            <div className="color-popover">
-                                <div className="cover" onClick={() => setDisplayColorPicker(false)} />
+                            <div className={styles.colorPopover}>
+                                <div className={styles.cover} onClick={() => setDisplayColorPicker(false)} />
                                 <ChromePicker onChange={(color) => handleChangeColor(color.hex)} color={color} />
                             </div>
                         )}
                     </div>
-                    <div className="marker-area">
-                        <div className="area-wrapper">
+                    <div className={styles.markerArea}>
+                        <div className={styles.areaWrapper}>
                             {COLORS.map((item, index) => (
                                 <div
-                                    className={cx('marker-wrapper', {
+                                    className={cx(styles.markerWrapper, {
                                         selected: item === color,
                                     })}
                                     key={index}
                                     onClick={() => handleChangeColor(item)}
                                 >
-                                    <div style={{ color: color }} className="icon-wrapper">
+                                    <div style={{ color: color }} className={styles.iconWrapper}>
                                         <MarkerPreview shape={shape || ''} color={item} />
                                     </div>
                                 </div>
@@ -116,17 +117,17 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                 </div>
             </div>
 
-            <div className="btn-group">
+            <div className={styles.btnGroup}>
                 {selectedItem.name && (
                     <>
-                        <button className="button" onClick={() => deleteItem(formData)}>
+                        <button className={styles.button} onClick={() => deleteItem(formData)}>
                             Delete
                         </button>
-                        <button className="button" onClick={() => openSummary()}>
+                        <button className={styles.button} onClick={() => openSummary()}>
                             Cancel
                         </button>
                         <button
-                            className="button success marker"
+                            className={`${styles.button} ${styles.success} ${styles.marker}`}
                             onClick={() => saveItem(formData)}
                             disabled={validation}
                         >
@@ -138,11 +139,11 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
 
                 {!selectedItem.name && (
                     <>
-                        <button className="button" onClick={() => openSummary()}>
+                        <button className={styles.button} onClick={() => openSummary()}>
                             Cancel
                         </button>
                         <button
-                            className="button success marker"
+                            className={`${styles.button} ${styles.success} ${styles.marker}`}
                             onClick={() => createItem(formData)}
                             disabled={validation}
                         >

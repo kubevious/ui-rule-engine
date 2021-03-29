@@ -4,6 +4,7 @@ import { ItemsList } from './ItemsList';
 import { COLORS, SHAPES } from '../constants';
 import { EditorItem, MarkerEditorState, SelectedItemData } from '../types';
 import { ClassComponent } from '@kubevious/ui-framework';
+import styles from './styles.scss';
 
 import { IMarkerService } from '@kubevious/ui-middleware';
 
@@ -141,7 +142,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state;
 
         return (
-            <div data-testid="marker-editor" className="RuleEditor-container" id="markerEditorComponent">
+            <div data-testid="marker-editor" className={styles.ruleEditorContainer} id="markerEditorComponent">
                 <ItemsList
                     type="marker"
                     items={items}

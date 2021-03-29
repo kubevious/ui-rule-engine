@@ -10,6 +10,7 @@ import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/theme/darcula.css';
 import 'codemirror/lib/codemirror.css';
+import styles from './styles.scss';
 
 import { Log, EditorItem, RuleMainTabProps } from '../types';
 
@@ -126,43 +127,43 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
 
     return (
         <>
-            <div className="field">
-                <div className="label-wrapper">
+            <div className={styles.field}>
+                <div className={styles.labelWrapper}>
                     <label>Name</label>
                 </div>
                 <input
                     type="text"
-                    className="field-input name"
+                    className={`${styles.fieldInput} ${styles.name}`}
                     value={name || ''}
                     name="name"
                     onChange={(e) => handleChange(e)}
                 />
             </div>
 
-            <div className="editor-container">
-                <div className="tabs">
+            <div className={styles.editorContainer}>
+                <div className={styles.tabs}>
                     <div
-                        className={cx('tab', {
+                        className={cx(styles.tab, {
                             selected: visibleEditor === 'target',
                         })}
                         onClick={() => setVisibleEditor('target')}
                     >
                         Target
-                        {countErrors('target') > 0 && <div className="error-count">{countErrors('target')}</div>}
+                        {countErrors('target') > 0 && <div className={styles.errorCount}>{countErrors('target')}</div>}
                     </div>
 
                     <div
-                        className={cx('tab', {
+                        className={cx(styles.tab, {
                             selected: visibleEditor === 'script',
                         })}
                         onClick={() => setVisibleEditor('script')}
                     >
                         Rule script
-                        {countErrors('script') > 0 && <div className="error-count">{countErrors('script')}</div>}
+                        {countErrors('script') > 0 && <div className={styles.errorCount}>{countErrors('script')}</div>}
                     </div>
                 </div>
 
-                <div className="editor">
+                <div className={styles.editor}>
                     {visibleEditor === 'target' && (
                         <CodeMirrorEditor
                             value={target || ''}
@@ -205,14 +206,14 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                 </div>
             </div>
 
-            <div className="editor-errors">
+            <div className={styles.editorErrors}>
                 {selectedItemData &&
                     !isEmptyArray(selectedItemData.logs) &&
                     selectedItemData.logs.map((err, index) => (
                         <>
                             {
-                                <div className="err-box" key={index}>
-                                    <div className="alert-item error" />
+                                <div className={styles.errBox} key={index}>
+                                    <div className={`${styles.alertItem} ${styles.error}`} />
                                     {err.msg.msg}
                                 </div>
                             }
@@ -220,27 +221,27 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                     ))}
             </div>
 
-            <label className="checkbox-container">
+            <label className={styles.checkboxContainer}>
                 {enabled ? 'Enable' : 'Disable'}
                 <input
                     type="checkbox"
-                    className="enable-checkbox"
+                    className={styles.enableCheckbox}
                     checked={enabled || false}
                     onChange={() => changeEnable()}
                 />
-                <span id="checkmark" className="checkmark" />
+                <span id="checkmark" className={styles.checkmark} />
             </label>
 
-            <div className="btn-group">
+            <div className={styles.btnGroup}>
                 {selectedItem.name && (
                     <>
-                        <button className="button" onClick={() => deleteItem(formData)}>
+                        <button className={styles.button} onClick={() => deleteItem(formData)}>
                             Delete
                         </button>
-                        <button className="button" onClick={() => openSummary()}>
+                        <button className={styles.button} onClick={() => openSummary()}>
                             Cancel
                         </button>
-                        <button className="button success" onClick={() => saveItem(formData)} disabled={validation}>
+                        <button className={`${styles.button} ${styles.success}`} onClick={() => saveItem(formData)} disabled={validation}>
                             Save
                         </button>
                         {isSuccess && <span>Saved!</span>}
@@ -249,11 +250,11 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
 
                 {!selectedItem.name && (
                     <>
-                        <button className="button" onClick={() => openSummary()}>
+                        <button className={styles.button} onClick={() => openSummary()}>
                             Cancel
                         </button>
                         <button
-                            className="button success rule"
+                            className={`${styles.button} ${styles.success} ${styles.rule}`}
                             onClick={() => createItem(formData)}
                             disabled={validation}
                         >

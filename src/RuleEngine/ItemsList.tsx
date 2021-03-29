@@ -4,6 +4,7 @@ import cx from 'classnames';
 import { MarkerPreview } from '../MarkerPreview';
 import { BurgerMenu } from '../BurgerMenu';
 import { EditorType, IndicatorType, EditorItem, ItemsListProps } from '../types';
+import styles from './styles.scss';
 
 export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     type,
@@ -27,40 +28,40 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
 
     return (
         <div id="rule-list">
-            <div className="rule-header">
-                <div className="btn-group">
-                    <button className="button success new-rule-btn" onClick={() => createNewItem()}>
-                        <div className="plus">+</div>
-                        <span className="button-text">New {type}</span>
+            <div className={styles.ruleHeader}>
+                <div className={styles.btnGroup}>
+                    <button className={`${styles.button} ${styles.success} ${styles.newRuleBtn}`} onClick={() => createNewItem()}>
+                        <div className={styles.plus}>+</div>
+                        <span className={styles.buttonText}>New {type}</span>
                     </button>
 
                     <BurgerMenu type={type} service={service} />
                 </div>
             </div>
 
-            <div className={cx('rules', { markers: type === EditorType.marker })}>
+            <div className={cx(styles.rules, { markers: type === EditorType.marker })}>
                 {!isEmptyArray(items) &&
                     items.map((item: EditorItem, index: number) => (
                         <button
                             key={index}
-                            className={cx('rule-item-button', {
+                            className={cx(styles.ruleItemButton, {
                                 selected: item.name === selectedItemId,
                             })}
                             onClick={() => selectItem(item)}
                         >
-                            <div className="item">
+                            <div className={styles.item}>
                                 {type === EditorType.marker && (
-                                    <div className="shape-wrapper">
+                                    <div className={styles.shapeWrapper}>
                                         <MarkerPreview shape={item.shape || ''} color={item.color || ''} />
                                     </div>
                                 )}
 
-                                <div className="indicators">
+                                <div className={styles.indicators}>
                                     {type === EditorType.rule && (
-                                        <div className={cx('indicator', ruleIndicatorClass(item))} />
+                                        <div className={cx(styles.indicator, ruleIndicatorClass(item))} />
                                     )}
                                     {type === EditorType.rule && !item.is_current && (
-                                        <div className="busy-rule-indicator" />
+                                        <div className={styles.busyRuleIndicator} />
                                     )}
                                 </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ClassComponent } from '@kubevious/ui-framework';
 import { Editor } from './Editor';
-import './styles.scss';
+import styles from './styles.scss';
 import { IRuleService } from '@kubevious/ui-middleware';
 import { ItemsList } from './ItemsList';
 import { EditorItem, RuleEditorState, SelectedItemData } from '../types.js';
@@ -161,7 +161,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state;
 
         return (
-            <div data-testid="rule-editor" className="RuleEditor-container" id="ruleEditorComponent">
+            <div data-testid="rule-editor" className={styles.ruleEditorContainer} id="ruleEditorComponent">
                 <ItemsList
                     type="rule"
                     items={items}
