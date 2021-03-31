@@ -44,9 +44,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
                     items.map((item: EditorItem, index: number) => (
                         <button
                             key={index}
-                            className={cx(styles.ruleItemButton, {
-                                selected: item.name === selectedItemId,
-                            })}
+                            className={cx(styles.ruleItemButton, item.name === selectedItemId && styles.selectedItemButton)}
                             onClick={() => selectItem(item)}
                         >
                             <div className={styles.item}>

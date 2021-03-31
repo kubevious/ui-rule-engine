@@ -68,9 +68,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                         <div className={styles.areaWrapper}>
                             {SHAPES.map((item, index) => (
                                 <div
-                                    className={cx(styles.markerWrapper, {
-                                        selected: item === shape,
-                                    })}
+                                    className={cx(styles.markerWrapper, item === shape && styles.selectedMarkerWrapper)}
                                     key={`${item}-${index}`}
                                     onClick={() => handleChangeShape(item)}
                                 >
@@ -101,9 +99,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                         <div className={styles.areaWrapper}>
                             {COLORS.map((item, index) => (
                                 <div
-                                    className={cx(styles.markerWrapper, {
-                                        selected: item === color,
-                                    })}
+                                    className={cx(styles.markerWrapper, item === color && styles.selectedMarkerWrapper)}
                                     key={index}
                                     onClick={() => handleChangeColor(item)}
                                 >

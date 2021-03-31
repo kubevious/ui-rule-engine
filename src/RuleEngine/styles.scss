@@ -92,7 +92,7 @@
     }
 }
 
-.ruleItemButton.selected {
+.selectedItemButton {
     background: #1e1e1e;
 }
 
@@ -407,8 +407,6 @@ input[type="file"] {
     font-size: 20px;
     margin-bottom: 5px;
 }
-.objectTab,
-.ruleTab {}
 
 .editorTitle .tab {
     margin-right: 20px;
@@ -421,11 +419,9 @@ input[type="file"] {
     cursor: pointer;
 }
 
-.editorTitle {
-    .selected {
-        color: white;
-        border-bottom: 1px solid #4ecd77;
-    }
+.selectedTab {
+    color: white;
+    border-bottom: 1px solid #4ecd77;
 }
 
 .checkmark {
@@ -604,6 +600,9 @@ input[type="file"] {
             font-size: 24px;
         }
     }
+    .selectedMarkerWrapper {
+        border: 1px solid white;
+    }
 
     .markerWrapper {
         margin: 5px;
@@ -614,10 +613,6 @@ input[type="file"] {
 
         &:hover {
             cursor: pointer;
-        }
-
-        &.selected {
-            border: 1px solid white;
         }
 
         .iconWrapper {

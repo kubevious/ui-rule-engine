@@ -90,17 +90,13 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
                     {!isNewItem && (
                         <>
                             <div
-                                className={cx(`${styles.tab} ${styles.ruleTab}`, {
-                                    selected: selectedTab === 'main',
-                                })}
+                                className={cx(styles.tab, selectedTab === 'main' && styles.selectedTab)}
                                 onClick={() => setSelectedTab('main')}
                             >
                                 Edit {type}
                             </div>
                             <div
-                                className={cx(`${styles.tab} ${styles.objectTab}`, {
-                                    selected: selectedTab === 'object',
-                                })}
+                                className={cx(styles.tab, selectedTab === 'object' && styles.selectedTab)}
                                 onClick={() => setSelectedTab('object')}
                             >
                                 Affected objects[{itemCount}]
