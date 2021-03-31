@@ -143,7 +143,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
             <div className={styles.editorContainer}>
                 <div className={styles.tabs}>
                     <div
-                        className={cx(styles.tab, visibleEditor === 'target' && styles.selectedTab)}
+                        className={cx(styles.tab, visibleEditor === 'target' && styles.selectedEditorConteinerTab)}
                         onClick={() => setVisibleEditor('target')}
                     >
                         Target
@@ -151,7 +151,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                     </div>
 
                     <div
-                        className={cx(styles.tab, visibleEditor === 'script' && styles.selectedTab)}
+                        className={cx(styles.tab, visibleEditor === 'script' && styles.selectedEditorConteinerTab)}
                         onClick={() => setVisibleEditor('script')}
                     >
                         Rule script

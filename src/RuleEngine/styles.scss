@@ -93,7 +93,7 @@
 }
 
 .selectedItemButton {
-    background: #1e1e1e;
+    background: #1e1e1e !important;
 }
 
 .indicators {
@@ -420,7 +420,7 @@ input[type="file"] {
 }
 
 .selectedTab {
-    color: white;
+    color: white !important;
     border-bottom: 1px solid #4ecd77;
 }
 
@@ -479,6 +479,14 @@ input[type="file"] {
     color: #a1a1a1;
 }
 
+.selectedEditorConteinerTab {
+    background: #35373e;
+    border: 1px solid #4e515b;
+    border-bottom: none;
+    color: white !important;
+    z-index: 1;
+}
+
 .editorContainer {
     height: calc(100% - 210px);
     min-height: 150px;
@@ -517,14 +525,6 @@ input[type="file"] {
                 justify-content: center;
                 align-items: center;
                 font-size: 11px;
-            }
-
-            .selected {
-                background: #35373e;
-                border: 1px solid #4e515b;
-                border-bottom: none;
-                color: white;
-                z-index: 1;
             }
 
             &:hover {
@@ -600,6 +600,7 @@ input[type="file"] {
             font-size: 24px;
         }
     }
+
     .selectedMarkerWrapper {
         border: 1px solid white;
     }
