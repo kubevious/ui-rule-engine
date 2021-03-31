@@ -145,7 +145,7 @@
     color: white;
 }
 
-.successPage .checkIcon {
+.successPage.checkIcon {
     color: #4ecd77;
     margin-right: 10px;
 }
@@ -408,21 +408,29 @@ input[type="file"] {
     margin-bottom: 5px;
 }
 
-.editorTitle .tab {
+.editorTitle.tab {
     margin-right: 20px;
     color: #737888;
     font-size: 16px;
     padding: 0 20px;
 }
 
-.editorTitle .tab:hover {
+.editorTitle.tab:hover {
     cursor: pointer;
 }
 
-.editorTitle .tab.selected {
+.editorTitle.tab.selected {
     color: white;
     border-bottom: 1px solid #4ecd77;
 }
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    border: solid 1px #ccc; }
 
 .ruleSummary-box {
     height: 200px;
@@ -452,17 +460,23 @@ input[type="file"] {
     margin: 0;
 }
 
-.editorErrors .errBox {
+.editorErrors.errBox {
     display: flex;
     margin-bottom: 10px;
 }
 
-.editorErrors .errBox:last-child {
+.editorErrors.errBox:last-child {
     margin-bottom: 0;
 }
 
-.editorErrors .errBox .alert-item {
+.editorErrors.errBox.alert-item {
     margin-right: 20px;
+}
+
+.empty {
+    align-items: center;
+    justify-content: center;
+    color: #a1a1a1;
 }
 
 .editorContainer {
@@ -665,6 +679,61 @@ input[type="file"] {
     position: relative;
     height: 100%;
     overflow: hidden;
+}
+
+.button {
+    min-width: 100px;
+    height: 40px;
+    margin-right: 10px;
+    border: 1px solid #4E515B;
+    border-radius: 3px;
+    color: #4E515B;
+    background: #1E1E1E;
+    outline: none;
+  }
+  
+  .button.square {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .button.success {
+    color: white;
+    background: #4ECD77;
+  }
+  
+  .button.light {
+    background: #557C9B;
+    color: white;
+  }
+  
+  .button.light:disabled {
+    background: #45596c;
+    color: #9a9b9e;
+  }
+  
+  .button:hover {
+    color: white;
+    border: 1px solid white;
+    cursor: pointer;
+  }
+  
+  .button.success:hover {
+    background: #249448;
+    border-color: #249448;
+  }
+  
+  .button:disabled:hover {
+    cursor: not-allowed;
+  }
+  
+  .button:last-child {
+    margin-right: 0;
+  }
+
+
+  .name {
+    color: white;
 }
 
 #rule-editor {

@@ -64,11 +64,11 @@ export const BurgerMenu = ({
         >
             <input type="file" id={`upload-${type}`} name={`upload-${type}`} onChange={() => uploadFile()} />
 
-            <div className={cx(styles.buttonWrapper, { hovered: isMenuVisible })}>
+            <div className={cx(styles.buttonWrapper, isMenuVisible && styles.hovered)}>
                 <FontAwesomeIcon icon={faBars} />
             </div>
 
-            <div className={cx(styles.menu, { hidden: !isMenuVisible })}>
+            <div className={cx(styles.menu, !isMenuVisible && styles.hidden)}>
                 <a id="exportAnchor" style={{ display: 'none' }} />
 
                 <div className={styles.menuItem} onClick={() => exportItems()}>

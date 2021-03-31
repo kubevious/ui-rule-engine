@@ -23,7 +23,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
         } else {
             indicatorClass = IndicatorType.enabled;
         }
-        return indicatorClass;
+        return styles[indicatorClass];
     };
 
     return (
@@ -39,7 +39,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
                 </div>
             </div>
 
-            <div className={cx(styles.rules, { markers: type === EditorType.marker })}>
+            <div className={cx(styles.rules, type === EditorType.marker && styles.markers)}>
                 {!isEmptyArray(items) &&
                     items.map((item: EditorItem, index: number) => (
                         <button
