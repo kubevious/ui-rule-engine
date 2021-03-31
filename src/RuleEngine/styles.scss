@@ -422,7 +422,7 @@ input[type="file"] {
 }
 
 .editorTitle {
-    .tab.selected {
+    .selected {
         color: white;
         border-bottom: 1px solid #4ecd77;
     }
@@ -523,7 +523,7 @@ input[type="file"] {
                 font-size: 11px;
             }
 
-            &.selected {
+            .selected {
                 background: #35373e;
                 border: 1px solid #4e515b;
                 border-bottom: none;
@@ -729,9 +729,29 @@ input[type="file"] {
     color: white;
 }
 
+.checkboxContainer {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
-//
-//styles by ID
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    input:checked~.checkmark {
+        background-color: #4ecd77;
+        border: 5px solid #4e515b;
+    }
+}
 
 .ruleList {
     width: 250px;
