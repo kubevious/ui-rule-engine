@@ -407,21 +407,25 @@ input[type="file"] {
     font-size: 20px;
     margin-bottom: 5px;
 }
+.objectTab,
+.ruleTab {}
 
-.editorTitle.tab {
+.editorTitle .tab {
     margin-right: 20px;
     color: #737888;
     font-size: 16px;
     padding: 0 20px;
 }
 
-.editorTitle.tab:hover {
+.editorTitle .tab:hover {
     cursor: pointer;
 }
 
-.editorTitle.tab.selected {
-    color: white;
-    border-bottom: 1px solid #4ecd77;
+.editorTitle {
+    .tab.selected {
+        color: white;
+        border-bottom: 1px solid #4ecd77;
+    }
 }
 
 .checkmark {
