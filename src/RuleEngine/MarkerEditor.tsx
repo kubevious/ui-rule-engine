@@ -142,7 +142,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state;
 
         return (
-            <div data-testid="marker-editor" className={styles.ruleEditorContainer} id="markerEditorComponent">
+            <div data-testid="marker-editor" className={`${styles.ruleEditorContainer} ${styles.markerEditorComponent}`} id="markerEditorComponent">
                 <ItemsList
                     type="marker"
                     items={items}

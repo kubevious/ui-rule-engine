@@ -27,7 +27,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     };
 
     return (
-        <div id="rule-list">
+        <div id="rule-list"className={styles.ruleList}>
             <div className={styles.ruleHeader}>
                 <div className={styles.btnGroup}>
                     <button className={`${styles.button} ${styles.success} ${styles.newRuleBtn}`} onClick={() => createNewItem()}>

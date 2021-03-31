@@ -670,17 +670,6 @@ input[type="file"] {
     height: 20px;
 }
 
-//
-//styles by ID
-
-#rule-list {
-    width: 250px;
-    background: #35373e;
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-}
-
 .button {
     min-width: 100px;
     height: 40px;
@@ -736,13 +725,25 @@ input[type="file"] {
     color: white;
 }
 
-#rule-editor {
+
+//
+//styles by ID
+
+.ruleList {
+    width: 250px;
+    background: #35373e;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.ruleEditor {
     min-width: calc(100% - 250px);
     max-width: calc(100% - 255px);
     position: relative;
 }
 
-#import-container {
+.importContainer {
     width: 200px;
     position: absolute;
     top: 10px;
@@ -752,7 +753,7 @@ input[type="file"] {
     color: white;
 }
 
-#markerEditorComponent {
+.markerEditorComponent {
     .fieldName {
         margin-bottom: 10px;
     }

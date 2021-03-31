@@ -119,7 +119,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
     };
 
     return (
-        <div id="rule-editor">
+        <div id="rule-editor" className={styles.ruleEditor}>
             <div className={styles.ruleContainer}>
                 {isEmptyObject(items) && isEmptyObject(selectedItem) && (
                     <StartPage type={type} createNewItem={createNewItem} />
