@@ -460,16 +460,16 @@ input[type="file"] {
     margin: 0;
 }
 
-.editorErrors.errBox {
+.errBox {
     display: flex;
     margin-bottom: 10px;
 }
 
-.editorErrors.errBox:last-child {
+.errBox:last-child {
     margin-bottom: 0;
 }
 
-.editorErrors.errBox.alert-item {
+.alertItem {
     margin-right: 20px;
 }
 
@@ -777,4 +777,8 @@ input[type="file"] {
     .fieldName {
         margin-bottom: 10px;
     }
+}
+
+.errorMessage {
+    color: red;
 }
