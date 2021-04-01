@@ -210,8 +210,9 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                             {
                                 <div className={styles.errBox} key={index}>
                                     <div className={styles.errorBullet} />
-                                    <div className={`${styles.alertItem} ${styles.errorMessage}`} />
-                                    {err.msg.msg}
+                                    <div className={`${styles.alertItem} ${styles.errorMessage}`}>
+                                        {err.msg.msg}
+                                    </div>
                                 </div>
                             }
                         </>
