@@ -782,3 +782,12 @@ input[type="file"] {
 .errorMessage {
     color: red;
 }
+
+.errorBullet {
+    margin-right: 10px;
+    background: #e24c4b;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+}
