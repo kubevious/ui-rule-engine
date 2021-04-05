@@ -50,6 +50,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                         </div>
                         <input
                             type="text"
+                            id="fieldInput"
                             className={`${styles.fieldInput} ${styles.marker} ${styles.name}`}
                             value={name || ''}
                             name="name"
@@ -139,6 +140,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                             Cancel
                         </button>
                         <button
+                            id="markerCreateButton"
                             className={`${styles.button} ${styles.success} ${styles.marker}`}
                             onClick={() => createItem(formData)}
                             disabled={validation}

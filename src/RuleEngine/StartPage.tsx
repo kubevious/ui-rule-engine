@@ -6,7 +6,7 @@ export const StartPage = ({ type, createNewItem }: { type: string; createNewItem
         <div className={styles.startRuleContainer}>
             <div className={styles.startWrapper}>
                 <div className={styles.startBtnWrapper}>
-                    <button className={`${styles.button} ${styles.success} ${styles.newRuleBtn}`} onClick={() => createNewItem()}>
+                    <button id="newRuleBtn" className={`${styles.button} ${styles.success} ${styles.newRuleBtn}`} onClick={() => createNewItem()}>
                         <div className={styles.plus}>+</div>
                         New {type}
                     </button>
