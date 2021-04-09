@@ -4,7 +4,8 @@ import { Editor } from './Editor';
 import styles from './styles.scss';
 import { IRuleService } from '@kubevious/ui-middleware';
 import { ItemsList } from './ItemsList';
-import { EditorItem, RuleEditorState, SelectedItemData } from '../types.js';
+import { EditorItem, RuleEditorState } from '../types.js';
+import { RuleResultSubscriber } from '@kubevious/ui-middleware/dist/services/rule';
 
 const selectedItemInit = {
     name: '',
@@ -21,18 +22,12 @@ const selectedItemDataInit = {
 };
 
 const isTesting = process.env.IS_TESTING;
-
 export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService> {
+
+    private _ruleResultSubscriber? : RuleResultSubscriber;
+
     constructor(props: {} | Readonly<{}>) {
-        //
-        // During testing, we do not implement
-        // registration of this service,
-        // and in order not to receive errors,
-        // we do not send the name of the service
-        //
-        // isTesting ? undefined : { kind: 'rule' }
-        //
-        super(props, null, isTesting ? undefined : { kind: 'rule' });
+        super(props, null, { kind: 'rule' });
 
         this.state = {
             selectedTab: 'main',
@@ -53,19 +48,24 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
     }
 
     componentDidMount(): void {
-        this.subscribeToSharedState('rule_editor_items', (value: EditorItem[]) => {
+
+        this.service.subscribeRuleStatuses((value) => {
             this.setState({
                 items: value,
             });
-        });
+        })
 
-        this.subscribeToSharedState('rule_editor_selected_rule_status', (value: SelectedItemData): void => {
-            if (!value) {
-                value = selectedItemDataInit;
-            }
-            this.setState({
-                selectedItemData: value,
+        this._ruleResultSubscriber = 
+            this.service.subscribeRuleResult((value) => {
+                if (!value) {
+                    value = selectedItemDataInit;
+                }
+                this.setState({
+                    selectedItemData: value,
+                });
             });
+        this.subscribeToSharedState('rule_editor_selected_rule_id', (rule_editor_selected_rule_id) => {
+            this._ruleResultSubscriber!.update(rule_editor_selected_rule_id);
         });
 
         this.subscribeToSharedState(
@@ -168,7 +168,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    service={isTesting ? undefined : this.service}
+                    service={this.service}
                 />
 
                 {!isTesting && <Editor

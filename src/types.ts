@@ -1,4 +1,4 @@
-import { IMarkerService, IRuleService } from '@kubevious/ui-middleware/dist';
+import { IMarkerService, IRuleService } from '@kubevious/ui-middleware';
 
 export type DnOptions = {
     relativeTo?: string;

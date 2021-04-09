@@ -7,6 +7,7 @@ import { ClassComponent } from '@kubevious/ui-framework';
 import styles from './styles.scss';
 
 import { IMarkerService } from '@kubevious/ui-middleware';
+import { MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
 
 const selectedItemDataInit: SelectedItemData = {
     items: [],
@@ -14,19 +15,12 @@ const selectedItemDataInit: SelectedItemData = {
     logs: [],
 };
 
-const isTesting = process.env.IS_TESTING;
-
 export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerService> {
+
+    private _markerResultSubscriber? : MarkerResultSubscriber;
+
     constructor(props: {} | Readonly<{}>) {
-        //
-        // During testing, we do not implement
-        // registration of this service,
-        // and in order not to receive errors,
-        // we do not send the name of the service
-        //
-        // isTesting ? undefined : { kind: 'marker' }
-        //
-        super(props, null, isTesting ? undefined : { kind: 'marker' });
+        super(props, null, { kind: 'marker' });
         this.state = {
             items: [],
             selectedItem: {},
@@ -45,19 +39,23 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
     }
 
     componentDidMount(): void {
-        this.subscribeToSharedState('marker_editor_items', (value: EditorItem[]) => {
+        this.service.subscribeMarkerStatuses((value) => {
             this.setState({
                 items: value,
             });
-        });
+        })
 
-        this.subscribeToSharedState('rule_editor_selected_marker_status', (value: SelectedItemData) => {
-            if (!value) {
-                value = selectedItemDataInit;
-            }
-            this.setState({
-                selectedItemData: value,
+        this._markerResultSubscriber = 
+            this.service.subscribeMarkerResult((value) => {
+                if (!value) {
+                    value = selectedItemDataInit;
+                }
+                this.setState({
+                    selectedItemData: value,
+                });
             });
+        this.subscribeToSharedState('marker_editor_selected_marker_id', (marker_editor_selected_marker_id) => {
+            this._markerResultSubscriber!.update(marker_editor_selected_marker_id);
         });
     }
 
@@ -149,7 +147,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    service={isTesting ? undefined : this.service}
+                    service={this.service}
                 />
 
                 <Editor
