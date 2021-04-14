@@ -53,7 +53,7 @@ export class RuleService implements IRuleService {
     });
     }
 
-    importRules(data: RulesExportData) : Promise<void> {
+    importRules(data) : Promise<void> {
         console.log(data);
         return Promise.resolve();
     }

@@ -44,7 +44,7 @@ export class MarkerService implements IMarkerService {
         });
     }
 
-    importMarkers(data: MarkersExportData): Promise<void> {
+    importMarkers(data): Promise<void> {
         console.log(data);
         return Promise.resolve();
     }
