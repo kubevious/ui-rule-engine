@@ -5,7 +5,7 @@ import styles from './styles.scss';
 import { IRuleService } from '@kubevious/ui-middleware';
 import { ItemsList } from './ItemsList';
 import { EditorItem, RuleEditorState } from '../types.js';
-import { RuleResultSubscriber } from '@kubevious/ui-middleware/dist/services/rule';
+import { RuleConfig, RuleResultSubscriber } from '@kubevious/ui-middleware/dist/services/rule';
 
 const selectedItemInit = {
     name: '',
@@ -58,10 +58,10 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         this._ruleResultSubscriber = 
             this.service.subscribeRuleResult((value) => {
                 if (!value) {
-                    value = selectedItemDataInit;
+                    value = (selectedItemDataInit as any);
                 }
                 this.setState({
-                    selectedItemData: value,
+                    selectedItemData: (value as any),
                 });
             });
         this.subscribeToSharedState('rule_editor_selected_rule_id', (rule_editor_selected_rule_id) => {
@@ -87,7 +87,8 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
 
         !rule.name
             ? this.openSummary()
-            : this.service.backendFetchRule(rule.name, (data) => {
+            : this.service.getRule(rule.name)
+                .then(data => {
                   if (data === null) {
                       this.openSummary();
                       return;
@@ -107,23 +108,25 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
 
     saveItem(data: EditorItem): void {
         const { selectedItemId } = this.state;
-        this.service.backendCreateRule(data, selectedItemId, () => {
-            this.setState({ isSuccess: true, selectedItem: data });
+        this.service.createRule(data as RuleConfig, selectedItemId)
+            .then(() => {
+                this.setState({ isSuccess: true, selectedItem: data });
 
-            setTimeout(() => {
-                this.setState({ isSuccess: false });
-            }, 2000);
-        });
+                setTimeout(() => {
+                    this.setState({ isSuccess: false });
+                }, 2000);
+            });
     }
 
     deleteItem(data: EditorItem): void {
-        this.service.backendDeleteRule(data.name || '', () => {
-            this.setState({
-                selectedItem: selectedItemInit,
-                selectedItemId: '',
+        this.service.deleteRule(data.name || '')
+            .then(() => {
+                this.setState({
+                    selectedItem: selectedItemInit,
+                    selectedItemId: '',
+                });
+                this.sharedState.set('rule_editor_selected_rule_id', null);
             });
-            this.sharedState.set('rule_editor_selected_rule_id', null);
-        });
     }
 
     openSummary(): void {
@@ -132,10 +135,11 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
     }
 
     createItem(data: EditorItem): void {
-        this.service.backendCreateRule(data, data.name || '', (rule: EditorItem) => {
-            this.setState({ isSuccess: true });
-            this.selectItem(rule);
-        });
+        this.service.createRule(data as RuleConfig, data.name || '')
+            .then(rule => {
+                this.setState({ isSuccess: true });
+                this.selectItem(rule);
+            });
     }
 
     createNewItem(): void {
@@ -168,7 +172,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    service={this.service}
+                    ruleService={this.service}
                 />
 
                 {!isTesting && <Editor

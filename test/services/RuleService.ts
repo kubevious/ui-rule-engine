@@ -1,6 +1,6 @@
 import _ from "the-lodash"
 import { IRuleService } from "@kubevious/ui-middleware"
-import { RuleResult, RuleStatus } from "@kubevious/ui-middleware/dist/services/rule"
+import { RuleConfig, RuleListItem, RuleResult, RulesExportData, RuleStatus } from "@kubevious/ui-middleware/dist/services/rule"
 
 export class RuleService implements IRuleService {
 
@@ -13,8 +13,8 @@ export class RuleService implements IRuleService {
 
     }
 
-    backendFetchRuleList(cb: (data: any) => any): void {
-        cb([{
+    getRuleList() : Promise<RuleListItem[]> {
+        return Promise.resolve([{
             enabled: true,
             name: "rule 1",
             target: "target-1",
@@ -22,8 +22,8 @@ export class RuleService implements IRuleService {
         }])
     }
 
-    backendFetchRule(name: string, cb: (data: any) => any): void {
-        cb({
+    getRule(name: string) : Promise<RuleConfig | null> {
+        return Promise.resolve({
             enabled: true,
             name: name,
             target: "target-1",
@@ -31,9 +31,9 @@ export class RuleService implements IRuleService {
         })
     }
 
-    backendCreateRule(rule: any, name: string, cb: (data: any) => any): void {
-        console.log(rule, name)
-        cb({
+    createRule(config: RuleConfig, name: string) : Promise<RuleConfig> {
+        console.log(config, name)
+        return Promise.resolve({
             enabled: true,
             name: name,
             target: "target-1",
@@ -41,47 +41,51 @@ export class RuleService implements IRuleService {
         })
     }
 
-    _backendUpdateRule(rule, name, cb) {
-        console.log(rule, name)
-        cb({
-            enabled: true,
+    deleteRule(name: string) : Promise<void> {
+        console.log(name)
+        return Promise.resolve();
+    }
+
+    exportRules() : Promise<RulesExportData> {
+       return Promise.resolve({
+        kind: 'rules',
+        items: []
+    });
+    }
+
+    importRules(data: RulesExportData) : Promise<void> {
+        console.log(data);
+        return Promise.resolve();
+    }
+
+    getRulesStatuses() : Promise<RuleStatus[]>
+    {
+        return Promise.resolve([]);
+    }
+
+    getRuleResult(name: string) : Promise<RuleResult>
+    {
+        return Promise.resolve({
             name: name,
-            target: "target-1",
-            script: "script-1",
+            items: [],
+            item_count: 0,
+            is_current: false,
+            logs: []
         })
-    }
-
-    backendDeleteRule(id: string, cb: (data: any) => any): void {
-        console.log(id)
-        cb({})
-    }
-
-    backendExportItems(cb: (data: any) => any): void {
-       cb({});
-    }
-
-    backendImportItems(rules: any, cb: (data: any) => any): void {
-        console.log(rules);
-        cb({});
     }
 
     subscribeRuleStatuses(cb: ((items: RuleStatus[]) => void)) : void
     {
-       cb([]);
+        this.getRulesStatuses()
+            .then(result => cb(result));
     }
 
     subscribeRuleResult(cb: ((result: RuleResult) => void))
     {
         return {
             update: (ruleName : string) => {
-                console.log(ruleName);
-                cb({
-                    name: ruleName,
-                    items: [],
-                    item_count: 0,
-                    is_current: false,
-                    logs: []
-                })
+                this.getRuleResult(ruleName)
+                    .then(result => cb(result));
             },
             close: () => {
             }

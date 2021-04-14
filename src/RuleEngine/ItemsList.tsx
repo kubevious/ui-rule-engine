@@ -12,7 +12,8 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     selectedItemId,
     selectItem,
     createNewItem,
-    service,
+    ruleService,
+    markerService
 }) => {
     const ruleIndicatorClass = (x: EditorItem): string => {
         let indicatorClass: string;
@@ -35,7 +36,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
                         <span className={styles.buttonText}>New {type}</span>
                     </button>
 
-                    <BurgerMenu type={type} service={service} />
+                    <BurgerMenu type={type} ruleService={ruleService} markerService={markerService} />
                 </div>
             </div>
 

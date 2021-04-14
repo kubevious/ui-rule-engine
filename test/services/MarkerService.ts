@@ -1,78 +1,63 @@
 import _ from "the-lodash"
 import { IMarkerService } from "@kubevious/ui-middleware"
-import { MarkerResult, MarkerStatus } from "@kubevious/ui-middleware/dist/services/marker";
+import { MarkerConfig, MarkerListItem, MarkerResult, MarkersExportData, MarkerStatus } from "@kubevious/ui-middleware/dist/services/marker";
 
 export class MarkerService implements IMarkerService {
 
-    constructor() {
-       
-    }
 
-    close()
-    {
-
-    }
-    
-    subscribeMarkerStatuses(cb: ((items: MarkerStatus[]) => void))
-    {
-      cb([]);
-    }
-
-    subscribeMarkerResult(cb: ((result: MarkerResult) => void))
-    {
-        return {
-            update: (markerName : string) => {
-             
-                cb({
-                    name: markerName,
-                    items: [],
-                    item_count: 0,
-                    is_current: false,
-                    logs: []
-                })
-            },
-            close: () => {
-            }
-        }
-    }
-
-    backendFetchMarkerList(cb: (data: any) => any) : void {
-        cb([{
+    getMarkerList(): Promise<MarkerListItem[]> {
+        return Promise.resolve([{
             name: 'markerName',
             shape: 'f164',
-            color: '#A5A5A5',
-            items: [],
-            logs: [],
-            is_current: true,
+            color: '#A5A5A5'
         }])
     }
 
-    backendFetchMarker(name: string, cb: (data: any) => any) : void {
-        cb({
+    getMarker(name: string): Promise<MarkerConfig> {
+        return Promise.resolve({
             name: name,
             shape: 'f164',
             color: '#A5A5A5',
-            items: [],
-            logs: [],
-            is_current: true,
+            propagate: false
         })
     }
 
-    backendCreateMarker(marker: any, name: string, cb: (data: any) => any) : void {
-        console.log(marker);
-        cb({
+    createMarker(config: MarkerConfig, name: string): Promise<MarkerConfig> {
+        console.log(config);
+        return Promise.resolve({
             name: name,
             shape: 'f164',
             color: '#A5A5A5',
-            items: [],
-            logs: [],
-            is_current: true,
+            propagate: false
         })
     }
 
-    backendDeleteMarker(name: string, cb: (data: any) => any) : void{
+    deleteMarker(name: string): Promise<void> {
         console.log(name);
-        cb({})
+        return Promise.resolve();
+    }
+
+    exportMarkers(): Promise<MarkersExportData> {
+        return Promise.resolve({
+            kind: 'markers',
+            items: []
+        });
+    }
+
+    importMarkers(data: MarkersExportData): Promise<void> {
+        console.log(data);
+        return Promise.resolve();
+    }
+
+    getMarkerStatuses(): Promise<MarkerStatus[]> {
+        return Promise.resolve([])
+    }
+    
+    getMarkerResult(name: string): Promise<MarkerResult> {
+        return Promise.resolve({
+            name: name,
+            items: [],
+        })
     }
 
     backendExportItems(cb: (data: any) => any) : void {
@@ -83,5 +68,30 @@ export class MarkerService implements IMarkerService {
         console.log(markers);
         cb({})
     }
+    
+    subscribeMarkerStatuses(cb: ((items: MarkerStatus[]) => void))
+    {
+        return this.getMarkerStatuses()
+            .then(result => cb(result));
+    }
+
+    subscribeMarkerResult(cb: ((result: MarkerResult) => void))
+    {
+        return {
+            update: (markerName : string) => {
+             
+                return this.getMarkerResult(markerName)
+                    .then(result => cb(result));
+            },
+            close: () => {
+            }
+        }
+    }
+
+    close()
+    {
+
+    }   
+
 
 }

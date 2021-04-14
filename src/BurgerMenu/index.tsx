@@ -4,28 +4,48 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import cx from 'classnames';
 import { IMarkerService, IRuleService } from '@kubevious/ui-middleware';
-import { ExportItem } from '../types';
 
 export const BurgerMenu = ({
     type,
-    service,
+    markerService,
+    ruleService
 }: {
     type: string;
-    service?: IMarkerService | IRuleService;
+    markerService?: IMarkerService;
+    ruleService?: IRuleService;
 }): JSX.Element => {
     const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
     const [deleteExtra, setDeleteExtra] = useState<boolean>(false);
 
     const exportItems = (): void => {
-        service && service.backendExportItems((response: ExportItem) => {
-            const dataStr: string = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response));
-            const exportElem: HTMLElement | null = document.getElementById('exportAnchor');
-            if (exportElem) {
-                exportElem.setAttribute('href', dataStr);
-                exportElem.setAttribute('download', `${response.kind}.json`);
-                exportElem.click();
-            }
-        });
+
+        if (markerService) {
+            markerService.exportMarkers()
+                .then((response) => {
+                    const dataStr: string = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response));
+                    const exportElem: HTMLElement | null = document.getElementById('exportAnchor');
+                    if (exportElem) {
+                        exportElem.setAttribute('href', dataStr);
+                        exportElem.setAttribute('download', `${response.kind}.json`);
+                        exportElem.click();
+                    }
+                });
+        }
+
+        if (ruleService)
+        {
+            ruleService.exportRules()
+                .then((response) => {
+                    const dataStr: string = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response));
+                    const exportElem: HTMLElement | null = document.getElementById('exportAnchor');
+                    if (exportElem) {
+                        exportElem.setAttribute('href', dataStr);
+                        exportElem.setAttribute('download', `${response.kind}.json`);
+                        exportElem.click();
+                    }
+                });
+        }
+        
     };
 
     const uploadFile = (): void => {
@@ -47,9 +67,22 @@ export const BurgerMenu = ({
                 data: JSON.parse(reader.result),
                 deleteExtra,
             };
-            service && service.backendImportItems(importData, () => {
-                input.value = '';
-            });
+
+            if (ruleService)
+            {
+                ruleService.importRules(importData as any)
+                    .then(() => {
+                        input.value = '';
+                    })
+            }
+
+            if (markerService)
+            {
+                markerService.importMarkers(importData as any)
+                    .then(() => {
+                        input.value = '';
+                    })
+            }
         };
 
         input.files && reader.readAsText(input.files[0]);

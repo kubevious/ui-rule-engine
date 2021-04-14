@@ -66,7 +66,8 @@ export type ItemsListProps = {
     selectedItemId: string;
     selectItem: (marker: EditorItem) => void;
     createNewItem: () => void;
-    service?: IMarkerService | IRuleService;
+    ruleService?: IRuleService;
+    markerService?: IMarkerService;
 };
 
 export type EditorProps = {

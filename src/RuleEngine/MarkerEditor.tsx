@@ -7,7 +7,7 @@ import { ClassComponent } from '@kubevious/ui-framework';
 import styles from './styles.scss';
 
 import { IMarkerService } from '@kubevious/ui-middleware';
-import { MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
+import { MarkerConfig, MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
 
 const selectedItemDataInit: SelectedItemData = {
     items: [],
@@ -48,10 +48,10 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         this._markerResultSubscriber = 
             this.service.subscribeMarkerResult((value) => {
                 if (!value) {
-                    value = selectedItemDataInit;
+                    value = (selectedItemDataInit as any);
                 }
                 this.setState({
-                    selectedItemData: value,
+                    selectedItemData: value as any,
                 });
             });
         this.subscribeToSharedState('marker_editor_selected_marker_id', (marker_editor_selected_marker_id) => {
@@ -66,19 +66,20 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
             selectedItemId: marker.name || '',
         });
         marker.name &&
-            this.service.backendFetchMarker(marker.name, (data) => {
-                if (data === null) {
-                    this.openSummary();
-                    return;
-                }
-                const { selectedItemId } = this.state;
+            this.service.getMarker(marker.name)
+                .then((data) => {
+                    if (data === null) {
+                        this.openSummary();
+                        return;
+                    }
+                    const { selectedItemId } = this.state;
 
-                if (data.name === selectedItemId) {
-                    this.setState({
-                        selectedItem: data,
-                    });
-                }
-            });
+                    if (data.name === selectedItemId) {
+                        this.setState({
+                            selectedItem: data,
+                        });
+                    }
+                });
 
         this.sharedState.set('marker_editor_selected_marker_id', marker.name);
     }
@@ -86,24 +87,26 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
     saveItem(data: EditorItem): void {
         const { selectedItemId } = this.state;
 
-        this.service.backendCreateMarker(data, selectedItemId!, () => {
-            this.setState({ isSuccess: true });
+        this.service.createMarker(data as MarkerConfig, selectedItemId!)
+            .then(() => {
+                this.setState({ isSuccess: true });
 
-            setTimeout(() => {
-                this.setState({ isSuccess: false });
-            }, 2000);
-        });
+                setTimeout(() => {
+                    this.setState({ isSuccess: false });
+                }, 2000);
+            });
     }
 
     deleteItem(data: EditorItem): void {
         if (data.name) {
-            this.service.backendDeleteMarker(data.name, () => {
-                this.setState({
-                    selectedItem: {},
-                    selectedItemId: '',
+            this.service.deleteMarker(data.name)
+                .then(() => {
+                    this.setState({
+                        selectedItem: {},
+                        selectedItemId: '',
+                    });
+                    this.sharedState.set('marker_editor_selected_marker_id', null);
                 });
-                this.sharedState.set('marker_editor_selected_marker_id', null);
-            });
         }
     }
 
@@ -113,10 +116,11 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
     }
 
     createItem(data: EditorItem): void {
-        this.service.backendCreateMarker(data, data.name || '', (marker) => {
-            this.setState({ isSuccess: true });
-            this.selectItem(marker);
-        });
+        this.service.createMarker(data as MarkerConfig, data.name || '')
+            .then((marker) => {
+                this.setState({ isSuccess: true });
+                this.selectItem(marker);
+            });
     }
 
     createNewItem(): void {
@@ -147,7 +151,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    service={this.service}
+                    markerService={this.service}
                 />
 
                 <Editor
