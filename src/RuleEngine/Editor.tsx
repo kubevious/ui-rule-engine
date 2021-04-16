@@ -86,7 +86,7 @@ export const Editor: React.FunctionComponent<EditorProps> = ({
             <>
                 <div className={styles.editorTitle}>
                     {renderLoading()}
-                    {isNewItem && <div className={styles.editorTitle} >Create new {type}</div>}
+                    {isNewItem && <div className={styles.editorTitle}>Create new {type}</div>}
                     {!isNewItem && (
                         <>
                             <div

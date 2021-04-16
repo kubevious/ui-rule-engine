@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Controlled as CodeMirrorEditor } from 'react-codemirror2';
 import cx from 'classnames';
 import { isEmptyArray } from '../utils';
@@ -17,7 +17,7 @@ import { Log, EditorItem, RuleMainTabProps } from '../types';
 const LEFT_WINDOW_CODE_KEY = 91;
 const EMPTY_CODE_KEY = 64;
 
-export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
+export const RuleMainTab: FC<RuleMainTabProps> = ({
     selectedItemId,
     selectedItem,
     selectedItemData,
@@ -99,15 +99,11 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleChangeTarget = (
-        value: string
-    ): void => {
+    const handleChangeTarget = (value: string): void => {
         setFormData({ ...formData, target: value });
     };
 
-    const handleChangeScript = (
-        value: string
-    ): void => {
+    const handleChangeScript = (value: string): void => {
         setFormData({ ...formData, script: value });
     };
 
@@ -122,7 +118,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
             if (item.msg.source.includes(type)) {
                 return (acc += 1);
             }
-            return acc
+            return acc;
         }, 0) || 0;
 
     return (
@@ -140,7 +136,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                 />
             </div>
 
-            <div className={styles.editorContainer}>
+            <div className={cx(styles.editorContainer, 'editor-container')}>
                 <div className={styles.tabs}>
                     <div
                         className={cx(styles.tab, visibleEditor === 'target' && styles.selectedEditorConteinerTab)}
@@ -162,6 +158,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                 <div className={styles.editor}>
                     {visibleEditor === 'target' && (
                         <CodeMirrorEditor
+                            className="test-editor"
                             value={target || ''}
                             options={{
                                 mode: 'javascript',
@@ -171,12 +168,15 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                                     'Ctrl-Space': 'autocomplete',
                                 },
                             }}
+                            editorDidMount={(editor) => editor.refresh()}
                             onKeyUp={(editor: Codemirror.Editor, data: KeyboardEvent) =>
                                 handleTargetKeyUp({ editor, data })
                             }
-                            onBeforeChange={(_editor: Codemirror.Editor, _data: Codemirror.EditorChange, value: string) =>
-                                handleChangeTarget(value)
-                            }
+                            onBeforeChange={(
+                                _editor: Codemirror.Editor,
+                                _data: Codemirror.EditorChange,
+                                value: string,
+                            ) => handleChangeTarget(value)}
                         />
                     )}
 
@@ -194,9 +194,11 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                             onKeyUp={(editor: Codemirror.Editor, data: KeyboardEvent) =>
                                 handleScriptKeyUp({ editor, data })
                             }
-                            onBeforeChange={(_editor: Codemirror.Editor, _data: Codemirror.EditorChange, value: string) =>
-                                handleChangeScript(value)
-                            }
+                            onBeforeChange={(
+                                _editor: Codemirror.Editor,
+                                _data: Codemirror.EditorChange,
+                                value: string,
+                            ) => handleChangeScript(value)}
                         />
                     )}
                 </div>
@@ -210,9 +212,7 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                             {
                                 <div className={styles.errBox} key={index}>
                                     <div className={styles.errorBullet} />
-                                    <div className={`${styles.alertItem} ${styles.errorMessage}`}>
-                                        {err.msg.msg}
-                                    </div>
+                                    <div className={`${styles.alertItem} ${styles.errorMessage}`}>{err.msg.msg}</div>
                                 </div>
                             }
                         </>
@@ -239,7 +239,11 @@ export const RuleMainTab: React.FunctionComponent<RuleMainTabProps> = ({
                         <button className={styles.button} onClick={() => openSummary()}>
                             Cancel
                         </button>
-                        <button className={`${styles.button} ${styles.success}`} onClick={() => saveItem(formData)} disabled={validation}>
+                        <button
+                            className={`${styles.button} ${styles.success}`}
+                            onClick={() => saveItem(formData)}
+                            disabled={validation}
+                        >
                             Save
                         </button>
                         {isSuccess && <span>Saved!</span>}

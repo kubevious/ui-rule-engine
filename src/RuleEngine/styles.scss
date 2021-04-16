@@ -176,16 +176,17 @@
     color: white;
 }
 
-.CodeMirror {
+.editorContainer :global(.CodeMirror) {
     height: 100%;
 }
 
-.CodeMirror.cm-s-darcula {
-    background: #35373e;
-    border: 1px solid #4e515b;
+.editorContainer :global(.CodeMirror.cm-s-darcula) {
+    width: 100%;
+    background: #35373e !important;
+    border: 1px solid #4e515b !important;
 }
 
-.CodeMirror-vscrollbar {
+.editorContainer :global(.CodeMirror-vscrollbar) {
     &::-webkit-scrollbar-thumb {
         background-color: #333;
     }
@@ -301,7 +302,7 @@
     position: relative;
 }
 
-input[type="file"] {
+input[type='file'] {
     display: none;
 }
 
@@ -341,7 +342,7 @@ input[type="file"] {
 }
 
 .labelArrow:after {
-    content: "";
+    content: '';
     top: 10px;
     left: 9px;
     position: absolute;
@@ -430,7 +431,8 @@ input[type="file"] {
     left: 0;
     height: 20px;
     width: 20px;
-    border: solid 1px #ccc; }
+    border: solid 1px #ccc;
+}
 
 .ruleSummary-box {
     height: 200px;
@@ -551,7 +553,7 @@ input[type="file"] {
     height: 16px;
     background-size: contain;
     background-repeat: no-repeat no-repeat;
-    background-image: url("/img/busy.svg");
+    background-image: url('/img/busy.svg');
     margin-right: 10px;
 }
 
@@ -674,54 +676,53 @@ input[type="file"] {
     min-width: 100px;
     height: 40px;
     margin-right: 10px;
-    border: 1px solid #4E515B;
+    border: 1px solid #4e515b;
     border-radius: 3px;
-    color: #4E515B;
-    background: #1E1E1E;
+    color: #4e515b;
+    background: #1e1e1e;
     outline: none;
-  }
-  
-  .button.square {
+}
+
+.button.square {
     width: 40px;
     height: 40px;
-  }
-  
-  .button.success {
+}
+
+.button.success {
     color: white;
-    background: #4ECD77;
-  }
-  
-  .button.light {
-    background: #557C9B;
+    background: #4ecd77;
+}
+
+.button.light {
+    background: #557c9b;
     color: white;
-  }
-  
-  .button.light:disabled {
+}
+
+.button.light:disabled {
     background: #45596c;
     color: #9a9b9e;
-  }
-  
-  .button:hover {
+}
+
+.button:hover {
     color: white;
     border: 1px solid white;
     cursor: pointer;
-  }
-  
-  .button.success:hover {
+}
+
+.button.success:hover {
     background: #249448;
     border-color: #249448;
-  }
-  
-  .button:disabled:hover {
+}
+
+.button:disabled:hover {
     cursor: not-allowed;
-  }
-  
-  .button:last-child {
+}
+
+.button:last-child {
     margin-right: 0;
-  }
+}
 
-
-  .name {
+.name {
     color: white;
 }
 
@@ -743,7 +744,7 @@ input[type="file"] {
         width: 0;
     }
 
-    input:checked~.checkmark {
+    input:checked ~ .checkmark {
         background-color: #4ecd77;
         border: 5px solid #4e515b;
     }
