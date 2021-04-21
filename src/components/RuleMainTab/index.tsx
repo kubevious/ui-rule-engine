@@ -1,18 +1,20 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Controlled as CodeMirrorEditor } from 'react-codemirror2';
 import cx from 'classnames';
-import { isEmptyArray } from '../utils';
+import { isEmptyArray } from '../../utils';
 import Codemirror from 'codemirror';
-import { snippets } from '../constants';
+import { snippets } from '../../constants';
 import $ from 'jquery';
 
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/theme/darcula.css';
 import 'codemirror/lib/codemirror.css';
-import styles from './styles.scss';
 
-import { Log, EditorItem, RuleMainTabProps } from '../types';
+import { Log, EditorItem, RuleMainTabProps } from '../../types';
+
+import styles from './styles.module.css';
+import commonStyles from '../../common.module.css';
 
 const LEFT_WINDOW_CODE_KEY = 91;
 const EMPTY_CODE_KEY = 64;
@@ -124,12 +126,12 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     return (
         <>
             <div className={styles.field}>
-                <div className={styles.labelWrapper}>
+                <div className={commonStyles.labelWrapper}>
                     <label>Name</label>
                 </div>
                 <input
                     type="text"
-                    className={`${styles.fieldInput} ${styles.name}`}
+                    className={cx(commonStyles.fieldInput, 'text-white')}
                     value={name || ''}
                     name="name"
                     onChange={(e) => handleChange(e)}
@@ -139,7 +141,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
             <div className={cx(styles.editorContainer, 'editor-container')}>
                 <div className={styles.tabs}>
                     <div
-                        className={cx(styles.tab, visibleEditor === 'target' && styles.selectedEditorConteinerTab)}
+                        className={cx(styles.tab, { [styles.selectedEditorContainerTab]: visibleEditor === 'target' })}
                         onClick={() => setVisibleEditor('target')}
                     >
                         Target
@@ -147,7 +149,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                     </div>
 
                     <div
-                        className={cx(styles.tab, visibleEditor === 'script' && styles.selectedEditorConteinerTab)}
+                        className={cx(styles.tab, { [styles.selectedEditorContainerTab]: visibleEditor === 'script' })}
                         onClick={() => setVisibleEditor('script')}
                     >
                         Rule script
@@ -208,14 +210,10 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                 {selectedItemData &&
                     !isEmptyArray(selectedItemData.logs) &&
                     selectedItemData.logs.map((err, index) => (
-                        <>
-                            {
-                                <div className={styles.errBox} key={index}>
-                                    <div className={styles.errorBullet} />
-                                    <div className={`${styles.alertItem} ${styles.errorMessage}`}>{err.msg.msg}</div>
-                                </div>
-                            }
-                        </>
+                        <div className={styles.errBox} key={index}>
+                            <div className={styles.errorBullet} />
+                            <div className={cx(styles.alertItem, styles.errorMessage)}>{err.msg.msg}</div>
+                        </div>
                     ))}
             </div>
 
@@ -230,17 +228,17 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                 <span id="checkmark" className={styles.checkmark} />
             </label>
 
-            <div className={styles.btnGroup}>
+            <div className="d-flex align-items-center">
                 {selectedItem.name && (
                     <>
-                        <button className={styles.button} onClick={() => deleteItem(formData)}>
+                        <button className={commonStyles.button} onClick={() => deleteItem(formData)}>
                             Delete
                         </button>
-                        <button className={styles.button} onClick={() => openSummary()}>
+                        <button className={commonStyles.button} onClick={openSummary}>
                             Cancel
                         </button>
                         <button
-                            className={`${styles.button} ${styles.success}`}
+                            className={cx(commonStyles.button, commonStyles.success)}
                             onClick={() => saveItem(formData)}
                             disabled={validation}
                         >
@@ -252,11 +250,11 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
                 {!selectedItem.name && (
                     <>
-                        <button className={styles.button} onClick={() => openSummary()}>
+                        <button className={commonStyles.button} onClick={() => openSummary()}>
                             Cancel
                         </button>
                         <button
-                            className={`${styles.button} ${styles.success} ${styles.rule}`}
+                            className={cx(commonStyles.button, commonStyles.success)}
                             onClick={() => createItem(formData)}
                             disabled={validation}
                         >

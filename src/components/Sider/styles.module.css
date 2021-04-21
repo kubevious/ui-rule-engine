@@ -1,0 +1,103 @@
+.ruleList {
+    width: 250px;
+    background: #35373e;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.ruleHeader {
+    position: absolute;
+    height: 80px;
+    background: #35373f;
+    width: 250px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    border-bottom: 1px solid #4e515b;
+    color: black;
+}
+
+.ruleHeader :global(.btn-group) {
+    width: 100%;
+    justify-content: space-around;
+}
+
+.ruleHeader .newRuleBtn {
+    flex: 1;
+}
+
+.rules {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    margin-top: 80px;
+    height: calc(100% - 80px);
+    overflow-y: hidden;
+}
+
+.rules:hover {
+    overflow-y: overlay;
+}
+
+.ruleItemButton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    color: #737888;
+    background: none;
+    padding: 10px 15px;
+    border-bottom: 1px solid #4e515b;
+    text-align: left;
+    width: 250px;
+}
+
+.ruleItemButton .item {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.ruleItemButton:focus {
+    outline: none;
+}
+
+.markers .ruleItemButton {
+    justify-content: space-between;
+    color: #737888;
+
+}
+
+.markers .ruleItemButton .shapeWrapper {
+    min-width: 30px;
+    margin-right: 15px;
+}
+
+.markers .ruleItemButton i {
+    font-size: 24px;
+}
+
+.markers .ruleItemButton .item {
+    color: white;
+}
+
+.indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.indicator.enabled {
+    background: #4ecd77;
+}
+
+.indicator.disabled {
+    background: #4e515b;
+}
+
+.indicator.invalid {
+    background: rgb(197, 6, 6);
+}

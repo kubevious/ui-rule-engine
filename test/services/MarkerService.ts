@@ -1,97 +1,91 @@
-import _ from "the-lodash"
-import { IMarkerService } from "@kubevious/ui-middleware"
-import { MarkerConfig, MarkerListItem, MarkerResult, MarkersExportData, MarkerStatus } from "@kubevious/ui-middleware/dist/services/marker";
+import { IMarkerService } from '@kubevious/ui-middleware';
+import {
+    MarkerConfig,
+    MarkerListItem,
+    MarkerResult,
+    MarkersExportData,
+    MarkerStatus,
+} from '@kubevious/ui-middleware/dist/services/marker';
 
 export class MarkerService implements IMarkerService {
-
-
-    getMarkerList(): Promise<MarkerListItem[]> {
-        return Promise.resolve([{
-            name: 'markerName',
-            shape: 'f164',
-            color: '#A5A5A5'
-        }])
+    getList(): Promise<MarkerListItem[]> {
+        return Promise.resolve([
+            {
+                name: 'markerName',
+                shape: 'f164',
+                color: '#A5A5A5',
+            },
+        ]);
     }
 
-    getMarker(name: string): Promise<MarkerConfig> {
+    getItem(name: string): Promise<MarkerConfig> {
         return Promise.resolve({
             name: name,
             shape: 'f164',
             color: '#A5A5A5',
-            propagate: false
-        })
+            propagate: false,
+        });
     }
 
-    createMarker(config: MarkerConfig, name: string): Promise<MarkerConfig> {
+    createItem(config: MarkerConfig, name: string): Promise<MarkerConfig> {
         console.log(config);
         return Promise.resolve({
             name: name,
             shape: 'f164',
             color: '#A5A5A5',
-            propagate: false
-        })
+            propagate: false,
+        });
     }
 
-    deleteMarker(name: string): Promise<void> {
+    deleteItem(name: string): Promise<void> {
         console.log(name);
         return Promise.resolve();
     }
 
-    exportMarkers(): Promise<MarkersExportData> {
+    exportItems(): Promise<MarkersExportData> {
         return Promise.resolve({
             kind: 'markers',
-            items: []
+            items: [],
         });
     }
 
-    importMarkers(data): Promise<void> {
+    importItems(data): Promise<void> {
         console.log(data);
         return Promise.resolve();
     }
 
-    getMarkerStatuses(): Promise<MarkerStatus[]> {
-        return Promise.resolve([])
+    getItemStatuses(): Promise<MarkerStatus[]> {
+        return Promise.resolve([]);
     }
-    
-    getMarkerResult(name: string): Promise<MarkerResult> {
+
+    getItemResult(name: string): Promise<MarkerResult> {
         return Promise.resolve({
             name: name,
             items: [],
-        })
+        });
     }
 
-    backendExportItems(cb: (data: any) => any) : void {
-        cb([])
+    backendExportItems(cb: (data: any) => any): void {
+        cb([]);
     }
 
-    backendImportItems(markers: any, cb: (data: any) => any) : void {
+    backendImportItems(markers: any, cb: (data: any) => any): void {
         console.log(markers);
-        cb({})
-    }
-    
-    subscribeMarkerStatuses(cb: ((items: MarkerStatus[]) => void))
-    {
-        return this.getMarkerStatuses()
-            .then(result => cb(result));
+        cb({});
     }
 
-    subscribeMarkerResult(cb: ((result: MarkerResult) => void))
-    {
+    subscribeItemStatuses(cb: (items: MarkerStatus[]) => void) {
+        return this.getItemStatuses().then((result) => cb(result));
+    }
+
+    subscribeItemResult(cb: (result: MarkerResult) => void) {
         return {
-            update: (markerName : string) => {
-             
-                return this.getMarkerResult(markerName)
-                    .then(result => cb(result));
+            update: (markerName: string) => {
+                return this.getItemResult(markerName).then((result) => cb(result));
             },
-            close: () => {
-            }
-        }
+            close: () => {},
+        };
     }
 
-    close()
-    {
-
-    }   
-
-
+    close() {}
 }

@@ -1,18 +1,15 @@
-import React from "react"
+import React, { FC } from 'react';
 
-export const MarkerPreview = ({
-    shape,
-    color,
-}: {
-    shape?: string
-    color?: string
-}): JSX.Element => {
-    return (
-        <i
-            data-testid="marker-preview"
-            className="fa"
-            style={{ color: color }}
-            dangerouslySetInnerHTML={{ __html: `&#x${shape};` }}
-        />
-    )
+export interface MarkerPreviewProps {
+    shape?: string;
+    color?: string;
 }
+
+export const MarkerPreview: FC<MarkerPreviewProps> = ({ shape, color }) => (
+    <i
+        data-testid="marker-preview"
+        className="fa"
+        style={{ color: color }}
+        dangerouslySetInnerHTML={{ __html: `&#x${shape};` }}
+    />
+);

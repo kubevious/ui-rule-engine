@@ -1,12 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { COLORS, SHAPES } from '../constants';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { COLORS, SHAPES } from '../../constants';
 import { ChromePicker } from 'react-color';
 import cx from 'classnames';
-import { MarkerPreview } from '../MarkerPreview';
-import { EditorItem, MarkerMainTabProps } from '../types';
-import styles from './styles.scss';
+import { MarkerPreview } from '../../MarkerPreview';
+import { EditorItem, MarkerMainTabProps } from '../../types';
 
-export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
+import styles from './styles.module.css';
+import commonStyles from '../../common.module.css';
+
+export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     selectedItem,
     isSuccess,
     deleteItem,
@@ -40,18 +42,18 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
     return (
         <>
             <div className={styles.fieldName}>
-                <div className={styles.labelWrapper}>
+                <div className={commonStyles.labelWrapper}>
                     <label>Name</label>
                 </div>
                 <div className={styles.nameWrapper}>
-                    <div className={`${styles.markerArea} ${styles.nameArea}`}>
+                    <div className={cx(styles.markerArea, styles.nameArea)}>
                         <div className={styles.shape}>
                             <MarkerPreview shape={shape || ''} color={color || ''} />
                         </div>
                         <input
                             type="text"
                             id="fieldInput"
-                            className={`${styles.fieldInput} ${styles.marker} ${styles.name}`}
+                            className={cx(commonStyles.fieldInput, styles.markerFieldInput)}
                             value={name || ''}
                             name="name"
                             onChange={(e) => handleChange(e)}
@@ -62,7 +64,7 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
 
             <div className={styles.markerInfoWrapper}>
                 <div className={styles.field}>
-                    <div className={styles.labelWrapper}>
+                    <div className={commonStyles.labelWrapper}>
                         <label>Shape</label>
                     </div>
                     <div className={styles.markerArea}>
@@ -86,7 +88,10 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                 <div className={styles.field}>
                     <div className={`${styles.labelWrapper} ${styles.color}`}>
                         <label>Color</label>
-                        <button className={styles.customColor} onClick={() => setDisplayColorPicker(!displayColorPicker)}>
+                        <button
+                            className={styles.customColor}
+                            onClick={() => setDisplayColorPicker(!displayColorPicker)}
+                        >
                             Pick custom color
                         </button>
                         {displayColorPicker && (
@@ -100,7 +105,9 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                         <div className={styles.areaWrapper}>
                             {COLORS.map((item, index) => (
                                 <div
-                                    className={cx(styles.markerWrapper, item === color && styles.selectedMarkerWrapper)}
+                                    className={cx(styles.markerWrapper, {
+                                        [styles.selectedMarkerWrapper]: item === color,
+                                    })}
                                     key={index}
                                     onClick={() => handleChangeColor(item)}
                                 >
@@ -114,17 +121,17 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
                 </div>
             </div>
 
-            <div className={styles.btnGroup}>
+            <div className="d-flex align-items-center">
                 {selectedItem.name && (
                     <>
-                        <button className={styles.button} onClick={() => deleteItem(formData)}>
+                        <button className={commonStyles.button} onClick={() => deleteItem(formData)}>
                             Delete
                         </button>
-                        <button className={styles.button} onClick={() => openSummary()}>
+                        <button className={commonStyles.button} onClick={openSummary}>
                             Cancel
                         </button>
                         <button
-                            className={`${styles.button} ${styles.success} ${styles.marker}`}
+                            className={cx(commonStyles.button, commonStyles.success)}
                             onClick={() => saveItem(formData)}
                             disabled={validation}
                         >
@@ -136,12 +143,12 @@ export const MarkerMainTab: React.FunctionComponent<MarkerMainTabProps> = ({
 
                 {!selectedItem.name && (
                     <>
-                        <button className={styles.button} onClick={() => openSummary()}>
+                        <button className={commonStyles.button} onClick={() => openSummary()}>
                             Cancel
                         </button>
                         <button
                             id="markerCreateButton"
-                            className={`${styles.button} ${styles.success} ${styles.marker}`}
+                            className={cx(commonStyles.button, commonStyles.success)}
                             onClick={() => createItem(formData)}
                             disabled={validation}
                         >

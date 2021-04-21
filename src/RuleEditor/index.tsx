@@ -1,11 +1,14 @@
+import { faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
+import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
 import React from 'react';
 import { ClassComponent } from '@kubevious/ui-framework';
-import { Editor } from './Editor';
-import styles from './styles.scss';
+import { Editor } from '../components/Editor';
 import { IRuleService } from '@kubevious/ui-middleware';
-import { ItemsList } from './ItemsList';
 import { EditorItem, RuleEditorState } from '../types.js';
 import { RuleConfig, RuleResultSubscriber } from '@kubevious/ui-middleware/dist/services/rule';
+import { Sider } from '../components/Sider';
+import { exportFile } from '../utils/exportFile';
+import { uploadFile } from '../utils/uploadFile';
 
 const selectedItemInit = {
     name: '',
@@ -21,10 +24,9 @@ const selectedItemDataInit = {
     items: [],
 };
 
-const isTesting = process.env.IS_TESTING;
 export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService> {
-
-    private _ruleResultSubscriber? : RuleResultSubscriber;
+    private _ruleResultSubscriber?: RuleResultSubscriber;
+    readonly burgerMenuItems: BurgerMenuItem[];
 
     constructor(props: {} | Readonly<{}>) {
         super(props, null, { kind: 'rule' });
@@ -39,6 +41,29 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
             isNewItem: false,
         };
 
+        this.burgerMenuItems = [
+            {
+                key: 'rule-export',
+                text: 'Export rules',
+                icon: faFileExport,
+                action: () => exportFile({ service: this.service }),
+            },
+            {
+                key: 'rule-import',
+                text: 'Import rules',
+                icon: faFileImport,
+                action: () => uploadFile({ service: this.service, deleteExtra: false, selector: 'rule-import' }),
+                isUploadFile: true,
+            },
+            {
+                key: 'rule-replace',
+                text: 'Replace rules',
+                icon: faFileDownload,
+                action: () => uploadFile({ service: this.service, deleteExtra: true, selector: 'rule-replace' }),
+                isUploadFile: true,
+            },
+        ];
+
         this.openSummary = this.openSummary.bind(this);
         this.saveItem = this.saveItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
@@ -48,22 +73,20 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
     }
 
     componentDidMount(): void {
-
-        this.service.subscribeRuleStatuses((value) => {
+        this.service.subscribeItemStatuses((value) => {
             this.setState({
                 items: value,
             });
-        })
+        });
 
-        this._ruleResultSubscriber = 
-            this.service.subscribeRuleResult((value) => {
-                if (!value) {
-                    value = (selectedItemDataInit as any);
-                }
-                this.setState({
-                    selectedItemData: (value as any),
-                });
+        this._ruleResultSubscriber = this.service.subscribeItemResult((value) => {
+            if (!value) {
+                value = selectedItemDataInit as any;
+            }
+            this.setState({
+                selectedItemData: value as any,
             });
+        });
         this.subscribeToSharedState('rule_editor_selected_rule_id', (rule_editor_selected_rule_id) => {
             this._ruleResultSubscriber!.update(rule_editor_selected_rule_id);
         });
@@ -87,8 +110,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
 
         !rule.name
             ? this.openSummary()
-            : this.service.getRule(rule.name)
-                .then(data => {
+            : this.service.getItem(rule.name).then((data) => {
                   if (data === null) {
                       this.openSummary();
                       return;
@@ -108,25 +130,23 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
 
     saveItem(data: EditorItem): void {
         const { selectedItemId } = this.state;
-        this.service.createRule(data as RuleConfig, selectedItemId)
-            .then(() => {
-                this.setState({ isSuccess: true, selectedItem: data });
+        this.service.createItem(data as RuleConfig, selectedItemId).then(() => {
+            this.setState({ isSuccess: true, selectedItem: data });
 
-                setTimeout(() => {
-                    this.setState({ isSuccess: false });
-                }, 2000);
-            });
+            setTimeout(() => {
+                this.setState({ isSuccess: false });
+            }, 2000);
+        });
     }
 
     deleteItem(data: EditorItem): void {
-        this.service.deleteRule(data.name || '')
-            .then(() => {
-                this.setState({
-                    selectedItem: selectedItemInit,
-                    selectedItemId: '',
-                });
-                this.sharedState.set('rule_editor_selected_rule_id', null);
+        this.service.deleteItem(data.name || '').then(() => {
+            this.setState({
+                selectedItem: selectedItemInit,
+                selectedItemId: '',
             });
+            this.sharedState.set('rule_editor_selected_rule_id', null);
+        });
     }
 
     openSummary(): void {
@@ -135,11 +155,10 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
     }
 
     createItem(data: EditorItem): void {
-        this.service.createRule(data as RuleConfig, data.name || '')
-            .then(rule => {
-                this.setState({ isSuccess: true });
-                this.selectItem(rule);
-            });
+        this.service.createItem(data as RuleConfig, data.name || '').then((rule) => {
+            this.setState({ isSuccess: true });
+            this.selectItem(rule);
+        });
     }
 
     createNewItem(): void {
@@ -165,17 +184,17 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state;
 
         return (
-            <div data-testid="rule-editor" className={styles.ruleEditorContainer} id="ruleEditorComponent">
-                <ItemsList
+            <div data-testid="rule-editor" className="d-flex h-100" id="ruleEditorComponent">
+                <Sider
                     type="rule"
                     items={items}
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    ruleService={this.service}
+                    burgerMenuItems={this.burgerMenuItems}
                 />
 
-                {!isTesting && <Editor
+                <Editor
                     type="rule"
                     items={items}
                     isNewItem={isNewItem}
@@ -188,7 +207,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                     createItem={this.createItem}
                     openSummary={this.openSummary}
                     isSuccess={isSuccess}
-                />}
+                />
             </div>
         );
     }

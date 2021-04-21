@@ -1,19 +1,20 @@
-import React from 'react';
-import { isEmptyArray } from '../utils';
+import React, { FC } from 'react';
+import { isEmptyArray } from '../../utils';
 import cx from 'classnames';
-import { MarkerPreview } from '../MarkerPreview';
-import { BurgerMenu } from '../BurgerMenu';
-import { EditorType, IndicatorType, EditorItem, ItemsListProps } from '../types';
-import styles from './styles.scss';
+import { MarkerPreview } from '../../MarkerPreview';
+import { EditorType, IndicatorType, EditorItem, SiderProps } from '../../types';
+import { BurgerMenu } from '@kubevious/ui-components';
 
-export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
+import styles from './styles.module.css';
+import commonStyles from '../../common.module.css';
+
+export const Sider: FC<SiderProps> = ({
     type,
     items,
     selectedItemId,
     selectItem,
     createNewItem,
-    ruleService,
-    markerService
+    burgerMenuItems,
 }) => {
     const ruleIndicatorClass = (x: EditorItem): string => {
         let indicatorClass: string;
@@ -28,25 +29,31 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
     };
 
     return (
-        <div id="rule-list"className={styles.ruleList}>
+        <div id="rule-list" className={styles.ruleList}>
             <div className={styles.ruleHeader}>
-                <div className={styles.btnGroup}>
-                    <button className={`${styles.button} ${styles.success} ${styles.newRuleBtn}`} onClick={() => createNewItem()}>
-                        <div className={styles.plus}>+</div>
-                        <span className={styles.buttonText}>New {type}</span>
+                <div className="d-flex align-items-center btn-group">
+                    <button
+                        className={cx(commonStyles.button, commonStyles.success, commonStyles.newRuleBtn, 'flex-grow-1')}
+                        onClick={createNewItem}
+                    >
+                        <div className={commonStyles.plus}>+</div>
+                        <span>New {type}</span>
                     </button>
 
-                    <BurgerMenu type={type} ruleService={ruleService} markerService={markerService} />
+                    <BurgerMenu items={burgerMenuItems} />
                 </div>
             </div>
 
-            <div className={cx(styles.rules, type === EditorType.marker && styles.markers)}>
+            <div className={cx(styles.rules, { [styles.markers]: type === EditorType.marker })}>
                 {!isEmptyArray(items) &&
-                    items.map((item: EditorItem, index: number) => (
+                    items.map((item, index) => (
                         <button
                             key={index}
                             id="ruleItemButton"
-                            className={cx(styles.ruleItemButton, item.name === selectedItemId && styles.selectedItemButton)}
+                            className={cx(
+                                styles.ruleItemButton,
+                                item.name === selectedItemId && styles.selectedItemButton,
+                            )}
                             onClick={() => selectItem(item)}
                         >
                             <div className={styles.item}>
@@ -56,7 +63,7 @@ export const ItemsList: React.FunctionComponent<ItemsListProps> = ({
                                     </div>
                                 )}
 
-                                <div className={styles.indicators}>
+                                <div className="d-flex align-items-center">
                                     {type === EditorType.rule && (
                                         <div className={cx(styles.indicator, ruleIndicatorClass(item))} />
                                     )}

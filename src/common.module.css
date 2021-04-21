@@ -1,0 +1,53 @@
+.button {
+    min-width: 100px;
+    height: 40px;
+    margin-right: 10px;
+    border: 1px solid #4e515b;
+    border-radius: 3px;
+    color: #4e515b;
+    background: #1e1e1e;
+    outline: none;
+}
+
+.button.success {
+    color: white;
+    background: #4ecd77;
+}
+
+.newRuleBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 120px !important;
+    font-weight: bold;
+    padding: 5px 10px !important;
+
+}
+
+.newRuleBtn .plus {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.labelWrapper {
+    margin-bottom: 10px;
+}
+
+.labelWrapper.color {
+    position: relative;
+}
+
+.labelWrapper label {
+    font-size: 14px;
+    color: #737888;
+    margin: 0;
+}
+
+.fieldInput {
+    width: 100%;
+    outline: none;
+    padding: 10px 20px;
+    background: #35373e;
+    border: 1px solid #4e515b;
+    color: white;
+}

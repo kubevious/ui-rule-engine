@@ -1,0 +1,134 @@
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.editorContainer {
+    height: calc(100% - 210px);
+    min-height: 150px;
+}
+
+.editor {
+    height: calc(100% - 50px);
+    min-height: 100px;
+    margin-bottom: 15px;
+}
+
+.editor :global(.react-codemirror2) {
+    min-height: 100%;
+}
+
+.editor :global(.react-codemirror2 .CodeMirror.cm-s-darcula) {
+    background: #35373e;
+    border: 1px solid #4e515b;
+    min-height: 100%;
+    max-width: 100%;
+}
+
+.tabs {
+    display: flex;
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    text-align: center;
+    color: #737888;
+    padding: 5px 0;
+    margin-bottom: -1px;
+    cursor: pointer;
+}
+
+.errorCount {
+    margin-left: 5px;
+    background: #e24c4b;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+}
+
+.selectedEditorContainerTab {
+    background: #35373e;
+    border: 1px solid #4e515b;
+    border-bottom: none;
+    color: white !important;
+    z-index: 1;
+}
+
+.editorErrors {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.editorErrors:empty {
+    margin: 0;
+}
+
+.errBox {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.errBox:last-child {
+    margin-bottom: 0;
+}
+
+.errorBullet {
+    margin-right: 10px;
+    background: #e24c4b;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+}
+
+.alertItem {
+    margin-right: 20px;
+}
+
+.errorMessage {
+    color: red;
+}
+
+.checkboxContainer {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    color: white;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkboxContainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    border: solid 1px #ccc;
+}
+
+.checkboxContainer input:checked ~ .checkmark {
+    background-color: #4ecd77;
+    border: 5px solid #4e515b;
+}

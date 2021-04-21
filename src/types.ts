@@ -1,4 +1,4 @@
-import { IMarkerService, IRuleService } from '@kubevious/ui-middleware';
+import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
 
 export type DnOptions = {
     relativeTo?: string;
@@ -60,14 +60,13 @@ export type MarkerEditorState = {
     isNewItem: boolean;
 };
 
-export type ItemsListProps = {
+export type SiderProps = {
     type: string;
     items: EditorItem[];
     selectedItemId: string;
     selectItem: (marker: EditorItem) => void;
     createNewItem: () => void;
-    ruleService?: IRuleService;
-    markerService?: IMarkerService;
+    burgerMenuItems: BurgerMenuItem[]
 };
 
 export type EditorProps = {

@@ -1,13 +1,16 @@
+import { faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
+import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
 import React from 'react';
-import { Editor } from './Editor';
-import { ItemsList } from './ItemsList';
+import { Editor } from '../components/Editor';
+import { Sider } from '../components/Sider';
 import { COLORS, SHAPES } from '../constants';
 import { EditorItem, MarkerEditorState, SelectedItemData } from '../types';
 import { ClassComponent } from '@kubevious/ui-framework';
-import styles from './styles.scss';
 
 import { IMarkerService } from '@kubevious/ui-middleware';
 import { MarkerConfig, MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
+import { exportFile } from '../utils/exportFile';
+import { uploadFile } from '../utils/uploadFile';
 
 const selectedItemDataInit: SelectedItemData = {
     items: [],
@@ -16,8 +19,8 @@ const selectedItemDataInit: SelectedItemData = {
 };
 
 export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerService> {
-
-    private _markerResultSubscriber? : MarkerResultSubscriber;
+    private _markerResultSubscriber?: MarkerResultSubscriber;
+    readonly burgerMenuItems: BurgerMenuItem[];
 
     constructor(props: {} | Readonly<{}>) {
         super(props, null, { kind: 'marker' });
@@ -30,6 +33,29 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
             isNewItem: false,
         };
 
+        this.burgerMenuItems = [
+            {
+                key: 'marker-export',
+                text: 'Export markers',
+                icon: faFileExport,
+                action: () => exportFile({ service: this.service }),
+            },
+            {
+                key: 'marker-import',
+                text: 'Import markers',
+                icon: faFileImport,
+                action: () => uploadFile({ service: this.service, deleteExtra: false, selector: 'marker-import' }),
+                isUploadFile: true,
+            },
+            {
+                key: 'marker-replace',
+                text: 'Replace markers',
+                icon: faFileDownload,
+                action: () => uploadFile({ service: this.service, deleteExtra: true, selector: 'marker-replace' }),
+                isUploadFile: true,
+            },
+        ];
+
         this.openSummary = this.openSummary.bind(this);
         this.saveItem = this.saveItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
@@ -39,21 +65,20 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
     }
 
     componentDidMount(): void {
-        this.service.subscribeMarkerStatuses((value) => {
+        this.service.subscribeItemStatuses((value) => {
             this.setState({
                 items: value,
             });
-        })
+        });
 
-        this._markerResultSubscriber = 
-            this.service.subscribeMarkerResult((value) => {
-                if (!value) {
-                    value = (selectedItemDataInit as any);
-                }
-                this.setState({
-                    selectedItemData: value as any,
-                });
+        this._markerResultSubscriber = this.service.subscribeItemResult((value) => {
+            if (!value) {
+                value = selectedItemDataInit as any;
+            }
+            this.setState({
+                selectedItemData: value as any,
             });
+        });
         this.subscribeToSharedState('marker_editor_selected_marker_id', (marker_editor_selected_marker_id) => {
             this._markerResultSubscriber!.update(marker_editor_selected_marker_id);
         });
@@ -66,20 +91,19 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
             selectedItemId: marker.name || '',
         });
         marker.name &&
-            this.service.getMarker(marker.name)
-                .then((data) => {
-                    if (data === null) {
-                        this.openSummary();
-                        return;
-                    }
-                    const { selectedItemId } = this.state;
+            this.service.getItem(marker.name).then((data) => {
+                if (data === null) {
+                    this.openSummary();
+                    return;
+                }
+                const { selectedItemId } = this.state;
 
-                    if (data.name === selectedItemId) {
-                        this.setState({
-                            selectedItem: data,
-                        });
-                    }
-                });
+                if (data.name === selectedItemId) {
+                    this.setState({
+                        selectedItem: data,
+                    });
+                }
+            });
 
         this.sharedState.set('marker_editor_selected_marker_id', marker.name);
     }
@@ -87,26 +111,24 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
     saveItem(data: EditorItem): void {
         const { selectedItemId } = this.state;
 
-        this.service.createMarker(data as MarkerConfig, selectedItemId!)
-            .then(() => {
-                this.setState({ isSuccess: true });
+        this.service.createItem(data as MarkerConfig, selectedItemId!).then(() => {
+            this.setState({ isSuccess: true });
 
-                setTimeout(() => {
-                    this.setState({ isSuccess: false });
-                }, 2000);
-            });
+            setTimeout(() => {
+                this.setState({ isSuccess: false });
+            }, 2000);
+        });
     }
 
     deleteItem(data: EditorItem): void {
         if (data.name) {
-            this.service.deleteMarker(data.name)
-                .then(() => {
-                    this.setState({
-                        selectedItem: {},
-                        selectedItemId: '',
-                    });
-                    this.sharedState.set('marker_editor_selected_marker_id', null);
+            this.service.deleteItem(data.name).then(() => {
+                this.setState({
+                    selectedItem: {},
+                    selectedItemId: '',
                 });
+                this.sharedState.set('marker_editor_selected_marker_id', null);
+            });
         }
     }
 
@@ -116,11 +138,10 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
     }
 
     createItem(data: EditorItem): void {
-        this.service.createMarker(data as MarkerConfig, data.name || '')
-            .then((marker) => {
-                this.setState({ isSuccess: true });
-                this.selectItem(marker);
-            });
+        this.service.createItem(data as MarkerConfig, data.name || '').then((marker) => {
+            this.setState({ isSuccess: true });
+            this.selectItem(marker);
+        });
     }
 
     createNewItem(): void {
@@ -144,14 +165,14 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state;
 
         return (
-            <div data-testid="marker-editor" className={`${styles.ruleEditorContainer} ${styles.markerEditorComponent}`} id="markerEditorComponent">
-                <ItemsList
+            <div data-testid="marker-editor" className="d-flex h-100" id="markerEditorComponent">
+                <Sider
                     type="marker"
                     items={items}
                     selectedItemId={selectedItemId}
                     selectItem={this.selectItem}
                     createNewItem={this.createNewItem}
-                    markerService={this.service}
+                    burgerMenuItems={this.burgerMenuItems}
                 />
 
                 <Editor
