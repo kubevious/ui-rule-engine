@@ -55,7 +55,7 @@ export class RuleService implements IRuleService {
         return Promise.resolve();
     }
 
-    getItemsStatuses(): Promise<RuleStatus[]> {
+    getItemStatuses(): Promise<RuleStatus[]> {
         return Promise.resolve([]);
     }
 
@@ -70,7 +70,7 @@ export class RuleService implements IRuleService {
     }
 
     subscribeItemStatuses(cb: (items: RuleStatus[]) => void): void {
-        this.getItemsStatuses().then((result) => cb(result));
+        this.getItemStatuses().then((result) => cb(result));
     }
 
     subscribeItemResult(cb: (result: RuleResult) => void) {
