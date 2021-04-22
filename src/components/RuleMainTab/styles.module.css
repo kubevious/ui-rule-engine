@@ -132,3 +132,9 @@
     background-color: #4ecd77;
     border: 5px solid #4e515b;
 }
+
+.newItemTitle {
+    font-size: 20px;
+    color: white;
+    padding: 0;
+}

@@ -8,14 +8,7 @@ import { BurgerMenu } from '@kubevious/ui-components';
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
 
-export const Sider: FC<SiderProps> = ({
-    type,
-    items,
-    selectedItemId,
-    selectItem,
-    createNewItem,
-    burgerMenuItems,
-}) => {
+export const Sider: FC<SiderProps> = ({ type, items, selectedItemId, selectItem, createNewItem, burgerMenuItems }) => {
     const ruleIndicatorClass = (x: EditorItem): string => {
         let indicatorClass: string;
         if (!x.enabled) {
@@ -33,7 +26,12 @@ export const Sider: FC<SiderProps> = ({
             <div className={styles.ruleHeader}>
                 <div className="d-flex align-items-center btn-group">
                     <button
-                        className={cx(commonStyles.button, commonStyles.success, commonStyles.newRuleBtn, 'flex-grow-1')}
+                        className={cx(
+                            commonStyles.button,
+                            commonStyles.success,
+                            commonStyles.newRuleBtn,
+                            'flex-grow-1',
+                        )}
                         onClick={createNewItem}
                     >
                         <div className={commonStyles.plus}>+</div>
@@ -50,10 +48,9 @@ export const Sider: FC<SiderProps> = ({
                         <button
                             key={index}
                             id="ruleItemButton"
-                            className={cx(
-                                styles.ruleItemButton,
-                                item.name === selectedItemId && styles.selectedItemButton,
-                            )}
+                            className={cx(styles.ruleItemButton, {
+                                [styles.selectedItemButton]: item.name === selectedItemId,
+                            })}
                             onClick={() => selectItem(item)}
                         >
                             <div className={styles.item}>

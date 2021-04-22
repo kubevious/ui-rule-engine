@@ -18,7 +18,7 @@ export const uploadFile = ({ service, selector, deleteExtra }): void => {
             deleteExtra,
         };
 
-        service.importRules(importData as any).then(() => {
+        service.importItems(importData as any).then(() => {
             input.value = '';
         });
     };

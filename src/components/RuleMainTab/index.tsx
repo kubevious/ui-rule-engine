@@ -20,7 +20,6 @@ const LEFT_WINDOW_CODE_KEY = 91;
 const EMPTY_CODE_KEY = 64;
 
 export const RuleMainTab: FC<RuleMainTabProps> = ({
-    selectedItemId,
     selectedItem,
     selectedItemData,
     isSuccess,
@@ -28,6 +27,8 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     openSummary,
     createItem,
     saveItem,
+    selectedItemId,
+    isNewItem = false,
 }) => {
     const [formData, setFormData] = useState<EditorItem>({ enabled: false });
     const [formDataId, setFormDataId] = useState<string>('');
@@ -38,7 +39,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
             setFormDataId(formDataId);
             setFormData({ ...selectedItem });
         }
-    }, [selectedItemId, selectedItem]);
+    }, [selectedItemId]);
 
     useEffect(() => {
         $('.editor-container').css('height', `calc(100% - 210px - ${selectedItemData.logs.length * 40}px)`);
@@ -125,6 +126,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
     return (
         <>
+            {isNewItem && <div className={styles.newItemTitle}>Create new rule</div>}
             <div className={styles.field}>
                 <div className={commonStyles.labelWrapper}>
                     <label>Name</label>

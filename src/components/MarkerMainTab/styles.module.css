@@ -12,7 +12,12 @@
     padding: 10px 10px;
     height: calc(100% - 60px);
     min-height: 150px;
+    max-height: 200px;
     overflow: hidden;
+}
+
+.markerArea:hover {
+    overflow: overlay;
 }
 
 .nameArea {
@@ -102,5 +107,5 @@
 }
 
 .markerFieldInput {
-    border: none;
+    border: none !important;
 }

@@ -101,3 +101,8 @@
 .indicator.invalid {
     background: rgb(197, 6, 6);
 }
+
+.selectedItemButton {
+    background: #1e1e1e !important;
+}
+

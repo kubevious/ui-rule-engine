@@ -1,0 +1,19 @@
+.header {
+    display: flex;
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.tab {
+    margin-right: 20px;
+    color: #737888;
+    font-size: 16px;
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+.selectedTab {
+    color: white !important;
+    border-bottom: 1px solid #4ecd77;
+}

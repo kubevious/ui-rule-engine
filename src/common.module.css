@@ -14,6 +14,26 @@
     background: #4ecd77;
 }
 
+.button:hover {
+    color: white;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+.button.success:hover {
+    background: #249448;
+    border-color: #249448;
+}
+
+.button:disabled:hover {
+    cursor: not-allowed;
+}
+
+.button:last-child {
+    margin-right: 0;
+}
+
+
 .newRuleBtn {
     display: flex;
     justify-content: center;
@@ -51,3 +71,50 @@
     border: 1px solid #4e515b;
     color: white;
 }
+
+.ruleEditor {
+    min-width: calc(100% - 250px);
+    max-width: calc(100% - 255px);
+    position: relative;
+}
+
+.ruleContainer {
+    overflow-y: hidden;
+    height: 100%;
+    padding: 20px 50px 10px;
+}
+
+.ruleContainer:hover {
+    overflow-y: overlay;
+}
+
+.ruleContainer.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #737888;
+}
+
+.editorTitle {
+    display: flex;
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.editorTitle .tab {
+    margin-right: 20px;
+    color: #737888;
+    font-size: 16px;
+    padding: 0 20px;
+}
+
+.editorTitle .tab:hover {
+    cursor: pointer;
+}
+
+.selectedTab {
+    color: white !important;
+    border-bottom: 1px solid #4ecd77;
+}
+

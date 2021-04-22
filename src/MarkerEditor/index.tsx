@@ -1,16 +1,23 @@
 import { faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
 import React from 'react';
-import { Editor } from '../components/Editor';
+import { AffectedObjects } from '../components/AffectedObjects';
+import { MarkerMainTab } from '../components/MarkerMainTab';
 import { Sider } from '../components/Sider';
+import { Tabs } from '../components/Tabs';
+import { Tab } from '../components/Tabs/Tab';
 import { COLORS, SHAPES } from '../constants';
+import { StartPage } from '../StartPage';
 import { EditorItem, MarkerEditorState, SelectedItemData } from '../types';
 import { ClassComponent } from '@kubevious/ui-framework';
 
 import { IMarkerService } from '@kubevious/ui-middleware';
 import { MarkerConfig, MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
+import { isEmptyArray, isEmptyObject } from '../utils';
 import { exportFile } from '../utils/exportFile';
 import { uploadFile } from '../utils/uploadFile';
+
+import commonStyles from '../common.module.css';
 
 const selectedItemDataInit: SelectedItemData = {
     items: [],
@@ -162,7 +169,17 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
     }
 
     render() {
-        const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state;
+        const { items, selectedItem, selectedItemId, isNewItem, selectedItemData, isSuccess } = this.state;
+
+        const itemCount = selectedItemData.items ? selectedItemData.items.length : selectedItemData.item_count;
+
+        if (selectedItemData.items) {
+            for (const item of selectedItemData.items) {
+                if (selectedItem.name) {
+                    item.markers = [selectedItem.name];
+                }
+            }
+        }
 
         return (
             <div data-testid="marker-editor" className="d-flex h-100" id="markerEditorComponent">
@@ -175,20 +192,47 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                     burgerMenuItems={this.burgerMenuItems}
                 />
 
-                <Editor
-                    type="marker"
-                    items={items}
-                    isNewItem={isNewItem}
-                    selectedItem={selectedItem}
-                    selectedItemData={selectedItemData}
-                    selectedItemId={selectedItemId}
-                    createNewItem={this.createNewItem}
-                    saveItem={this.saveItem}
-                    deleteItem={this.deleteItem}
-                    createItem={this.createItem}
-                    openSummary={this.openSummary}
-                    isSuccess={isSuccess}
-                />
+                <div id="marker-editor" className={commonStyles.ruleEditor}>
+                    <div className={commonStyles.ruleContainer}>
+                        {(isEmptyArray(items) || isEmptyObject(selectedItem)) && !isNewItem && (
+                            <StartPage type="marker" createNewItem={this.createNewItem} />
+                        )}
+
+                        {(selectedItemId || isNewItem) && (
+                            <>
+                                {isNewItem && (
+                                    <MarkerMainTab
+                                        selectedItem={selectedItem}
+                                        saveItem={this.saveItem}
+                                        deleteItem={this.deleteItem}
+                                        createItem={this.createItem}
+                                        openSummary={this.openSummary}
+                                        isSuccess={isSuccess}
+                                    />
+                                )}
+
+                                {!isNewItem && (
+                                    <Tabs>
+                                        <Tab key="edit" label="Edit markers">
+                                            <MarkerMainTab
+                                                selectedItem={selectedItem}
+                                                saveItem={this.saveItem}
+                                                deleteItem={this.deleteItem}
+                                                createItem={this.createItem}
+                                                openSummary={this.openSummary}
+                                                isSuccess={isSuccess}
+                                            />
+                                        </Tab>
+
+                                        <Tab key="objects" label={`Affected objects[${itemCount}]`}>
+                                            <AffectedObjects selectedItemData={selectedItemData} />
+                                        </Tab>
+                                    </Tabs>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
         );
     }

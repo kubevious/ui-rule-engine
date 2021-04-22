@@ -1,14 +1,21 @@
 import { faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ClassComponent } from '@kubevious/ui-framework';
-import { Editor } from '../components/Editor';
+import { AffectedObjects } from '../components/AffectedObjects';
 import { IRuleService } from '@kubevious/ui-middleware';
+import { RuleMainTab } from '../components/RuleMainTab';
+import { Tabs } from '../components/Tabs';
+import { Tab } from '../components/Tabs/Tab';
+import { StartPage } from '../StartPage';
 import { EditorItem, RuleEditorState } from '../types.js';
 import { RuleConfig, RuleResultSubscriber } from '@kubevious/ui-middleware/dist/services/rule';
 import { Sider } from '../components/Sider';
+import { isEmptyArray, isEmptyObject } from '../utils';
 import { exportFile } from '../utils/exportFile';
 import { uploadFile } from '../utils/uploadFile';
+
+import commonStyles from '../common.module.css';
 
 const selectedItemInit = {
     name: '',
@@ -32,8 +39,29 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         super(props, null, { kind: 'rule' });
 
         this.state = {
-            selectedTab: 'main',
-            items: [],
+            items: [
+                {
+                    name: 'rule 1',
+                    enabled: true,
+                    item_count: 0,
+                    error_count: 0,
+                    is_current: false,
+                },
+                {
+                    name: 'rule 2',
+                    enabled: false,
+                    item_count: 0,
+                    error_count: 0,
+                    is_current: false,
+                },
+                {
+                    name: 'rule 3',
+                    enabled: true,
+                    item_count: 0,
+                    error_count: 0,
+                    is_current: false,
+                },
+            ],
             selectedItem: selectedItemInit,
             selectedItemData: selectedItemDataInit,
             selectedItemId: '',
@@ -102,12 +130,6 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
     }
 
     selectItem(rule: EditorItem): void {
-        this.setState({
-            isNewItem: false,
-            isSuccess: false,
-            selectedItemId: rule.name || '',
-        });
-
         !rule.name
             ? this.openSummary()
             : this.service.getItem(rule.name).then((data) => {
@@ -116,16 +138,14 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                       return;
                   }
 
-                  const { selectedItemId } = this.state;
-                  if (data.name === selectedItemId) {
-                      this.setState({
-                          selectedItem: data,
-                      });
-                  }
-              });
+                  this.setState({
+                      selectedItemId: data.name,
+                      selectedItem: data,
+                  });
 
-        this.sharedState.set('rule_editor_selected_rule_id', rule.name);
-        this.sharedState.set('rule_editor_is_new_rule', false);
+                  this.sharedState.set('rule_editor_selected_rule_id', rule.name);
+                  this.sharedState.set('rule_editor_is_new_rule', false);
+              });
     }
 
     saveItem(data: EditorItem): void {
@@ -180,8 +200,18 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         }));
     }
 
+    renderLoading(): ReactNode {
+        return (
+            !this.state.isNewItem &&
+            this.state.selectedItemData &&
+            !this.state.selectedItemData.is_current && <div className={commonStyles.busyRuleIndicator} />
+        );
+    }
+
     render() {
-        const { items, isNewItem, selectedItem, selectedItemData, selectedItemId, isSuccess } = this.state;
+        const { items, selectedItem, selectedItemId, isNewItem, isSuccess, selectedItemData } = this.state;
+
+        const itemCount = selectedItemData.items ? selectedItemData.items.length : selectedItemData.item_count;
 
         return (
             <div data-testid="rule-editor" className="d-flex h-100" id="ruleEditorComponent">
@@ -194,20 +224,52 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                     burgerMenuItems={this.burgerMenuItems}
                 />
 
-                <Editor
-                    type="rule"
-                    items={items}
-                    isNewItem={isNewItem}
-                    selectedItem={selectedItem}
-                    selectedItemData={selectedItemData}
-                    selectedItemId={selectedItemId}
-                    createNewItem={this.createNewItem}
-                    saveItem={this.saveItem}
-                    deleteItem={this.deleteItem}
-                    createItem={this.createItem}
-                    openSummary={this.openSummary}
-                    isSuccess={isSuccess}
-                />
+                <div id="rule-editor" className={commonStyles.ruleEditor}>
+                    <div className={commonStyles.ruleContainer}>
+                        {(isEmptyArray(items) || isEmptyObject(selectedItem)) && !isNewItem && (
+                            <StartPage type="rule" createNewItem={this.createNewItem} />
+                        )}
+
+                        {(selectedItemId || isNewItem) && (
+                            <>
+                                {isNewItem && (
+                                    <RuleMainTab
+                                        selectedItem={selectedItem}
+                                        selectedItemData={selectedItemData}
+                                        saveItem={this.saveItem}
+                                        deleteItem={this.deleteItem}
+                                        createItem={this.createItem}
+                                        openSummary={this.openSummary}
+                                        selectedItemId={selectedItemId}
+                                        isSuccess={isSuccess}
+                                        isNewItem={isNewItem}
+                                    />
+                                )}
+
+                                {!isNewItem && (
+                                    <Tabs>
+                                        <Tab key="edit" label="Edit rules">
+                                            <RuleMainTab
+                                                selectedItem={selectedItem}
+                                                selectedItemData={selectedItemData}
+                                                saveItem={this.saveItem}
+                                                deleteItem={this.deleteItem}
+                                                createItem={this.createItem}
+                                                openSummary={this.openSummary}
+                                                selectedItemId={selectedItemId}
+                                                isSuccess={isSuccess}
+                                            />
+                                        </Tab>
+
+                                        <Tab key="objects" label={`Affected objects[${itemCount}]`}>
+                                            <AffectedObjects selectedItemData={selectedItemData} />
+                                        </Tab>
+                                    </Tabs>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
         );
     }

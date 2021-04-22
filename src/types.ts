@@ -30,10 +30,10 @@ export type RuleMainTabProps = {
     openSummary: () => void;
     selectedItemId: string;
     isSuccess: boolean;
+    isNewItem?: boolean;
 };
 
 export type RuleEditorState = {
-    selectedTab: string;
     items: EditorItem[];
     selectedItemData: SelectedItemData;
     selectedItem: EditorItem;
@@ -66,7 +66,7 @@ export type SiderProps = {
     selectedItemId: string;
     selectItem: (marker: EditorItem) => void;
     createNewItem: () => void;
-    burgerMenuItems: BurgerMenuItem[]
+    burgerMenuItems: BurgerMenuItem[];
 };
 
 export type EditorProps = {
@@ -117,6 +117,6 @@ export enum IndicatorType {
 }
 
 export type ExportItem = {
-    kind: string
-    items: EditorItem[]
-}
+    kind: string;
+    items: EditorItem[];
+};
