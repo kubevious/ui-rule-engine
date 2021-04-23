@@ -112,7 +112,14 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         const { selectedItemKey } = this.state;
 
         this.service.createItem(data as MarkerConfig, selectedItemKey!).then(() => {
-            this.setState({ isSuccess: true });
+            this.setState((prevState) => ({
+                isSuccess: true,
+                selectedItem: data,
+                selectedItemKey: data.name!,
+                items: prevState.items.map((item) => (item.name === selectedItemKey ? data : item)),
+            }));
+
+            this.sharedState.set('marker_editor_selected_marker_key', data.name);
 
             setTimeout(() => {
                 this.setState({ isSuccess: false });
@@ -123,10 +130,12 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
     deleteItem(data: EditorItem): void {
         if (data.name) {
             this.service.deleteItem(data.name).then(() => {
-                this.setState({
+                this.setState((prevState) => ({
                     selectedItem: {},
                     selectedItemKey: '',
-                });
+                    items: prevState.items.filter((item) => item.name !== data.name),
+                }));
+
                 this.sharedState.set('marker_editor_selected_marker_key', null);
             });
         }
@@ -139,8 +148,15 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
 
     createItem(data: EditorItem): void {
         this.service.createItem(data as MarkerConfig, data.name || '').then((marker) => {
-            this.setState({ isSuccess: true });
-            this.selectItem(marker.name);
+            this.setState((prevState) => ({
+                ...prevState,
+                isSuccess: true,
+                items: prevState.items.concat(marker),
+                selectedItemKey: marker.name,
+                selectedItem: marker,
+            }));
+
+            this.sharedState.set('marker_editor_selected_marker_key', marker.name);
         });
     }
 
@@ -173,9 +189,6 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                 }
             }
         }
-
-        console.log('selectedItemKey= >', selectedItemKey);
-        console.log('isNewItem => ', isNewItem);
 
         return (
             <div data-testid="marker-editor" className="d-flex h-100" id="markerEditorComponent">

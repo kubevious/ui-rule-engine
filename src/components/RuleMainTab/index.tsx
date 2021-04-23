@@ -137,6 +137,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                     value={name || ''}
                     name="name"
                     onChange={(e) => handleChange(e)}
+                    data-testid="rule-name-input"
                 />
             </div>
 

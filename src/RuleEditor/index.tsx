@@ -129,8 +129,16 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
 
     saveItem(data: EditorItem): void {
         const { selectedItemKey } = this.state;
+
         this.service.createItem(data as RuleConfig, selectedItemKey).then(() => {
-            this.setState({ isSuccess: true, selectedItem: data });
+            this.setState((prevState) => ({
+                isSuccess: true,
+                selectedItem: data,
+                selectedItemKey: data.name!,
+                items: prevState.items.map((item) => (item.name === selectedItemKey ? data : item)),
+            }));
+
+            this.sharedState.set('rule_editor_selected_rule_key', data.name);
 
             setTimeout(() => {
                 this.setState({ isSuccess: false });
@@ -140,10 +148,11 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
 
     deleteItem(data: EditorItem): void {
         this.service.deleteItem(data.name || '').then(() => {
-            this.setState({
-                selectedItem: selectedItemInit,
+            this.setState((prevState) => ({
+                selectedItem: {},
                 selectedItemKey: '',
-            });
+                items: prevState.items.filter((item) => item.name !== data.name),
+            }));
             this.sharedState.set('rule_editor_selected_rule_key', null);
         });
     }
@@ -157,6 +166,16 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         this.service.createItem(data as RuleConfig, data.name || '').then((rule) => {
             this.setState({ isSuccess: true });
             this.selectItem(rule.name);
+
+            this.setState((prevState) => ({
+                ...prevState,
+                isSuccess: true,
+                items: prevState.items.concat(rule),
+                selectedItemKey: rule.name,
+                selectedItem: rule,
+            }));
+
+            this.sharedState.set('rule_editor_selected_rule_key', rule.name);
         });
     }
 
