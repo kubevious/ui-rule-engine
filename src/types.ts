@@ -1,4 +1,4 @@
-import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
+import { ReactNode } from 'react';
 
 export type DnOptions = {
     relativeTo?: string;
@@ -28,7 +28,7 @@ export type RuleMainTabProps = {
     deleteItem: (data: EditorItem) => void;
     createItem: (data: EditorItem) => void;
     openSummary: () => void;
-    selectedItemId: string;
+    selectedItemKey: string;
     isSuccess: boolean;
     isNewItem?: boolean;
 };
@@ -37,7 +37,7 @@ export type RuleEditorState = {
     items: EditorItem[];
     selectedItemData: SelectedItemData;
     selectedItem: EditorItem;
-    selectedItemId: string;
+    selectedItemKey: string;
     isSuccess: boolean;
     isNewItem: boolean;
 };
@@ -55,18 +55,24 @@ export type MarkerEditorState = {
     items: EditorItem[];
     selectedItem: EditorItem;
     selectedItemData: SelectedItemData;
-    selectedItemId: string;
+    selectedItemKey: string;
     isSuccess: boolean;
     isNewItem: boolean;
 };
 
+export type SiderMenuItem = {
+    key: string;
+    title: ReactNode;
+    extraText?: ReactNode;
+    icon: ReactNode;
+};
+
 export type SiderProps = {
     type: string;
-    items: EditorItem[];
-    selectedItemId: string;
-    selectItem: (marker: EditorItem) => void;
-    createNewItem: () => void;
-    burgerMenuItems: BurgerMenuItem[];
+    items: SiderMenuItem[];
+    onSelect: (key: string) => void;
+    selectedItemKey: string;
+    header?: ReactNode
 };
 
 export type EditorProps = {

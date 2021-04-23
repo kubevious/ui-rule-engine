@@ -27,7 +27,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     openSummary,
     createItem,
     saveItem,
-    selectedItemId,
+    selectedItemKey,
     isNewItem = false,
 }) => {
     const [formData, setFormData] = useState<EditorItem>({ enabled: false });
@@ -35,11 +35,11 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     const [visibleEditor, setVisibleEditor] = useState<string>('target');
 
     useEffect(() => {
-        if (selectedItemId !== formDataId || selectedItemId === null) {
+        if (selectedItemKey !== formDataId || selectedItemKey === null) {
             setFormDataId(formDataId);
             setFormData({ ...selectedItem });
         }
-    }, [selectedItemId]);
+    }, [selectedItemKey]);
 
     useEffect(() => {
         $('.editor-container').css('height', `calc(100% - 210px - ${selectedItemData.logs.length * 40}px)`);
