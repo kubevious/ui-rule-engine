@@ -118,3 +118,8 @@
     border-bottom: 1px solid #4ecd77;
 }
 
+.newItemTitle {
+    font-size: 20px;
+    color: white;
+    padding: 0;
+}

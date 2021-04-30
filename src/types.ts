@@ -49,6 +49,7 @@ export type MarkerMainTabProps = {
     createItem: (data: EditorItem) => void;
     openSummary: () => void;
     isSuccess: boolean;
+    isNewItem?: boolean
 };
 
 export type MarkerEditorState = {

@@ -19,6 +19,11 @@ import commonStyles from '../../common.module.css';
 const LEFT_WINDOW_CODE_KEY = 91;
 const EMPTY_CODE_KEY = 64;
 
+export enum EditorTab {
+    target = 'target',
+    script = 'script',
+}
+
 export const RuleMainTab: FC<RuleMainTabProps> = ({
     selectedItem,
     selectedItemData,
@@ -32,7 +37,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 }) => {
     const [formData, setFormData] = useState<EditorItem>({ enabled: false });
     const [formDataId, setFormDataId] = useState<string>('');
-    const [visibleEditor, setVisibleEditor] = useState<string>('target');
+    const [visibleEditor, setVisibleEditor] = useState<EditorTab>(EditorTab.target);
 
     useEffect(() => {
         if (selectedItemKey !== formDataId || selectedItemKey === null) {
@@ -126,7 +131,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
     return (
         <>
-            {isNewItem && <div className={styles.newItemTitle}>Create new rule</div>}
+            {isNewItem && <div className={commonStyles.newItemTitle}>Create new rule</div>}
             <div className={styles.field}>
                 <div className={commonStyles.labelWrapper}>
                     <label>Name</label>
@@ -144,24 +149,32 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
             <div className={cx(styles.editorContainer, 'editor-container')}>
                 <div className={styles.tabs}>
                     <div
-                        className={cx(styles.tab, { [styles.selectedEditorContainerTab]: visibleEditor === 'target' })}
-                        onClick={() => setVisibleEditor('target')}
+                        className={cx(styles.tab, {
+                            [styles.selectedEditorContainerTab]: visibleEditor === EditorTab.target,
+                        })}
+                        onClick={() => setVisibleEditor(EditorTab.target)}
                     >
                         Target
-                        {countErrors('target') > 0 && <div className={styles.errorCount}>{countErrors('target')}</div>}
+                        {countErrors(EditorTab.target) > 0 && (
+                            <div className={styles.errorCount}>{countErrors(EditorTab.target)}</div>
+                        )}
                     </div>
 
                     <div
-                        className={cx(styles.tab, { [styles.selectedEditorContainerTab]: visibleEditor === 'script' })}
-                        onClick={() => setVisibleEditor('script')}
+                        className={cx(styles.tab, {
+                            [styles.selectedEditorContainerTab]: visibleEditor === EditorTab.script,
+                        })}
+                        onClick={() => setVisibleEditor(EditorTab.script)}
                     >
                         Rule script
-                        {countErrors('script') > 0 && <div className={styles.errorCount}>{countErrors('script')}</div>}
+                        {countErrors(EditorTab.script) > 0 && (
+                            <div className={styles.errorCount}>{countErrors(EditorTab.script)}</div>
+                        )}
                     </div>
                 </div>
 
                 <div className={styles.editor}>
-                    {visibleEditor === 'target' && (
+                    {visibleEditor === EditorTab.target && (
                         <CodeMirrorEditor
                             className="test-editor"
                             value={target || ''}
@@ -185,7 +198,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                         />
                     )}
 
-                    {visibleEditor === 'script' && (
+                    {visibleEditor === EditorTab.script && (
                         <CodeMirrorEditor
                             value={script || ''}
                             options={{
@@ -253,7 +266,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
                 {!selectedItem.name && (
                     <>
-                        <button className={commonStyles.button} onClick={() => openSummary()}>
+                        <button className={commonStyles.button} onClick={openSummary}>
                             Cancel
                         </button>
                         <button

@@ -245,6 +245,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                                         deleteItem={this.deleteItem}
                                         createItem={this.createItem}
                                         openSummary={this.openSummary}
+                                        isNewItem={isNewItem}
                                         isSuccess={isSuccess}
                                     />
                                 )}

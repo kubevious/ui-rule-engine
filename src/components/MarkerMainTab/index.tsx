@@ -15,6 +15,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     openSummary,
     createItem,
     saveItem,
+    isNewItem = false,
 }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false);
     const [formData, setFormData] = useState<EditorItem>(selectedItem);
@@ -41,6 +42,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
 
     return (
         <>
+            {isNewItem && <div className={commonStyles.newItemTitle}>Create new marker</div>}
             <div className={styles.fieldName}>
                 <div className={commonStyles.labelWrapper}>
                     <label>Name</label>
@@ -86,7 +88,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                 </div>
 
                 <div className={styles.field}>
-                    <div className={`${styles.labelWrapper} ${styles.color}`}>
+                    <div className={cx(commonStyles.labelWrapper, commonStyles.color)}>
                         <label>Color</label>
                         <button
                             className={styles.customColor}
