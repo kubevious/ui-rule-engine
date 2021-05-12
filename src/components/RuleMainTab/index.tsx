@@ -27,7 +27,6 @@ export enum EditorTab {
 export const RuleMainTab: FC<RuleMainTabProps> = ({
     selectedItem,
     selectedItemData,
-    isSuccess,
     deleteItem,
     openSummary,
     createItem,
@@ -243,7 +242,6 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                             <Button onClick={() => saveItem(formData)} disabled={validation}>
                                 Save
                             </Button>
-                            {isSuccess && <span>Saved!</span>}
                         </div>
 
                         <div>

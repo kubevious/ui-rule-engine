@@ -29,7 +29,6 @@ export type RuleMainTabProps = {
     createItem: (data: EditorItem) => void;
     openSummary: () => void;
     selectedItemKey: string;
-    isSuccess: boolean;
     isNewItem?: boolean;
 };
 
@@ -42,7 +41,6 @@ export type RuleEditorState = {
     selectedItemData: SelectedItemData;
     selectedItem: EditorItem;
     selectedItemKey: string;
-    isSuccess: boolean;
     isNewItem: boolean;
 };
 
