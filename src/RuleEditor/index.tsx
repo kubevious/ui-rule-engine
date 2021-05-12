@@ -66,7 +66,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         this.subscribeToSharedState(
             ['rule_editor_selected_rule_key', 'rule_editor_is_new_rule'],
             ({ rule_editor_selected_rule_key, rule_editor_is_new_rule }) => {
-                if (!rule_editor_is_new_rule) {
+                if (rule_editor_selected_rule_key && !rule_editor_is_new_rule) {
                     this.selectItem(rule_editor_selected_rule_key);
                 }
             },
@@ -144,6 +144,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
     openSummary(): void {
         this.setState({ selectedItem: {}, selectedItemKey: '' });
         this.sharedState.set('rule_editor_selected_rule_key', null);
+        this.sharedState.set('rule_editor_is_new_rule', false);
     }
 
     createItem(data: EditorItem): void {

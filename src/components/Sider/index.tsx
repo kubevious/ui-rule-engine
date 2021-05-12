@@ -23,7 +23,7 @@ export const Sider: FC<SiderProps> = ({ type, items, selectedItemKey, onSelect }
 
                             {item.title}
                         </div>
-                        [{item.extraText}]
+                        {item.extraText}
                     </button>
                 ))}
         </div>

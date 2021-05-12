@@ -231,7 +231,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
             </div>
 
             <div className="d-flex align-items-center justify-content-between">
-                {selectedItem.name && (
+                {!isNewItem && (
                     <>
                         <div className="d-flex">
                             <div className="me-3">
@@ -254,7 +254,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                     </>
                 )}
 
-                {!selectedItem.name && (
+                {isNewItem && (
                     <div className="d-flex">
                         <div className="me-3">
                             <Button type="ghost" onClick={openSummary}>
