@@ -6,10 +6,10 @@ import { useService, useSharedState } from '@kubevious/ui-framework/dist';
 import { exportFile } from '../utils/exportFile';
 import { uploadFile } from '../utils/uploadFile';
 
-export interface RuleEditorMenuActions
+export class RuleEditorMenuActions
 {
-    burgerMenus: BurgerMenuItem[],
-    createNewItem: () => void;
+    burgerMenus: BurgerMenuItem[] = [];
+    createNewItem: () => void = () => {};
 }
 
 export interface RuleEditorMenuSetupProps {
