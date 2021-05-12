@@ -55,7 +55,7 @@ export const RuleEditorMenuSetup: FC<RuleEditorMenuSetupProps> = ({ setup }) => 
             createNewItem: handleAddNewRule
         })
 
-    }, []);
+    }, [service, sharedState]);
 
     return <>
         
