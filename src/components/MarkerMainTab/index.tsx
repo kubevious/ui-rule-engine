@@ -1,12 +1,13 @@
+import { Input } from '@kubevious/ui-components';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { COLORS, SHAPES } from '../../constants';
-import { ChromePicker } from 'react-color';
 import cx from 'classnames';
 import { MarkerPreview } from '../../MarkerPreview';
 import { EditorItem, MarkerMainTabProps } from '../../types';
 
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
+import { Button } from '@kubevious/ui-components/dist';
 
 export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     selectedItem,
@@ -17,7 +18,6 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     saveItem,
     isNewItem = false,
 }) => {
-    const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false);
     const [formData, setFormData] = useState<EditorItem>(selectedItem);
 
     useEffect(() => {
@@ -43,32 +43,20 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     return (
         <>
             {isNewItem && <div className={commonStyles.newItemTitle}>Create new marker</div>}
-            <div className={styles.fieldName}>
-                <div className={commonStyles.labelWrapper}>
-                    <label>Name</label>
-                </div>
-                <div className={styles.nameWrapper}>
-                    <div className={cx(styles.markerArea, styles.nameArea)}>
-                        <div className={styles.shape}>
-                            <MarkerPreview shape={shape || ''} color={color || ''} />
-                        </div>
-                        <input
-                            type="text"
-                            id="fieldInput"
-                            className={cx(commonStyles.fieldInput, styles.markerFieldInput)}
-                            value={name || ''}
-                            name="name"
-                            onChange={(e) => handleChange(e)}
-                        />
-                    </div>
-                </div>
+            <div className={styles.field}>
+                <Input
+                    label="Name"
+                    type="text"
+                    id="fieldInput"
+                    value={name || ''}
+                    name="name"
+                    onChange={handleChange}
+                />
             </div>
 
             <div className={styles.markerInfoWrapper}>
                 <div className={styles.field}>
-                    <div className={commonStyles.labelWrapper}>
-                        <label>Shape</label>
-                    </div>
+                    <div className={commonStyles.labelWrapper}>Icon</div>
                     <div className={styles.markerArea}>
                         <div className={styles.areaWrapper}>
                             {SHAPES.map((item, index) => (
@@ -88,21 +76,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                 </div>
 
                 <div className={styles.field}>
-                    <div className={cx(commonStyles.labelWrapper, commonStyles.color)}>
-                        <label>Color</label>
-                        <button
-                            className={styles.customColor}
-                            onClick={() => setDisplayColorPicker(!displayColorPicker)}
-                        >
-                            Pick custom color
-                        </button>
-                        {displayColorPicker && (
-                            <div className={styles.colorPopover}>
-                                <div className={styles.cover} onClick={() => setDisplayColorPicker(false)} />
-                                <ChromePicker onChange={(color) => handleChangeColor(color.hex)} color={color} />
-                            </div>
-                        )}
-                    </div>
+                    <div className={commonStyles.labelWrapper}>Color</div>
                     <div className={styles.markerArea}>
                         <div className={styles.areaWrapper}>
                             {COLORS.map((item, index) => (
@@ -123,40 +97,40 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                 </div>
             </div>
 
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center justify-content-between">
                 {selectedItem.name && (
                     <>
-                        <button className={commonStyles.button} onClick={() => deleteItem(formData)}>
-                            Delete
-                        </button>
-                        <button className={commonStyles.button} onClick={openSummary}>
-                            Cancel
-                        </button>
-                        <button
-                            className={cx(commonStyles.button, commonStyles.success)}
-                            onClick={() => saveItem(formData)}
-                            disabled={validation}
-                        >
-                            Save
-                        </button>
-                        {isSuccess && <span>Saved!</span>}
+                        <div className="d-flex">
+                            <div className="me-3">
+                                <Button type="ghost" onClick={openSummary}>
+                                    Cancel
+                                </Button>
+                            </div>
+                            <Button onClick={() => saveItem(formData)} disabled={validation}>
+                                Save
+                            </Button>
+                            {isSuccess && <span>Saved!</span>}
+                        </div>
+
+                        <div>
+                            <Button type="danger" onClick={() => deleteItem(formData)}>
+                                Delete
+                            </Button>
+                        </div>
                     </>
                 )}
 
                 {!selectedItem.name && (
-                    <>
-                        <button className={commonStyles.button} onClick={() => openSummary()}>
-                            Cancel
-                        </button>
-                        <button
-                            id="markerCreateButton"
-                            className={cx(commonStyles.button, commonStyles.success)}
-                            onClick={() => createItem(formData)}
-                            disabled={validation}
-                        >
+                    <div className="d-flex">
+                        <div className="me-3">
+                            <Button type="ghost" onClick={() => openSummary()}>
+                                Cancel
+                            </Button>
+                        </div>
+                        <Button id="markerCreateButton" onClick={() => createItem(formData)} disabled={validation}>
                             Create
-                        </button>
-                    </>
+                        </Button>
+                    </div>
                 )}
             </div>
         </>

@@ -33,6 +33,10 @@ export type RuleMainTabProps = {
     isNewItem?: boolean;
 };
 
+export type RuleEditorProps = {
+    service
+}
+
 export type RuleEditorState = {
     items: EditorItem[];
     selectedItemData: SelectedItemData;

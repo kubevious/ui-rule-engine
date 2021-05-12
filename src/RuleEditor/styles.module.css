@@ -1,0 +1,13 @@
+.container {
+    background: #212122;
+    height: 100%;
+    padding: 30px;
+}
+
+.container > div {
+    height: 100%;
+}
+
+.container > div > div:last-child {
+    height: calc(100% - 50px);
+}

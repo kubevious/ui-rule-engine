@@ -1,10 +1,10 @@
+import { Button, Checkbox, Input } from '@kubevious/ui-components';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Controlled as CodeMirrorEditor } from 'react-codemirror2';
 import cx from 'classnames';
 import { isEmptyArray } from '../../utils';
 import Codemirror from 'codemirror';
 import { snippets } from '../../constants';
-import $ from 'jquery';
 
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/show-hint.css';
@@ -45,10 +45,6 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
             setFormData({ ...selectedItem });
         }
     }, [selectedItemKey]);
-
-    useEffect(() => {
-        $('.editor-container').css('height', `calc(100% - 210px - ${selectedItemData.logs.length * 40}px)`);
-    }, [selectedItemData]);
 
     const validation = useMemo(() => {
         return !formData.name || !formData.target || !formData.script;
@@ -133,16 +129,13 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
         <>
             {isNewItem && <div className={commonStyles.newItemTitle}>Create new rule</div>}
             <div className={styles.field}>
-                <div className={commonStyles.labelWrapper}>
-                    <label>Name</label>
-                </div>
-                <input
+                <Input
                     type="text"
-                    className={cx(commonStyles.fieldInput, 'text-white')}
                     value={name || ''}
                     name="name"
-                    onChange={(e) => handleChange(e)}
+                    onChange={handleChange}
                     data-testid="rule-name-input"
+                    label="Name"
                 />
             </div>
 
@@ -181,7 +174,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                             options={{
                                 mode: 'javascript',
                                 theme: 'darcula',
-                                lineNumbers: true,
+                                lineNumbers: false,
                                 extraKeys: {
                                     'Ctrl-Space': 'autocomplete',
                                 },
@@ -204,7 +197,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                             options={{
                                 mode: 'javascript',
                                 theme: 'darcula',
-                                lineNumbers: true,
+                                lineNumbers: false,
                                 extraKeys: {
                                     'Ctrl-Space': 'autocomplete',
                                 },
@@ -233,50 +226,46 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                     ))}
             </div>
 
-            <label className={styles.checkboxContainer}>
-                {enabled ? 'Enable' : 'Disable'}
-                <input
-                    type="checkbox"
-                    className={styles.enableCheckbox}
-                    checked={enabled || false}
-                    onChange={() => changeEnable()}
-                />
-                <span id="checkmark" className={styles.checkmark} />
-            </label>
+            <div className={styles.checkboxContainer}>
+                <Checkbox checked={enabled} label={enabled ? 'Enable' : 'Disable'} onChange={changeEnable} />
+            </div>
 
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center justify-content-between">
                 {selectedItem.name && (
                     <>
-                        <button className={commonStyles.button} onClick={() => deleteItem(formData)}>
-                            Delete
-                        </button>
-                        <button className={commonStyles.button} onClick={openSummary}>
-                            Cancel
-                        </button>
-                        <button
-                            className={cx(commonStyles.button, commonStyles.success)}
-                            onClick={() => saveItem(formData)}
-                            disabled={validation}
-                        >
-                            Save
-                        </button>
-                        {isSuccess && <span>Saved!</span>}
+                        <div className="d-flex">
+                            <div className="me-3">
+                                <Button type="ghost" onClick={openSummary}>
+                                    Cancel
+                                </Button>
+                            </div>
+
+                            <Button onClick={() => saveItem(formData)} disabled={validation}>
+                                Save
+                            </Button>
+                            {isSuccess && <span>Saved!</span>}
+                        </div>
+
+                        <div>
+                            <Button type="danger" onClick={() => deleteItem(formData)}>
+                                Delete Rule
+                            </Button>
+                        </div>
                     </>
                 )}
 
                 {!selectedItem.name && (
-                    <>
-                        <button className={commonStyles.button} onClick={openSummary}>
-                            Cancel
-                        </button>
-                        <button
-                            className={cx(commonStyles.button, commonStyles.success)}
-                            onClick={() => createItem(formData)}
-                            disabled={validation}
-                        >
+                    <div className="d-flex">
+                        <div className="me-3">
+                            <Button type="ghost" onClick={openSummary}>
+                                Cancel
+                            </Button>
+                        </div>
+
+                        <Button onClick={() => createItem(formData)} disabled={validation}>
                             Create
-                        </button>
-                    </>
+                        </Button>
+                    </div>
                 )}
             </div>
         </>

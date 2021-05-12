@@ -1,6 +1,4 @@
-import { faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
-import { BurgerMenu, Tab, Tabs } from '@kubevious/ui-components';
-import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
+import { Tab, Tabs } from '@kubevious/ui-components';
 import cx from 'classnames';
 import React from 'react';
 import { AffectedObjects } from '../components/AffectedObjects';
@@ -15,8 +13,6 @@ import { ClassComponent } from '@kubevious/ui-framework';
 import { IMarkerService } from '@kubevious/ui-middleware';
 import { MarkerConfig, MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
 import { isEmptyArray, isEmptyObject } from '../utils';
-import { exportFile } from '../utils/exportFile';
-import { uploadFile } from '../utils/uploadFile';
 
 import commonStyles from '../common.module.css';
 import { MarkerPreview } from '../MarkerPreview';
@@ -29,7 +25,6 @@ const selectedItemDataInit: SelectedItemData = {
 
 export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerService> {
     private _markerResultSubscriber?: MarkerResultSubscriber;
-    readonly burgerMenuItems: BurgerMenuItem[];
 
     constructor(props: {} | Readonly<{}>) {
         super(props, null, { kind: 'marker' });
@@ -41,29 +36,6 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
             isSuccess: false,
             isNewItem: false,
         };
-
-        this.burgerMenuItems = [
-            {
-                key: 'marker-export',
-                text: 'Export markers',
-                icon: faFileExport,
-                action: () => exportFile({ service: this.service }),
-            },
-            {
-                key: 'marker-import',
-                text: 'Import markers',
-                icon: faFileImport,
-                action: () => uploadFile({ service: this.service, deleteExtra: false, selector: 'marker-import' }),
-                isUploadFile: true,
-            },
-            {
-                key: 'marker-replace',
-                text: 'Replace markers',
-                icon: faFileDownload,
-                action: () => uploadFile({ service: this.service, deleteExtra: true, selector: 'marker-replace' }),
-                isUploadFile: true,
-            },
-        ];
 
         this.openSummary = this.openSummary.bind(this);
         this.saveItem = this.saveItem.bind(this);
@@ -88,8 +60,27 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                 selectedItemData: value as any,
             });
         });
+
         this.subscribeToSharedState('marker_editor_selected_marker_key', (marker_editor_selected_marker_key) => {
             this._markerResultSubscriber!.update(marker_editor_selected_marker_key);
+        });
+
+        this.subscribeToSharedState('marker_editor_is_new_marker', (marker_editor_is_new_marker) => {
+            if (marker_editor_is_new_marker) {
+                this.setState((prevState) => ({
+                    ...prevState,
+                    isNewItem: true,
+                    selectedItem: {
+                        name: '',
+                        color: COLORS[0],
+                        shape: SHAPES[0],
+                        propagate: false,
+                    },
+                    isSuccess: false,
+                    selectedItemKey: '',
+                    selectedItemData: selectedItemDataInit,
+                }));
+            }
         });
     }
 
@@ -191,7 +182,12 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         }
 
         return (
-            <div data-testid="marker-editor" className="d-flex h-100" id="markerEditorComponent">
+            <div
+                data-testid="marker-editor"
+                className="d-flex"
+                id="markerEditorComponent"
+                style={{ height: `calc(100% - 20px)` }}
+            >
                 <Sider
                     type="marker"
                     items={
@@ -210,44 +206,28 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                     }
                     selectedItemKey={selectedItemKey}
                     onSelect={this.selectItem}
-                    header={
-                        <div className="d-flex align-items-center btn-group">
-                            <button
-                                className={cx(
-                                    commonStyles.button,
-                                    commonStyles.success,
-                                    commonStyles.newRuleBtn,
-                                    'flex-grow-1',
-                                )}
-                                onClick={this.createNewItem}
-                            >
-                                <div className={commonStyles.plus}>+</div>
-                                <span>New marker</span>
-                            </button>
-
-                            <BurgerMenu items={this.burgerMenuItems} />
-                        </div>
-                    }
                 />
 
                 <div id="marker-editor" className={commonStyles.ruleEditor}>
                     <div className={commonStyles.ruleContainer}>
-                        {(isEmptyArray(items) || isEmptyObject(selectedItem)) && !isNewItem && (
-                            <StartPage type="marker" createNewItem={this.createNewItem} />
-                        )}
+                        {(isEmptyArray(items) || isEmptyObject(selectedItem)) && !isNewItem && <StartPage />}
 
                         {(selectedItemKey || isNewItem) && (
-                            <>
+                            <div
+                                className={cx(commonStyles.tabContainer, { [commonStyles.newTabContainer]: isNewItem })}
+                            >
                                 {isNewItem && (
-                                    <MarkerMainTab
-                                        selectedItem={selectedItem}
-                                        saveItem={this.saveItem}
-                                        deleteItem={this.deleteItem}
-                                        createItem={this.createItem}
-                                        openSummary={this.openSummary}
-                                        isNewItem={isNewItem}
-                                        isSuccess={isSuccess}
-                                    />
+                                    <div>
+                                        <MarkerMainTab
+                                            selectedItem={selectedItem}
+                                            saveItem={this.saveItem}
+                                            deleteItem={this.deleteItem}
+                                            createItem={this.createItem}
+                                            openSummary={this.openSummary}
+                                            isNewItem={isNewItem}
+                                            isSuccess={isSuccess}
+                                        />
+                                    </div>
                                 )}
 
                                 {!isNewItem && (
@@ -268,7 +248,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                                         </Tab>
                                     </Tabs>
                                 )}
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>

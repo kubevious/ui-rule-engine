@@ -5,10 +5,8 @@ import { EditorType, SiderProps } from '../../types';
 
 import styles from './styles.module.css';
 
-export const Sider: FC<SiderProps> = ({ type, items, selectedItemKey, onSelect, header }) => (
+export const Sider: FC<SiderProps> = ({ type, items, selectedItemKey, onSelect }) => (
     <div id="rule-list" className={styles.ruleList}>
-        <div className={styles.ruleHeader}>{header}</div>
-
         <div className={cx(styles.rules, { [styles.markers]: type === EditorType.marker })}>
             {!isEmptyArray(items) &&
                 items.map((item) => (
@@ -25,7 +23,7 @@ export const Sider: FC<SiderProps> = ({ type, items, selectedItemKey, onSelect, 
 
                             {item.title}
                         </div>
-                        {item.extraText}
+                        [{item.extraText}]
                     </button>
                 ))}
         </div>

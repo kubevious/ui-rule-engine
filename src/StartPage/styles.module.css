@@ -45,12 +45,11 @@
 }
 
 .startText {
+    color: #94C5FF;
     text-align: center;
     margin-bottom: 15px;
-    text-decoration: none;
 }
 
 .startText:hover {
-    text-decoration: underline;
     color: #007bff;
 }

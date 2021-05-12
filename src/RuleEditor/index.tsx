@@ -1,6 +1,4 @@
-import { faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
-import { BurgerMenu, Tab, Tabs } from '@kubevious/ui-components';
-import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
+import { Tab, Tabs } from '@kubevious/ui-components';
 import cx from 'classnames';
 import React, { ReactNode } from 'react';
 import { ClassComponent } from '@kubevious/ui-framework';
@@ -12,19 +10,10 @@ import { StartPage } from '../StartPage';
 import { EditorItem, RuleEditorState } from '../types.js';
 import { RuleConfig, RuleResultSubscriber } from '@kubevious/ui-middleware/dist/services/rule';
 import { Sider } from '../components/Sider';
-import { isEmptyArray, isEmptyObject } from '../utils';
-import { exportFile } from '../utils/exportFile';
-import { uploadFile } from '../utils/uploadFile';
+import { isEmptyArray } from '../utils';
 
 import commonStyles from '../common.module.css';
 import { ruleIndicatorClass } from '../utils/ruleIndicatorClass';
-
-const selectedItemInit = {
-    name: '',
-    enabled: true,
-    script: '',
-    target: '',
-};
 
 const selectedItemDataInit = {
     is_current: true,
@@ -35,49 +24,24 @@ const selectedItemDataInit = {
 
 export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService> {
     private _ruleResultSubscriber?: RuleResultSubscriber;
-    readonly burgerMenuItems: BurgerMenuItem[];
 
     constructor(props: {} | Readonly<{}>) {
         super(props, null, { kind: 'rule' });
 
         this.state = {
             items: [],
-            selectedItem: selectedItemInit,
+            selectedItem: {},
             selectedItemData: selectedItemDataInit,
             selectedItemKey: '',
             isSuccess: false,
             isNewItem: false,
         };
 
-        this.burgerMenuItems = [
-            {
-                key: 'rule-export',
-                text: 'Export rules',
-                icon: faFileExport,
-                action: () => exportFile({ service: this.service }),
-            },
-            {
-                key: 'rule-import',
-                text: 'Import rules',
-                icon: faFileImport,
-                action: () => uploadFile({ service: this.service, deleteExtra: false, selector: 'rule-import' }),
-                isUploadFile: true,
-            },
-            {
-                key: 'rule-replace',
-                text: 'Replace rules',
-                icon: faFileDownload,
-                action: () => uploadFile({ service: this.service, deleteExtra: true, selector: 'rule-replace' }),
-                isUploadFile: true,
-            },
-        ];
-
         this.openSummary = this.openSummary.bind(this);
         this.saveItem = this.saveItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.createItem = this.createItem.bind(this);
         this.selectItem = this.selectItem.bind(this);
-        this.createNewItem = this.createNewItem.bind(this);
     }
 
     componentDidMount(): void {
@@ -107,6 +71,26 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                 }
             },
         );
+
+        this.subscribeToSharedState('rule_editor_is_new_rule', (rule_editor_is_new_rule) => {
+            if (rule_editor_is_new_rule) {
+                this.sharedState.set('rule_editor_selected_rule_key', null);
+
+                this.setState((prevState) => ({
+                    ...prevState,
+                    isNewItem: true,
+                    selectedItem: {
+                        name: '',
+                        enabled: true,
+                        script: '',
+                        target: '',
+                    },
+                    selectedItemKey: '',
+                    isSuccess: false,
+                    selectedItemData: selectedItemDataInit,
+                }));
+            }
+        });
     }
 
     selectItem(key: string): void {
@@ -158,7 +142,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
     }
 
     openSummary(): void {
-        this.setState({ selectedItem: selectedItemInit, selectedItemKey: '' });
+        this.setState({ selectedItem: {}, selectedItemKey: '' });
         this.sharedState.set('rule_editor_selected_rule_key', null);
     }
 
@@ -179,25 +163,6 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         });
     }
 
-    createNewItem(): void {
-        this.sharedState.set('rule_editor_selected_rule_key', null);
-        this.sharedState.set('rule_editor_is_new_rule', true);
-
-        this.setState((prevState) => ({
-            ...prevState,
-            isNewItem: true,
-            selectedItem: {
-                name: '',
-                enabled: true,
-                script: '',
-                target: '',
-            },
-            selectedItemKey: '',
-            isSuccess: false,
-            selectedItemData: selectedItemDataInit,
-        }));
-    }
-
     renderLoading(): ReactNode {
         return (
             !this.state.isNewItem &&
@@ -212,7 +177,12 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         const itemCount = selectedItemData.items ? selectedItemData.items.length : selectedItemData.item_count;
 
         return (
-            <div data-testid="rule-editor" className="d-flex h-100" id="ruleEditorComponent">
+            <div
+                data-testid="rule-editor"
+                className="d-flex"
+                id="ruleEditorComponent"
+                style={{ height: `calc(100% - 20px)` }}
+            >
                 <Sider
                     type="rule"
                     items={
@@ -232,46 +202,30 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                     }
                     selectedItemKey={selectedItemKey}
                     onSelect={this.selectItem}
-                    header={
-                        <div className="d-flex align-items-center btn-group">
-                            <button
-                                className={cx(
-                                    commonStyles.button,
-                                    commonStyles.success,
-                                    commonStyles.newRuleBtn,
-                                    'flex-grow-1',
-                                )}
-                                onClick={this.createNewItem}
-                            >
-                                <div className={commonStyles.plus}>+</div>
-                                <span>New rule</span>
-                            </button>
-
-                            <BurgerMenu items={this.burgerMenuItems} />
-                        </div>
-                    }
                 />
 
                 <div id="rule-editor" className={commonStyles.ruleEditor}>
                     <div className={commonStyles.ruleContainer}>
-                        {(isEmptyArray(items) || isEmptyObject(selectedItem)) && !isNewItem && (
-                            <StartPage type="rule" createNewItem={this.createNewItem} />
-                        )}
+                        {(isEmptyArray(items) || !selectedItemKey) && !isNewItem && <StartPage />}
 
                         {(selectedItemKey || isNewItem) && (
-                            <>
+                            <div
+                                className={cx(commonStyles.tabContainer, { [commonStyles.newTabContainer]: isNewItem })}
+                            >
                                 {isNewItem && (
-                                    <RuleMainTab
-                                        selectedItem={selectedItem}
-                                        selectedItemData={selectedItemData}
-                                        saveItem={this.saveItem}
-                                        deleteItem={this.deleteItem}
-                                        createItem={this.createItem}
-                                        openSummary={this.openSummary}
-                                        selectedItemKey={selectedItemKey}
-                                        isSuccess={isSuccess}
-                                        isNewItem={isNewItem}
-                                    />
+                                    <div>
+                                        <RuleMainTab
+                                            selectedItem={selectedItem}
+                                            selectedItemData={selectedItemData}
+                                            saveItem={this.saveItem}
+                                            deleteItem={this.deleteItem}
+                                            createItem={this.createItem}
+                                            openSummary={this.openSummary}
+                                            selectedItemKey={selectedItemKey}
+                                            isSuccess={isSuccess}
+                                            isNewItem={isNewItem}
+                                        />
+                                    </div>
                                 )}
 
                                 {!isNewItem && (
@@ -289,12 +243,12 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                                             />
                                         </Tab>
 
-                                        <Tab key="objects" label={`Affected objects[${itemCount}]`}>
+                                        <Tab key="objects" label={`Affected objects (${itemCount})`}>
                                             <AffectedObjects selectedItemData={selectedItemData} />
                                         </Tab>
                                     </Tabs>
                                 )}
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>
