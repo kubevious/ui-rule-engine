@@ -3,12 +3,13 @@ import React, { FC, useEffect, useMemo, useState } from 'react';
 import { COLORS, SHAPES } from '../../constants';
 import cx from 'classnames';
 import { MarkerPreview } from '../../MarkerPreview';
-import { makeNewMarker, MarkerMainTabProps } from '../../types';
+import { MarkerMainTabProps } from '../../types';
 
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
 import { Button } from '@kubevious/ui-components/dist';
 import { MarkerConfig } from '@kubevious/ui-middleware/dist/services/marker';
+import { makeNewMarker } from '../../utils';
 
 export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     selectedItem,

@@ -7,7 +7,7 @@ import { MarkerMainTab } from '../components/MarkerMainTab';
 import { Sider } from '../components/Sider';
 import styles from '../components/Sider/styles.module.css';
 import { StartPage } from '../StartPage';
-import { makeNewMarker, MarkerEditorState, SelectedItemData } from '../types';
+import { MarkerEditorState, SelectedItemData } from '../types';
 import { app, ClassComponent } from '@kubevious/ui-framework';
 
 import { IMarkerService } from '@kubevious/ui-middleware';
@@ -15,6 +15,7 @@ import { MarkerConfig, MarkerResultSubscriber, MarkerStatus } from '@kubevious/u
 
 import commonStyles from '../common.module.css';
 import { MarkerPreview } from '../MarkerPreview';
+import { makeNewMarker } from '../utils';
 
 const selectedItemDataInit: SelectedItemData = {
     items: [],

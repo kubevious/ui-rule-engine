@@ -1,7 +1,6 @@
 import { MarkerConfig, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
 import { RuleConfig, RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
 import { ReactNode } from 'react';
-import { COLORS, SHAPES } from './constants';
 
 export type DnOptions = {
     relativeTo?: string;
@@ -91,25 +90,4 @@ export enum IndicatorType {
     disabled = 'disabled',
     invalid = 'invalid',
     enabled = 'enabled',
-}
-
-export function makeNewRule() : RuleConfig
-{
-    return {
-        name: '',
-        target: '',
-        script: '',
-        enabled: true,
-    }
-}
-
-
-export function makeNewMarker() : MarkerConfig
-{
-    return {
-        name: '',
-        shape: SHAPES[0],
-        color: COLORS[0],
-        propagate: false
-    }
 }

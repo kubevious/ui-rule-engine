@@ -8,12 +8,13 @@ import { IRuleService } from '@kubevious/ui-middleware';
 import { RuleMainTab } from '../components/RuleMainTab';
 import styles from '../components/Sider/styles.module.css';
 import { StartPage } from '../StartPage';
-import { makeNewRule, RuleEditorState } from '../types.js';
+import { RuleEditorState } from '../types.js';
 import { RuleConfig, RuleResultSubscriber, RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
 import { Sider } from '../components/Sider';
 
 import commonStyles from '../common.module.css';
 import { ruleIndicatorClass } from '../utils/ruleIndicatorClass';
+import { makeNewRule } from '../utils';
 
 const selectedItemDataInit = {
     is_current: true,

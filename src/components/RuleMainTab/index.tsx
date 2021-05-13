@@ -3,7 +3,7 @@ import { Button, Checkbox, Input } from '@kubevious/ui-components';
 import { RuleConfig } from '@kubevious/ui-middleware/dist/services/rule';
 import { Controlled as CodeMirrorEditor } from 'react-codemirror2';
 import cx from 'classnames';
-import { isEmptyArray } from '../../utils';
+import { isEmptyArray, makeNewRule } from '../../utils';
 import Codemirror from 'codemirror';
 import { snippets } from '../../constants';
 
@@ -12,7 +12,7 @@ import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/theme/darcula.css';
 import 'codemirror/lib/codemirror.css';
 
-import { Log, RuleMainTabProps, makeNewRule } from '../../types';
+import { Log, RuleMainTabProps } from '../../types';
 
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
