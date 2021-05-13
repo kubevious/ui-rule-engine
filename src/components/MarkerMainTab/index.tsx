@@ -3,25 +3,29 @@ import React, { FC, useEffect, useMemo, useState } from 'react';
 import { COLORS, SHAPES } from '../../constants';
 import cx from 'classnames';
 import { MarkerPreview } from '../../MarkerPreview';
-import { EditorItem, MarkerMainTabProps } from '../../types';
+import { makeNewMarker, MarkerMainTabProps } from '../../types';
 
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
 import { Button } from '@kubevious/ui-components/dist';
+import { MarkerConfig } from '@kubevious/ui-middleware/dist/services/marker';
 
 export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     selectedItem,
-    isSuccess,
     deleteItem,
     openSummary,
     createItem,
     saveItem,
     isNewItem = false,
 }) => {
-    const [formData, setFormData] = useState<EditorItem>(selectedItem);
+    const [formData, setFormData] = useState<MarkerConfig>(makeNewMarker());
 
     useEffect(() => {
-        setFormData({ ...selectedItem });
+        if (selectedItem) {
+            setFormData(selectedItem);
+        } else {
+            setFormData(makeNewMarker());
+        }
     }, [selectedItem]);
 
     const { name, color, shape } = formData;
@@ -43,6 +47,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     return (
         <>
             {isNewItem && <div className={commonStyles.newItemTitle}>Create new marker</div>}
+
             <div className={styles.field}>
                 <Input
                     label="Name"
@@ -98,7 +103,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
             </div>
 
             <div className="d-flex align-items-center justify-content-between">
-                {selectedItem.name && (
+                {!isNewItem && (
                     <>
                         <div className="d-flex">
                             <div className="me-3">
@@ -109,7 +114,6 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                             <Button onClick={() => saveItem(formData)} disabled={validation}>
                                 Save
                             </Button>
-                            {isSuccess && <span>Saved!</span>}
                         </div>
 
                         <div>
@@ -120,7 +124,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                     </>
                 )}
 
-                {!selectedItem.name && (
+                {isNewItem && (
                     <div className="d-flex">
                         <div className="me-3">
                             <Button type="ghost" onClick={() => openSummary()}>

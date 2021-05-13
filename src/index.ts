@@ -3,4 +3,6 @@ export { RuleEditorMenuSetup, RuleEditorMenuActions } from './RuleEditorMenuSetu
 
 
 export { MarkerEditor } from './MarkerEditor'
+export { MarkerEditorMenuSetup, MarkerEditorMenuActions } from './MarkerEditorMenuSetup'
+
 export { MarkerPreview } from './MarkerPreview'

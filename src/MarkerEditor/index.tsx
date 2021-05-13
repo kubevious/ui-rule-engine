@@ -1,3 +1,4 @@
+import _ from 'the-lodash';
 import { Tab, Tabs } from '@kubevious/ui-components';
 import cx from 'classnames';
 import React from 'react';
@@ -5,14 +6,12 @@ import { AffectedObjects } from '../components/AffectedObjects';
 import { MarkerMainTab } from '../components/MarkerMainTab';
 import { Sider } from '../components/Sider';
 import styles from '../components/Sider/styles.module.css';
-import { COLORS, SHAPES } from '../constants';
 import { StartPage } from '../StartPage';
-import { EditorItem, MarkerEditorState, SelectedItemData } from '../types';
-import { ClassComponent } from '@kubevious/ui-framework';
+import { makeNewMarker, MarkerEditorState, SelectedItemData } from '../types';
+import { app, ClassComponent } from '@kubevious/ui-framework';
 
 import { IMarkerService } from '@kubevious/ui-middleware';
-import { MarkerConfig, MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
-import { isEmptyArray, isEmptyObject } from '../utils';
+import { MarkerConfig, MarkerResultSubscriber, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
 
 import commonStyles from '../common.module.css';
 import { MarkerPreview } from '../MarkerPreview';
@@ -25,15 +24,15 @@ const selectedItemDataInit: SelectedItemData = {
 
 export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerService> {
     private _markerResultSubscriber?: MarkerResultSubscriber;
+    private _itemsDict : Record<string, MarkerStatus> = {};
 
     constructor(props: {} | Readonly<{}>) {
         super(props, null, { kind: 'marker' });
         this.state = {
             items: [],
-            selectedItem: {},
+            selectedItem: null,
             selectedItemData: selectedItemDataInit,
-            selectedItemKey: '',
-            isSuccess: false,
+            selectedItemKey: null,
             isNewItem: false,
         };
 
@@ -42,14 +41,12 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         this.deleteItem = this.deleteItem.bind(this);
         this.createItem = this.createItem.bind(this);
         this.selectItem = this.selectItem.bind(this);
-        this.createNewItem = this.createNewItem.bind(this);
     }
 
     componentDidMount(): void {
         this.service.subscribeItemStatuses((value) => {
-            this.setState({
-                items: value,
-            });
+            this._itemsDict = _.makeDict(value, x => x.name, x => x);
+            this._renderItemList();
         });
 
         this._markerResultSubscriber = this.service.subscribeItemResult((value) => {
@@ -65,118 +62,120 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
             this._markerResultSubscriber!.update(marker_editor_selected_marker_key);
         });
 
+        this.subscribeToSharedState(
+            ['marker_editor_selected_marker_key', 'marker_editor_is_new_marker'],
+            ({ marker_editor_selected_marker_key, marker_editor_is_new_marker }) => {
+                if (marker_editor_selected_marker_key && !marker_editor_is_new_marker) {
+                    this.setState({
+                        selectedItemKey: marker_editor_selected_marker_key
+                    })
+                    this.loadItem();
+                } else {
+                    this.setState({
+                        selectedItemKey: null,
+                        selectedItem: makeNewMarker()
+                    })
+                }
+            },
+        );
+
         this.subscribeToSharedState('marker_editor_is_new_marker', (marker_editor_is_new_marker) => {
             if (marker_editor_is_new_marker) {
-                this.setState((prevState) => ({
-                    ...prevState,
+                this.sharedState.set('marker_editor_selected_marker_key', null);
+
+                this.setState({
                     isNewItem: true,
-                    selectedItem: {
-                        name: '',
-                        color: COLORS[0],
-                        shape: SHAPES[0],
-                        propagate: false,
-                    },
-                    isSuccess: false,
-                    selectedItemKey: '',
-                    selectedItemData: selectedItemDataInit,
-                }));
+                });
+            }
+            else
+            {
+                this.setState({
+                    isNewItem: false
+                });
             }
         });
     }
 
+    private _renderItemList()
+    {
+        let items = _.orderBy(_.values(this._itemsDict), x => x.name);
+        this.setState({
+            items: items
+        });
+    }
+
     selectItem(key: string): void {
-        this.service.getItem(key).then((data) => {
+        if (!key) {
+            this.openSummary();
+        } else {
+            this.sharedState.set('marker_editor_selected_marker_key', key);
+            this.sharedState.set('marker_editor_is_new_marker', false);
+        }
+    }
+
+    loadItem(): void {
+        const itemKey = this.sharedState.get('marker_editor_selected_marker_key');
+        
+        this.service.getItem(itemKey).then((data) => {
+
+            if (this.sharedState.get('marker_editor_selected_marker_key') !== itemKey ||
+                this.sharedState.get('marker_editor_is_new_marker')) {
+                return;
+            }
+
             if (data === null) {
                 this.openSummary();
                 return;
             }
 
             this.setState({
-                selectedItemKey: data.name,
-                selectedItem: data,
+                selectedItem: data
             });
-            this.sharedState.set('marker_editor_selected_marker_key', key);
         });
     }
 
-    saveItem(data: EditorItem): void {
+    createItem(config: MarkerConfig): void {
+        this.service.createItem(config, config.name || '').then(() => {
+            this.sharedState.set('marker_editor_selected_marker_key', config.name);
+
+            app.operationLog.report(`Marker ${config.name} created.`)
+        });
+    }
+
+    saveItem(config: MarkerConfig): void {
         const { selectedItemKey } = this.state;
 
-        this.service.createItem(data as MarkerConfig, selectedItemKey!).then(() => {
-            this.setState((prevState) => ({
-                isSuccess: true,
-                selectedItem: data,
-                selectedItemKey: data.name!,
-                items: prevState.items.map((item) => (item.name === selectedItemKey ? data : item)),
-            }));
+        this.service.createItem(config, selectedItemKey!).then(() => {
+            this.sharedState.set('marker_editor_selected_marker_key', config.name);
 
-            this.sharedState.set('marker_editor_selected_marker_key', data.name);
-
-            setTimeout(() => {
-                this.setState({ isSuccess: false });
-            }, 2000);
+            app.operationLog.report(`Marker ${config.name} saved.`)
         });
     }
 
-    deleteItem(data: EditorItem): void {
-        if (data.name) {
-            this.service.deleteItem(data.name).then(() => {
-                this.setState((prevState) => ({
-                    selectedItem: {},
-                    selectedItemKey: '',
-                    items: prevState.items.filter((item) => item.name !== data.name),
-                }));
+    deleteItem(config: MarkerConfig): void {
+        this.service.deleteItem(config.name).then(() => {
+            this.openSummary();
 
-                this.sharedState.set('marker_editor_selected_marker_key', null);
-            });
-        }
+            app.operationLog.report(`Marker ${config.name} deleted.`)
+        });
     }
 
     openSummary(): void {
-        this.setState({ selectedItem: {}, selectedItemKey: '', isNewItem: false });
         this.sharedState.set('marker_editor_selected_marker_key', null);
-    }
-
-    createItem(data: EditorItem): void {
-        this.service.createItem(data as MarkerConfig, data.name || '').then((marker) => {
-            this.setState((prevState) => ({
-                ...prevState,
-                isSuccess: true,
-                items: prevState.items.concat(marker),
-                selectedItemKey: marker.name,
-                selectedItem: marker,
-            }));
-
-            this.sharedState.set('marker_editor_selected_marker_key', marker.name);
-        });
-    }
-
-    createNewItem(): void {
-        this.sharedState.set('marker_editor_selected_marker_key', null);
-
-        this.setState(() => ({
-            isNewItem: true,
-            selectedItem: {
-                name: '',
-                color: COLORS[0],
-                shape: SHAPES[0],
-                propagate: false,
-            },
-            isSuccess: false,
-            selectedItemKey: '',
-            selectedItemData: selectedItemDataInit,
-        }));
+        this.sharedState.set('marker_editor_is_new_marker', false);
     }
 
     render() {
-        const { items, selectedItem, selectedItemKey, isNewItem, selectedItemData, isSuccess } = this.state;
+        const { items, selectedItem, selectedItemKey, isNewItem, selectedItemData } = this.state;
 
         const itemCount = selectedItemData.items ? selectedItemData.items.length : selectedItemData.item_count;
 
         if (selectedItemData.items) {
             for (const item of selectedItemData.items) {
-                if (selectedItem.name) {
-                    item.markers = [selectedItem.name];
+                if (selectedItem) {
+                    if (selectedItem!.name) {
+                        item.markers = [selectedItem!.name!];
+                    }
                 }
             }
         }
@@ -210,7 +209,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
 
                 <div id="marker-editor" className={commonStyles.ruleEditor}>
                     <div className={commonStyles.ruleContainer}>
-                        {(isEmptyArray(items) || isEmptyObject(selectedItem)) && !isNewItem && <StartPage />}
+                        {!(selectedItemKey || isNewItem) && <StartPage />}
 
                         {(selectedItemKey || isNewItem) && (
                             <div
@@ -219,13 +218,12 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                                 {isNewItem && (
                                     <div>
                                         <MarkerMainTab
-                                            selectedItem={selectedItem}
+                                            isNewItem={isNewItem}
+                                            selectedItem={selectedItem!}
                                             saveItem={this.saveItem}
                                             deleteItem={this.deleteItem}
                                             createItem={this.createItem}
                                             openSummary={this.openSummary}
-                                            isNewItem={isNewItem}
-                                            isSuccess={isSuccess}
                                         />
                                     </div>
                                 )}
@@ -234,16 +232,15 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                                     <Tabs>
                                         <Tab key="edit" label="Edit markers">
                                             <MarkerMainTab
-                                                selectedItem={selectedItem}
+                                                selectedItem={selectedItem!}
                                                 saveItem={this.saveItem}
                                                 deleteItem={this.deleteItem}
                                                 createItem={this.createItem}
                                                 openSummary={this.openSummary}
-                                                isSuccess={isSuccess}
                                             />
                                         </Tab>
 
-                                        <Tab key="objects" label={`Affected objects[${itemCount}]`}>
+                                        <Tab key="objects" label={`Affected objects [${itemCount}]`}>
                                             <AffectedObjects selectedItemData={selectedItemData} />
                                         </Tab>
                                     </Tabs>

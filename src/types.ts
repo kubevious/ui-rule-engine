@@ -1,4 +1,7 @@
+import { MarkerConfig, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
+import { RuleConfig, RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
 import { ReactNode } from 'react';
+import { COLORS, SHAPES } from './constants';
 
 export type DnOptions = {
     relativeTo?: string;
@@ -22,44 +25,37 @@ export type Log = {
 };
 
 export type RuleMainTabProps = {
-    selectedItem: EditorItem;
-    selectedItemData: SelectedItemData;
-    saveItem: (data: EditorItem) => void;
-    deleteItem: (data: EditorItem) => void;
-    createItem: (data: EditorItem) => void;
+    selectedItem?: RuleConfig;
+    selectedItemData?: SelectedItemData;
+    saveItem: (data: RuleConfig) => void;
+    deleteItem: (data: RuleConfig) => void;
+    createItem: (data: RuleConfig) => void;
     openSummary: () => void;
-    selectedItemKey: string;
     isNewItem?: boolean;
 };
 
-export type RuleEditorProps = {
-    service
-}
-
 export type RuleEditorState = {
-    items: EditorItem[];
+    items: RuleStatus[];
     selectedItemData: SelectedItemData;
-    selectedItem: EditorItem;
-    selectedItemKey: string;
+    selectedItem: RuleConfig | null;
+    selectedItemKey: string | null;
     isNewItem: boolean;
 };
 
 export type MarkerMainTabProps = {
-    selectedItem: EditorItem;
-    saveItem: (data: EditorItem) => void;
-    deleteItem: (data: EditorItem) => void;
-    createItem: (data: EditorItem) => void;
+    selectedItem?: MarkerConfig;
+    saveItem: (data: MarkerConfig) => void;
+    deleteItem: (data: MarkerConfig) => void;
+    createItem: (data: MarkerConfig) => void;
     openSummary: () => void;
-    isSuccess: boolean;
     isNewItem?: boolean
 };
 
 export type MarkerEditorState = {
-    items: EditorItem[];
-    selectedItem: EditorItem;
+    items: MarkerStatus[];
+    selectedItem: MarkerConfig | null;
     selectedItemData: SelectedItemData;
-    selectedItemKey: string;
-    isSuccess: boolean;
+    selectedItemKey: string | null;
     isNewItem: boolean;
 };
 
@@ -74,23 +70,8 @@ export type SiderProps = {
     type: string;
     items: SiderMenuItem[];
     onSelect: (key: string) => void;
-    selectedItemKey: string;
+    selectedItemKey: string | null;
     header?: ReactNode
-};
-
-export type EditorProps = {
-    type: string;
-    items: EditorItem[];
-    isNewItem: boolean;
-    selectedItem: EditorItem;
-    selectedItemData: SelectedItemData;
-    selectedItemId: string;
-    createNewItem: () => void;
-    saveItem: (data: EditorItem) => void;
-    deleteItem: (data: EditorItem) => void;
-    createItem: (data: EditorItem) => void;
-    openSummary: () => void;
-    isSuccess: boolean;
 };
 
 export type SelectedItemData = {
@@ -99,19 +80,6 @@ export type SelectedItemData = {
     item_count: number;
     is_current?: boolean;
     logs: Log[];
-};
-
-export type EditorItem = {
-    script?: string;
-    target?: string;
-    name?: string;
-    propagate?: boolean;
-    shape?: string;
-    color?: string;
-    item_count?: number;
-    error_count?: number;
-    enabled?: boolean;
-    is_current?: boolean;
 };
 
 export enum EditorType {
@@ -125,7 +93,23 @@ export enum IndicatorType {
     enabled = 'enabled',
 }
 
-export type ExportItem = {
-    kind: string;
-    items: EditorItem[];
-};
+export function makeNewRule() : RuleConfig
+{
+    return {
+        name: '',
+        target: '',
+        script: '',
+        enabled: true,
+    }
+}
+
+
+export function makeNewMarker() : MarkerConfig
+{
+    return {
+        name: '',
+        shape: SHAPES[0],
+        color: COLORS[0],
+        propagate: false
+    }
+}

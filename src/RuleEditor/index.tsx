@@ -8,7 +8,7 @@ import { IRuleService } from '@kubevious/ui-middleware';
 import { RuleMainTab } from '../components/RuleMainTab';
 import styles from '../components/Sider/styles.module.css';
 import { StartPage } from '../StartPage';
-import { EditorItem, RuleEditorState } from '../types.js';
+import { makeNewRule, RuleEditorState } from '../types.js';
 import { RuleConfig, RuleResultSubscriber, RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
 import { Sider } from '../components/Sider';
 
@@ -31,9 +31,9 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
 
         this.state = {
             items: [],
-            selectedItem: {},
+            selectedItem: null,
             selectedItemData: selectedItemDataInit,
-            selectedItemKey: '',
+            selectedItemKey: null,
             isNewItem: false,
         };
 
@@ -58,6 +58,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                 selectedItemData: value as any,
             });
         });
+
         this.subscribeToSharedState('rule_editor_selected_rule_key', (rule_editor_selected_rule_key) => {
             this._ruleResultSubscriber!.update(rule_editor_selected_rule_key);
         });
@@ -66,7 +67,15 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
             ['rule_editor_selected_rule_key', 'rule_editor_is_new_rule'],
             ({ rule_editor_selected_rule_key, rule_editor_is_new_rule }) => {
                 if (rule_editor_selected_rule_key && !rule_editor_is_new_rule) {
+                    this.setState({
+                        selectedItemKey: rule_editor_selected_rule_key
+                    })
                     this.loadItem();
+                } else {
+                    this.setState({
+                        selectedItemKey: null,
+                        selectedItem: makeNewRule()
+                    })
                 }
             },
         );
@@ -75,25 +84,15 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
             if (rule_editor_is_new_rule) {
                 this.sharedState.set('rule_editor_selected_rule_key', null);
 
-                this.setState((prevState) => ({
-                    ...prevState,
+                this.setState({
                     isNewItem: true,
-                    selectedItem: {
-                        name: '',
-                        enabled: true,
-                        script: '',
-                        target: '',
-                    },
-                    selectedItemKey: '',
-                    selectedItemData: selectedItemDataInit,
-                }));
+                });
             }
             else
             {
-                this.setState((prevState) => ({
-                    ...prevState,
+                this.setState({
                     isNewItem: false
-                }));
+                });
             }
         });
     }
@@ -101,10 +100,9 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
     private _renderItemList()
     {
         let items = _.orderBy(_.values(this._itemsDict), x => x.name);
-        this.setState((prevState) => ({
-            ...prevState,
+        this.setState({
             items: items
-        }));
+        });
     }
 
     selectItem(key: string): void {
@@ -132,81 +130,42 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
             }
 
             this.setState({
-                selectedItem: data,
+                selectedItem: data
             });
         });
     }
 
-    saveItem(data: EditorItem): void {
+    createItem(config: RuleConfig): void {
+ 
+        this.service.createItem(config, config.name || '').then(() => {
+            this.sharedState.set('rule_editor_selected_rule_key', config.name);
+
+            app.operationLog.report(`Rule ${config.name} created.`)
+        });
+    }
+
+    saveItem(config: RuleConfig): void {
         const { selectedItemKey } = this.state;
 
-        const config = data as RuleConfig
-            
-        this.service.createItem(config, selectedItemKey).then(() => {
-            
-            // this.setState((prevState) => ({
-            //     selectedItem: config,
-            //     // selectedItemKey: config.name,
-            // }));
-
-            // // items: prevState.items.map((item) => (item.name === selectedItemKey ? data : item)),
-            // if (selectedItemKey != config.name) {
-            //     delete this._itemsDict[selectedItemKey];
-            //     this._itemsDict[config.name] = {
-            //         name: config.name,
-            //         enabled: config.enabled,
-            //         is_current: false,
-            //     }
-            // } else {
-
-            // }
-            // this._renderItemList();
-
+        this.service.createItem(config, selectedItemKey!).then(() => {
             this.sharedState.set('rule_editor_selected_rule_key', config.name);
 
             app.operationLog.report(`Rule ${config.name} saved.`)
         });
     }
 
-    deleteItem(data: EditorItem): void {
-
-        const config = data as RuleConfig
+    deleteItem(config: RuleConfig): void {
 
         this.service.deleteItem(config.name).then(() => {
-            // this.setState((prevState) => ({
-            //     selectedItem: {},
-            //     selectedItemKey: '',
-            //     // items: prevState.items.filter((item) => item.name !== data.name),
-            // }));
-            this.sharedState.set('rule_editor_selected_rule_key', null);
+            this.openSummary();
 
             app.operationLog.report(`Rule ${config.name} deleted.`)
         });
     }
 
     openSummary(): void {
-        this.setState({ selectedItem: {}, selectedItemKey: '' });
         this.sharedState.set('rule_editor_selected_rule_key', null);
         this.sharedState.set('rule_editor_is_new_rule', false);
-    }
-
-    createItem(data: EditorItem): void {
-        const config = data as RuleConfig;
- 
-        this.service.createItem(config, config.name || '').then((rule) => {
-            // this.selectItem(rule.name);
-
-            // this.setState((prevState) => ({
-            //     ...prevState,
-            //     items: prevState.items.concat(rule),
-            //     selectedItemKey: rule.name,
-            //     selectedItem: rule,
-            // }));
-
-            this.sharedState.set('rule_editor_selected_rule_key', config.name);
-
-            app.operationLog.report(`Rule ${rule.name} created.`)
-        });
     }
 
     renderLoading(): ReactNode {
@@ -221,6 +180,9 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         const { items, selectedItem, selectedItemKey, isNewItem, selectedItemData } = this.state;
 
         const itemCount = selectedItemData.items ? selectedItemData.items.length : selectedItemData.item_count;
+
+        console.log("[loadItem] RENDER ", this.state)
+
 
         return (
             <div
@@ -261,14 +223,12 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                                 {isNewItem && (
                                     <div>
                                         <RuleMainTab
-                                            selectedItem={selectedItem}
-                                            selectedItemData={selectedItemData}
+                                            isNewItem={isNewItem}
+                                            selectedItem={selectedItem!}
                                             saveItem={this.saveItem}
                                             deleteItem={this.deleteItem}
                                             createItem={this.createItem}
                                             openSummary={this.openSummary}
-                                            selectedItemKey={selectedItemKey}
-                                            isNewItem={isNewItem}
                                         />
                                     </div>
                                 )}
@@ -277,17 +237,16 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                                     <Tabs>
                                         <Tab key="edit" label="Edit rules">
                                             <RuleMainTab
-                                                selectedItem={selectedItem}
+                                                selectedItem={selectedItem!}
                                                 selectedItemData={selectedItemData}
                                                 saveItem={this.saveItem}
                                                 deleteItem={this.deleteItem}
                                                 createItem={this.createItem}
                                                 openSummary={this.openSummary}
-                                                selectedItemKey={selectedItemKey}
                                             />
                                         </Tab>
 
-                                        <Tab key="objects" label={`Affected objects (${itemCount})`}>
+                                        <Tab key="objects" label={`Affected objects [${itemCount}]`}>
                                             <AffectedObjects selectedItemData={selectedItemData} />
                                         </Tab>
                                     </Tabs>

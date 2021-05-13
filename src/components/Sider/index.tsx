@@ -9,9 +9,9 @@ export const Sider: FC<SiderProps> = ({ type, items, selectedItemKey, onSelect }
     <div id="rule-list" className={styles.ruleList}>
         <div className={cx(styles.rules, { [styles.markers]: type === EditorType.marker })}>
             {!isEmptyArray(items) &&
-                items.map((item) => (
+                items.map((item, index) => (
                     <button
-                        key={item.key}
+                        key={index}
                         id="ruleItemButton"
                         className={cx(styles.ruleItemButton, {
                             [styles.selectedItemButton]: item.key === selectedItemKey,

@@ -1,5 +1,6 @@
-import { Button, Checkbox, Input } from '@kubevious/ui-components';
 import React, { FC, useEffect, useMemo, useState } from 'react';
+import { Button, Checkbox, Input } from '@kubevious/ui-components';
+import { RuleConfig } from '@kubevious/ui-middleware/dist/services/rule';
 import { Controlled as CodeMirrorEditor } from 'react-codemirror2';
 import cx from 'classnames';
 import { isEmptyArray } from '../../utils';
@@ -11,10 +12,11 @@ import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/theme/darcula.css';
 import 'codemirror/lib/codemirror.css';
 
-import { Log, EditorItem, RuleMainTabProps } from '../../types';
+import { Log, RuleMainTabProps, makeNewRule } from '../../types';
 
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
+
 
 const LEFT_WINDOW_CODE_KEY = 91;
 const EMPTY_CODE_KEY = 64;
@@ -31,19 +33,18 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     openSummary,
     createItem,
     saveItem,
-    selectedItemKey,
     isNewItem = false,
 }) => {
-    const [formData, setFormData] = useState<EditorItem>({ enabled: false });
-    const [formDataId, setFormDataId] = useState<string>('');
+    const [formData, setFormData] = useState<RuleConfig>(makeNewRule());
     const [visibleEditor, setVisibleEditor] = useState<EditorTab>(EditorTab.target);
 
     useEffect(() => {
-        if (selectedItemKey !== formDataId || selectedItemKey === null) {
-            setFormDataId(formDataId);
-            setFormData({ ...selectedItem });
+        if (selectedItem) {
+            setFormData(selectedItem);
+        } else {
+            setFormData(makeNewRule());
         }
-    }, [selectedItemKey]);
+    }, [selectedItem]);
 
     const validation = useMemo(() => {
         return !formData.name || !formData.target || !formData.script;
@@ -117,7 +118,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     const { name, enabled, target, script } = formData;
 
     const countErrors = (type: string): number =>
-        selectedItemData.logs.reduce((acc = 0, item: Log) => {
+        selectedItemData?.logs.reduce((acc = 0, item: Log) => {
             if (item.msg.source.includes(type)) {
                 return (acc += 1);
             }

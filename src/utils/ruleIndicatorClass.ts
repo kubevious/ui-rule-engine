@@ -1,7 +1,8 @@
+import { RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
 import styles from '../components/Sider/styles.module.css';
-import { EditorItem, IndicatorType } from '../types';
+import { IndicatorType } from '../types';
 
-export const ruleIndicatorClass = (x: EditorItem): string => {
+export const ruleIndicatorClass = (x: RuleStatus): string => {
     let indicatorClass: string;
     if (!x.enabled) {
         indicatorClass = IndicatorType.disabled;
