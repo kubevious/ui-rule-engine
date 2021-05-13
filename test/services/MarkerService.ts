@@ -82,7 +82,7 @@ export class MarkerService implements IMarkerService {
         return {
             update: (markerName: string | null) => {
                 if (markerName) {
-                    return this.getItemResult(markerName).then((result) => cb(result));
+                    this.getItemResult(markerName).then((result) => cb(result));
                 }
             },
             close: () => {},
