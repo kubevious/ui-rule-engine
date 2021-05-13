@@ -75,8 +75,10 @@ export class RuleService implements IRuleService {
 
     subscribeItemResult(cb: (result: RuleResult) => void) {
         return {
-            update: (ruleName: string) => {
-                this.getItemResult(ruleName).then((result) => cb(result));
+            update: (ruleName: string | null) => {
+                if (ruleName) {
+                    this.getItemResult(ruleName).then((result) => cb(result));
+                }
             },
             close: () => {},
         };

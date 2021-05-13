@@ -80,8 +80,10 @@ export class MarkerService implements IMarkerService {
 
     subscribeItemResult(cb: (result: MarkerResult) => void) {
         return {
-            update: (markerName: string) => {
-                return this.getItemResult(markerName).then((result) => cb(result));
+            update: (markerName: string | null) => {
+                if (markerName) {
+                    return this.getItemResult(markerName).then((result) => cb(result));
+                }
             },
             close: () => {},
         };
