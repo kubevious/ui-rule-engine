@@ -1,4 +1,4 @@
-import { Input } from '@kubevious/ui-components';
+import { Input, Button } from '@kubevious/ui-components';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { COLORS, SHAPES } from '../../constants';
 import cx from 'classnames';
@@ -7,9 +7,9 @@ import { MarkerMainTabProps } from '../../types';
 
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
-import { Button } from '@kubevious/ui-components/dist';
 import { MarkerConfig } from '@kubevious/ui-middleware/dist/services/marker';
 import { makeNewMarker } from '../../utils';
+import { ChromePicker } from 'react-color';
 
 export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     selectedItem,
@@ -19,6 +19,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     saveItem,
     isNewItem = false,
 }) => {
+    const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false);
     const [formData, setFormData] = useState<MarkerConfig>(makeNewMarker());
 
     useEffect(() => {
@@ -82,7 +83,23 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                 </div>
 
                 <div className={styles.field}>
-                    <div className={commonStyles.labelWrapper}>Color</div>
+                    <div className={cx(commonStyles.labelWrapper, 'd-flex')}>
+                        Color
+                        <div className="position-relative">
+                            <button
+                                className={styles.customColor}
+                                onClick={() => setDisplayColorPicker(!displayColorPicker)}
+                            >
+                                Pick custom color
+                            </button>
+                            {displayColorPicker && (
+                                <div className={styles.colorPopover}>
+                                    <div className={styles.cover} onClick={() => setDisplayColorPicker(false)} />
+                                    <ChromePicker onChange={(color) => handleChangeColor(color.hex)} color={color} />
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     <div className={styles.markerArea}>
                         <div className={styles.areaWrapper}>
                             {COLORS.map((item, index) => (
@@ -106,12 +123,10 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
             <div className="d-flex align-items-center justify-content-between">
                 {!isNewItem && (
                     <>
-                        <div className="d-flex">
-                            <div className="me-3">
-                                <Button type="ghost" onClick={openSummary}>
-                                    Cancel
-                                </Button>
-                            </div>
+                        <div>
+                            <Button type="ghost" onClick={openSummary} spacingRight>
+                                Cancel
+                            </Button>
                             <Button onClick={() => saveItem(formData)} disabled={validation}>
                                 Save
                             </Button>
@@ -126,16 +141,15 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                 )}
 
                 {isNewItem && (
-                    <div className="d-flex">
-                        <div className="me-3">
-                            <Button type="ghost" onClick={() => openSummary()}>
-                                Cancel
-                            </Button>
-                        </div>
+                    <>
+                        <Button type="ghost" onClick={() => openSummary()} spacingRight>
+                            Cancel
+                        </Button>
+
                         <Button id="markerCreateButton" onClick={() => createItem(formData)} disabled={validation}>
                             Create
                         </Button>
-                    </div>
+                    </>
                 )}
             </div>
         </>

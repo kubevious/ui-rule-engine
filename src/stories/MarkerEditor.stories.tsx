@@ -53,15 +53,12 @@ export const Default: Story = () => {
             <InnerPage
                 header={
                     <PageHeader title="Markers">
-                        <div className="row">
-                            <div className="col-1">
-                                <BurgerMenu items={burgerMenuItems} />
-                            </div>
-                            <div className="col-2 offset-1">
-                                <Button type="success" onClick={handleAddNewMarker}>
-                                    Add New Marker
-                                </Button>
-                            </div>
+                        <div className="d-flex">
+                            <BurgerMenu items={burgerMenuItems} />
+
+                            <Button type="success" onClick={handleAddNewMarker} spacingLeft>
+                                Add New Marker
+                            </Button>
                         </div>
                     </PageHeader>
                 }

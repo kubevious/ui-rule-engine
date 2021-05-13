@@ -6,8 +6,7 @@ import { useService, useSharedState } from '@kubevious/ui-framework/dist';
 import { exportFile } from '../utils/exportFile';
 import { uploadFile } from '../utils/uploadFile';
 
-export class RuleEditorMenuActions
-{
+export class RuleEditorMenuActions {
     burgerMenus: BurgerMenuItem[] = [];
     createNewItem: () => void = () => {};
 }
@@ -17,7 +16,6 @@ export interface RuleEditorMenuSetupProps {
 }
 
 export const RuleEditorMenuSetup: FC<RuleEditorMenuSetupProps> = ({ setup }) => {
-
     const service = useService({ kind: 'rule' });
     const sharedState = useSharedState();
 
@@ -46,18 +44,15 @@ export const RuleEditorMenuSetup: FC<RuleEditorMenuSetupProps> = ({ setup }) => 
         ];
 
         const handleAddNewRule = () => {
-            sharedState!.set('rule_editor_selected_rule_key', null);
-            sharedState!.set('rule_editor_is_new_rule', true);
+            sharedState?.set('rule_editor_selected_rule_key', null);
+            sharedState?.set('rule_editor_is_new_rule', true);
         };
 
         setup({
             burgerMenus: burgerMenuItems,
-            createNewItem: handleAddNewRule
-        })
-
+            createNewItem: handleAddNewRule,
+        });
     }, [service, sharedState]);
 
-    return <>
-        
-    </>
+    return <></>;
 };

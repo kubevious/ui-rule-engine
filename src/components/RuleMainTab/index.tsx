@@ -17,7 +17,6 @@ import { Log, RuleMainTabProps } from '../../types';
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
 
-
 const LEFT_WINDOW_CODE_KEY = 91;
 const EMPTY_CODE_KEY = 64;
 
@@ -77,7 +76,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     const showSnippets = (editor: Codemirror.Editor): void => {
         Codemirror.showHint(
             editor,
-            function () {
+            () => {
                 const cursor = editor.getCursor();
                 const token = editor.getTokenAt(cursor);
                 const start = token.start;
@@ -85,9 +84,9 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                 const line = cursor.line;
                 const currentWord = token.string;
 
-                const list = snippets.filter(function (item: { text: string | string[] }) {
-                    return item.text.indexOf(currentWord) >= 0;
-                });
+                const list = snippets.filter(
+                    (item: { text: string | string[] }) => item.text.indexOf(currentWord) >= 0,
+                );
 
                 return {
                     list: list.length ? list : snippets,
@@ -233,12 +232,10 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
             <div className="d-flex align-items-center justify-content-between">
                 {!isNewItem && (
                     <>
-                        <div className="d-flex">
-                            <div className="me-3">
-                                <Button type="ghost" onClick={openSummary}>
-                                    Cancel
-                                </Button>
-                            </div>
+                        <div>
+                            <Button type="ghost" onClick={openSummary} spacingRight>
+                                Cancel
+                            </Button>
 
                             <Button onClick={() => saveItem(formData)} disabled={validation}>
                                 Save
@@ -254,17 +251,15 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                 )}
 
                 {isNewItem && (
-                    <div className="d-flex">
-                        <div className="me-3">
-                            <Button type="ghost" onClick={openSummary}>
-                                Cancel
-                            </Button>
-                        </div>
+                    <>
+                        <Button type="ghost" onClick={openSummary} spacingRight>
+                            Cancel
+                        </Button>
 
                         <Button onClick={() => createItem(formData)} disabled={validation}>
                             Create
                         </Button>
-                    </div>
+                    </>
                 )}
             </div>
         </>

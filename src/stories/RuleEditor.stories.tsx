@@ -53,15 +53,12 @@ export const Default: Story = () => {
             <InnerPage
                 header={
                     <PageHeader title="Rules">
-                        <div className="row">
-                            <div className="col-1">
-                                <BurgerMenu items={burgerMenuItems} />
-                            </div>
-                            <div className="col-2 offset-1">
-                                <Button type="success" onClick={handleAddNewRule}>
-                                    Add New Rule
-                                </Button>
-                            </div>
+                        <div className="d-flex">
+                            <BurgerMenu items={burgerMenuItems} />
+
+                            <Button type="success" onClick={handleAddNewRule} spacingLeft>
+                                Add New Rule
+                            </Button>
                         </div>
                     </PageHeader>
                 }

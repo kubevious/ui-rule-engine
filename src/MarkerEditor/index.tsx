@@ -11,7 +11,7 @@ import { MarkerEditorState, SelectedItemData } from '../types';
 import { app, ClassComponent } from '@kubevious/ui-framework';
 
 import { IMarkerService } from '@kubevious/ui-middleware';
-import { MarkerConfig, MarkerResultSubscriber, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
+import { MarkerConfig, MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
 
 import commonStyles from '../common.module.css';
 import { MarkerPreview } from '../MarkerPreview';
@@ -25,7 +25,6 @@ const selectedItemDataInit: SelectedItemData = {
 
 export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerService> {
     private _markerResultSubscriber?: MarkerResultSubscriber;
-    private _itemsDict : Record<string, MarkerStatus> = {};
 
     constructor(props: {} | Readonly<{}>) {
         super(props, null, { kind: 'marker' });
@@ -46,8 +45,9 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
 
     componentDidMount(): void {
         this.service.subscribeItemStatuses((value) => {
-            this._itemsDict = _.makeDict(value, x => x.name, x => x);
-            this._renderItemList();
+            this.setState({
+                items: _.orderBy(value, (item) => item.name),
+            });
         });
 
         this._markerResultSubscriber = this.service.subscribeItemResult((value) => {
@@ -60,7 +60,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         });
 
         this.subscribeToSharedState('marker_editor_selected_marker_key', (marker_editor_selected_marker_key) => {
-            this._markerResultSubscriber!.update(marker_editor_selected_marker_key);
+            this._markerResultSubscriber?.update(marker_editor_selected_marker_key);
         });
 
         this.subscribeToSharedState(
@@ -68,14 +68,14 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
             ({ marker_editor_selected_marker_key, marker_editor_is_new_marker }) => {
                 if (marker_editor_selected_marker_key && !marker_editor_is_new_marker) {
                     this.setState({
-                        selectedItemKey: marker_editor_selected_marker_key
-                    })
+                        selectedItemKey: marker_editor_selected_marker_key,
+                    });
                     this.loadItem();
                 } else {
                     this.setState({
                         selectedItemKey: null,
-                        selectedItem: makeNewMarker()
-                    })
+                        selectedItem: makeNewMarker(),
+                    });
                 }
             },
         );
@@ -87,21 +87,11 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                 this.setState({
                     isNewItem: true,
                 });
-            }
-            else
-            {
+            } else {
                 this.setState({
-                    isNewItem: false
+                    isNewItem: false,
                 });
             }
-        });
-    }
-
-    private _renderItemList()
-    {
-        let items = _.orderBy(_.values(this._itemsDict), x => x.name);
-        this.setState({
-            items: items
         });
     }
 
@@ -116,11 +106,12 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
 
     loadItem(): void {
         const itemKey = this.sharedState.get('marker_editor_selected_marker_key');
-        
-        this.service.getItem(itemKey).then((data) => {
 
-            if (this.sharedState.get('marker_editor_selected_marker_key') !== itemKey ||
-                this.sharedState.get('marker_editor_is_new_marker')) {
+        this.service.getItem(itemKey).then((data) => {
+            if (
+                this.sharedState.get('marker_editor_selected_marker_key') !== itemKey ||
+                this.sharedState.get('marker_editor_is_new_marker')
+            ) {
                 return;
             }
 
@@ -130,7 +121,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
             }
 
             this.setState({
-                selectedItem: data
+                selectedItem: data,
             });
         });
     }
@@ -139,7 +130,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         this.service.createItem(config, config.name || '').then(() => {
             this.sharedState.set('marker_editor_selected_marker_key', config.name);
 
-            app.operationLog.report(`Marker ${config.name} created.`)
+            app.operationLog.report(`Marker ${config.name} created.`);
         });
     }
 
@@ -149,7 +140,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         this.service.createItem(config, selectedItemKey!).then(() => {
             this.sharedState.set('marker_editor_selected_marker_key', config.name);
 
-            app.operationLog.report(`Marker ${config.name} saved.`)
+            app.operationLog.report(`Marker ${config.name} saved.`);
         });
     }
 
@@ -157,7 +148,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
         this.service.deleteItem(config.name).then(() => {
             this.openSummary();
 
-            app.operationLog.report(`Marker ${config.name} deleted.`)
+            app.operationLog.report(`Marker ${config.name} deleted.`);
         });
     }
 

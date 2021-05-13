@@ -6,8 +6,7 @@ import { useService, useSharedState } from '@kubevious/ui-framework/dist';
 import { exportFile } from '../utils/exportFile';
 import { uploadFile } from '../utils/uploadFile';
 
-export class MarkerEditorMenuActions
-{
+export class MarkerEditorMenuActions {
     burgerMenus: BurgerMenuItem[] = [];
     createNewItem: () => void = () => {};
 }
@@ -17,7 +16,6 @@ export interface MarkerEditorMenuSetupProps {
 }
 
 export const MarkerEditorMenuSetup: FC<MarkerEditorMenuSetupProps> = ({ setup }) => {
-
     const service = useService({ kind: 'marker' });
     const sharedState = useSharedState();
 
@@ -46,18 +44,15 @@ export const MarkerEditorMenuSetup: FC<MarkerEditorMenuSetupProps> = ({ setup })
         ];
 
         const handleAddNewMarker = () => {
-            sharedState!.set('marker_editor_selected_marker_key', null);
-            sharedState!.set('marker_editor_is_new_marker', true);
+            sharedState?.set('marker_editor_selected_marker_key', null);
+            sharedState?.set('marker_editor_is_new_marker', true);
         };
 
         setup({
             burgerMenus: burgerMenuItems,
-            createNewItem: handleAddNewMarker
-        })
-
+            createNewItem: handleAddNewMarker,
+        });
     }, [service, sharedState]);
 
-    return <>
-        
-    </>
+    return <></>;
 };

@@ -47,7 +47,7 @@ export type MarkerMainTabProps = {
     deleteItem: (data: MarkerConfig) => void;
     createItem: (data: MarkerConfig) => void;
     openSummary: () => void;
-    isNewItem?: boolean
+    isNewItem?: boolean;
 };
 
 export type MarkerEditorState = {
@@ -70,7 +70,7 @@ export type SiderProps = {
     items: SiderMenuItem[];
     onSelect: (key: string) => void;
     selectedItemKey: string | null;
-    header?: ReactNode
+    header?: ReactNode;
 };
 
 export type SelectedItemData = {
