@@ -30,29 +30,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
         super(props, null, { kind: 'rule' });
 
         this.state = {
-            items: [
-                {
-                    name: 'rule 1',
-                    enabled: true,
-                    item_count: 0,
-                    error_count: 0,
-                    is_current: false,
-                },
-                {
-                    name: 'rule 2',
-                    enabled: false,
-                    item_count: 0,
-                    error_count: 0,
-                    is_current: false,
-                },
-                {
-                    name: 'rule 3',
-                    enabled: true,
-                    item_count: 0,
-                    error_count: 0,
-                    is_current: false,
-                },
-            ],
+            items: [],
             selectedItem: null,
             selectedItemData: selectedItemDataInit,
             selectedItemKey: null,
