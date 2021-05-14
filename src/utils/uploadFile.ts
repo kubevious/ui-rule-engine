@@ -1,4 +1,14 @@
-export const uploadFile = ({ service, selector, deleteExtra }): void => {
+import { IMarkerService, IRuleService } from '@kubevious/ui-middleware/dist';
+
+export const uploadFile = ({
+    service,
+    selector,
+    deleteExtra,
+}: {
+    service: undefined | IRuleService | IMarkerService;
+    selector: string;
+    deleteExtra: boolean;
+}): void => {
     const input = document.getElementById(`upload-${selector}`) as HTMLInputElement;
 
     if (input?.files?.length === 0) {
@@ -18,7 +28,7 @@ export const uploadFile = ({ service, selector, deleteExtra }): void => {
             deleteExtra,
         };
 
-        service.importItems(importData as any).then(() => {
+        service?.importItems(importData as any).then(() => {
             input.value = '';
         });
     };

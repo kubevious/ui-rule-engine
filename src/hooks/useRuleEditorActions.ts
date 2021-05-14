@@ -1,6 +1,7 @@
 import { faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
 import { useService, useSharedState } from '@kubevious/ui-framework';
+import { IRuleService } from '@kubevious/ui-middleware/dist';
 import { exportFile } from '../utils/exportFile';
 import { uploadFile } from '../utils/uploadFile';
 
@@ -10,7 +11,7 @@ export interface RuleEditorMenuActions {
 }
 
 export const useRuleEditorActions = (): RuleEditorMenuActions => {
-    const service = useService({ kind: 'rule' });
+    const service: IRuleService | undefined = useService({ kind: 'rule' });
     const sharedState = useSharedState();
 
     const handleAddNewRule = () => {

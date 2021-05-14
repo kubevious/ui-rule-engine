@@ -1,6 +1,7 @@
 import { faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
 import { useService, useSharedState } from '@kubevious/ui-framework';
+import { IMarkerService } from '@kubevious/ui-middleware/dist';
 import { exportFile } from '../utils/exportFile';
 import { uploadFile } from '../utils/uploadFile';
 
@@ -10,7 +11,7 @@ export interface MarkerEditorMenuActions {
 }
 
 export const useMarkerEditorActions = (): MarkerEditorMenuActions => {
-    const service = useService({ kind: 'marker' });
+    const service: IMarkerService | undefined = useService({ kind: 'marker' });
     const sharedState = useSharedState();
 
     const handleAddNewMarker = () => {
