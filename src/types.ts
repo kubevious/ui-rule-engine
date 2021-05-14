@@ -1,31 +1,9 @@
-import { MarkerConfig, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
-import { RuleConfig, RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
-import { ReactNode } from 'react';
-
-export type DnOptions = {
-    relativeTo?: string;
-};
-
-export interface SelectedData {
-    dn: string;
-    id?: number;
-    errors?: number;
-    warnings?: number;
-    options?: DnOptions;
-    markers?: string[];
-}
-
-export type Log = {
-    kind: string;
-    msg: {
-        source: string[];
-        msg: string;
-    };
-};
+import { MarkerConfig, MarkerResult, MarkerStatus } from '@kubevious/ui-middleware/dist/services/marker';
+import { RuleConfig, RuleResult, RuleStatus } from '@kubevious/ui-middleware/dist/services/rule';
 
 export type RuleMainTabProps = {
     selectedItem?: RuleConfig;
-    selectedItemData?: SelectedItemData;
+    selectedItemData?: RuleResult;
     saveItem: (data: RuleConfig) => void;
     deleteItem: (data: RuleConfig) => void;
     createItem: (data: RuleConfig) => void;
@@ -35,7 +13,7 @@ export type RuleMainTabProps = {
 
 export type RuleEditorState = {
     items: RuleStatus[];
-    selectedItemData: SelectedItemData;
+    selectedItemData: RuleResult;
     selectedItem: RuleConfig | null;
     selectedItemKey: string | null;
     isNewItem: boolean;
@@ -53,38 +31,10 @@ export type MarkerMainTabProps = {
 export type MarkerEditorState = {
     items: MarkerStatus[];
     selectedItem: MarkerConfig | null;
-    selectedItemData: SelectedItemData;
+    selectedItemData: MarkerResult;
     selectedItemKey: string | null;
     isNewItem: boolean;
 };
-
-export type SiderMenuItem = {
-    key: string;
-    title: ReactNode;
-    extraText?: ReactNode;
-    icon: ReactNode;
-};
-
-export type SiderProps = {
-    type: string;
-    items: SiderMenuItem[];
-    onSelect: (key: string) => void;
-    selectedItemKey: string | null;
-    header?: ReactNode;
-};
-
-export type SelectedItemData = {
-    name?: string;
-    items: SelectedData[];
-    item_count: number;
-    is_current?: boolean;
-    logs: Log[];
-};
-
-export enum EditorType {
-    rule = 'rule',
-    marker = 'marker',
-}
 
 export enum IndicatorType {
     disabled = 'disabled',

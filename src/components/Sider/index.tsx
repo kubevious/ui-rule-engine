@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { isEmptyArray } from '../../utils';
 import cx from 'classnames';
-import { EditorType, SiderProps } from '../../types';
+import { EditorType, SiderProps } from './types';
 
 import styles from './styles.module.css';
 

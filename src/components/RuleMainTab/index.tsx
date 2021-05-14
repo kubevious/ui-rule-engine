@@ -12,7 +12,7 @@ import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/theme/darcula.css';
 import 'codemirror/lib/codemirror.css';
 
-import { Log, RuleMainTabProps } from '../../types';
+import { RuleMainTabProps } from '../../types';
 
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
@@ -117,7 +117,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     const { name, enabled, target, script } = formData;
 
     const countErrors = (type: string): number =>
-        selectedItemData?.logs.reduce((acc = 0, item: Log) => {
+        selectedItemData?.logs.reduce((acc = 0, item) => {
             if (item.msg.source.includes(type)) {
                 return (acc += 1);
             }

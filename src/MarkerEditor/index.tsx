@@ -1,25 +1,24 @@
 import _ from 'the-lodash';
-import { Tab, Tabs, MarkerPreview } from '@kubevious/ui-components';
+import { Tab, Tabs, MarkerPreview, DnResults } from '@kubevious/ui-components';
+import { DnShortcutComponentProps } from '@kubevious/ui-components/dist/DnShortcutComponent/types';
 import cx from 'classnames';
 import React from 'react';
-import { AffectedObjects } from '../components/AffectedObjects';
 import { MarkerMainTab } from '../components/MarkerMainTab';
 import { Sider } from '../components/Sider';
 import styles from '../components/Sider/styles.module.css';
 import { StartPage } from '../StartPage';
-import { MarkerEditorState, SelectedItemData } from '../types';
+import { MarkerEditorState } from '../types';
 import { app, ClassComponent } from '@kubevious/ui-framework';
 
 import { IMarkerService } from '@kubevious/ui-middleware';
-import { MarkerConfig, MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
+import { MarkerConfig, MarkerResult, MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
 
 import commonStyles from '../common.module.css';
 import { makeNewMarker } from '../utils';
 
-const selectedItemDataInit: SelectedItemData = {
-    items: [],
-    item_count: 0,
-    logs: [],
+const selectedItemDataInit: MarkerResult = {
+    name: "",
+    items: []
 };
 
 export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerService> {
@@ -51,10 +50,10 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
 
         this._markerResultSubscriber = this.service.subscribeItemResult((value) => {
             if (!value) {
-                value = selectedItemDataInit as any;
+                value = selectedItemDataInit;
             }
             this.setState({
-                selectedItemData: value as any,
+                selectedItemData: value,
             });
         });
 
@@ -159,15 +158,14 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
     render() {
         const { items, selectedItem, selectedItemKey, isNewItem, selectedItemData } = this.state;
 
-        const itemCount = selectedItemData.items ? selectedItemData.items.length : selectedItemData.item_count;
+        const selectedResultItems : DnShortcutComponentProps[] = [];
 
         if (selectedItemData.items) {
             for (const item of selectedItemData.items) {
-                if (selectedItem) {
-                    if (selectedItem!.name) {
-                        item.markers = [selectedItem!.name!];
-                    }
-                }
+                selectedResultItems.push({
+                    dn: item.dn,
+                    markers: [selectedItem!.name!]
+                })
             }
         }
 
@@ -231,8 +229,8 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                                             />
                                         </Tab>
 
-                                        <Tab key="objects" label={`Affected objects [${itemCount}]`}>
-                                            <AffectedObjects selectedItemData={selectedItemData} />
+                                        <Tab key="objects" label={`Affected objects [${selectedResultItems.length}]`}>
+                                            <DnResults items={selectedResultItems} />
                                         </Tab>
                                     </Tabs>
                                 )}

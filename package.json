@@ -22,7 +22,7 @@
   "author": "Ruben Hakopian <ruben.hakopian@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@kubevious/ui-components": "^1.0.98",
+    "@kubevious/ui-components": "^1.0.100",
     "@kubevious/ui-framework": "^1.0.42",
     "@kubevious/ui-middleware": "^1.0.25",
     "bootstrap": "^5.0.0",

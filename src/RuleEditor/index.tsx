@@ -1,26 +1,26 @@
 import _ from 'the-lodash';
-import { Tab, Tabs } from '@kubevious/ui-components';
+import { Tab, Tabs, DnResults } from '@kubevious/ui-components';
 import cx from 'classnames';
 import React, { ReactNode } from 'react';
 import { app, ClassComponent } from '@kubevious/ui-framework';
-import { AffectedObjects } from '../components/AffectedObjects';
 import { IRuleService } from '@kubevious/ui-middleware';
 import { RuleMainTab } from '../components/RuleMainTab';
 import styles from '../components/Sider/styles.module.css';
 import { StartPage } from '../StartPage';
 import { RuleEditorState } from '../types.js';
-import { RuleConfig, RuleResultSubscriber } from '@kubevious/ui-middleware/dist/services/rule';
+import { RuleConfig, RuleResult, RuleResultSubscriber } from '@kubevious/ui-middleware/dist/services/rule';
 import { Sider } from '../components/Sider';
 
 import commonStyles from '../common.module.css';
 import { ruleIndicatorClass } from '../utils/ruleIndicatorClass';
 import { makeNewRule } from '../utils';
 
-const selectedItemDataInit = {
-    is_current: true,
-    item_count: 0,
-    logs: [],
+const selectedItemDataInit : RuleResult = {
+    name: '',
     items: [],
+    is_current: true,
+    error_count: 0,
+    logs: []
 };
 
 export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService> {
@@ -53,10 +53,13 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
 
         this._ruleResultSubscriber = this.service.subscribeItemResult((value) => {
             if (!value) {
-                value = selectedItemDataInit as any;
+                value = selectedItemDataInit;
+            }
+            if (!value.items) {
+                value.items = [];
             }
             this.setState({
-                selectedItemData: value as any,
+                selectedItemData: value,
             });
         });
 
@@ -169,8 +172,6 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
     render() {
         const { items, selectedItem, selectedItemKey, isNewItem, selectedItemData } = this.state;
 
-        const itemCount = selectedItemData.items ? selectedItemData.items.length : selectedItemData.item_count;
-
         return (
             <div
                 data-testid="rule-editor"
@@ -233,8 +234,8 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                                             />
                                         </Tab>
 
-                                        <Tab key="objects" label={`Affected objects [${itemCount}]`}>
-                                            <AffectedObjects selectedItemData={selectedItemData} />
+                                        <Tab key="objects" label={`Affected objects [${selectedItemData.items.length}]`}>
+                                            <DnResults items={selectedItemData.items} />
                                         </Tab>
                                     </Tabs>
                                 )}
