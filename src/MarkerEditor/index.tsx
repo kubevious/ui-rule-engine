@@ -164,6 +164,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
             for (const item of selectedItemData.items) {
                 selectedResultItems.push({
                     dn: item.dn,
+                    clusterId: item.clusterId,
                     markers: [selectedItem!.name!]
                 })
             }

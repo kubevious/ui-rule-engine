@@ -24,7 +24,7 @@
   "dependencies": {
     "@kubevious/ui-components": "^1.0.100",
     "@kubevious/ui-framework": "^1.0.42",
-    "@kubevious/ui-middleware": "^1.0.25",
+    "@kubevious/ui-middleware": "^1.0.27",
     "bootstrap": "^5.0.0",
     "classnames": "^2.2.6",
     "codemirror": "^5.54.0",
