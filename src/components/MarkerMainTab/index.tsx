@@ -1,8 +1,7 @@
-import { Input, Button } from '@kubevious/ui-components';
 import React, { FC, useEffect, useMemo, useState } from 'react';
+import { Input, Button, MarkerPreview } from '@kubevious/ui-components';
 import { COLORS, SHAPES } from '../../constants';
 import cx from 'classnames';
-import { MarkerPreview } from '../../MarkerPreview';
 import { MarkerMainTabProps } from '../../types';
 
 import styles from './styles.module.css';

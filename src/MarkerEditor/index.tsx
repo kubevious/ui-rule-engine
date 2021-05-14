@@ -1,5 +1,5 @@
 import _ from 'the-lodash';
-import { Tab, Tabs } from '@kubevious/ui-components';
+import { Tab, Tabs, MarkerPreview } from '@kubevious/ui-components';
 import cx from 'classnames';
 import React from 'react';
 import { AffectedObjects } from '../components/AffectedObjects';
@@ -14,7 +14,6 @@ import { IMarkerService } from '@kubevious/ui-middleware';
 import { MarkerConfig, MarkerResultSubscriber } from '@kubevious/ui-middleware/dist/services/marker';
 
 import commonStyles from '../common.module.css';
-import { MarkerPreview } from '../MarkerPreview';
 import { makeNewMarker } from '../utils';
 
 const selectedItemDataInit: SelectedItemData = {
