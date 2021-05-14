@@ -50,7 +50,7 @@ export class RuleService implements IRuleService {
         });
     }
 
-    importItems(data): Promise<void> {
+    importItems(data: any): Promise<void> {
         console.log(data);
         return Promise.resolve();
     }
