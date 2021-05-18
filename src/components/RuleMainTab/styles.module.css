@@ -5,7 +5,7 @@
 }
 
 .editorContainer {
-    height: calc(100% - 210px);
+    height: calc(100% - 160px);
     min-height: 150px;
 }
 

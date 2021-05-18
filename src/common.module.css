@@ -60,6 +60,7 @@
     background: #212122;
     height: 100%;
     padding: 30px;
+    overflow-y: auto;
 }
 
 .tabContainer > div {
