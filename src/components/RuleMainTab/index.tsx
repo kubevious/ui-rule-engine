@@ -45,6 +45,14 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
         }
     }, [selectedItem]);
 
+    useEffect(() => {
+        if (selectedItemData?.logs && selectedItemData?.logs.length > 0) {
+            (document.querySelector('.editor-container') as HTMLElement).style.height = `calc(100% - 160px - ${
+                selectedItemData?.logs.length * 34
+            }px)`;
+        }
+    }, [selectedItemData]);
+
     const validation = useMemo(() => {
         return !formData.name || !formData.target || !formData.script;
     }, [formData]);
@@ -214,6 +222,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                 </div>
             </div>
 
+            {console.log(`selectedItemData`, selectedItemData)}
             <div className={styles.editorErrors}>
                 {selectedItemData &&
                     !isEmptyArray(selectedItemData.logs) &&
