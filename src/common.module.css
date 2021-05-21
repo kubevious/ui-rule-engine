@@ -59,6 +59,7 @@
 .tabContainer {
     background: #212122;
     height: 100%;
+    max-height: 85vh;
     padding: 30px;
     overflow-y: auto;
 }
