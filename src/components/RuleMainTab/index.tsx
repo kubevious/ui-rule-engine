@@ -252,7 +252,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                         </div>
 
                         <div>
-                            <Button type="danger" onClick={() => deleteItem(formData)}>
+                            <Button type="danger" onClick={() => deleteItem(formData)} bordered={false}>
                                 Delete Rule
                             </Button>
                         </div>

@@ -132,8 +132,8 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                         </div>
 
                         <div>
-                            <Button type="danger" onClick={() => deleteItem(formData)}>
-                                Delete
+                            <Button type="danger" onClick={() => deleteItem(formData)} bordered={false}>
+                                Delete marker
                             </Button>
                         </div>
                     </>
