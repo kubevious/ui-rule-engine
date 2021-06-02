@@ -26,6 +26,17 @@ export const Sider: FC<SiderProps> = ({ type, items, selectedItemKey, onSelect }
                         {item.extraText}
                     </button>
                 ))}
+
+            {items && (items.length == 0) && <>
+                <div className={styles.noItemsLabel}>
+                    {(type == 'rule') && <>
+                        No rules present
+                    </>}
+                    {(type == 'marker') && <>
+                        No markers present
+                    </>}
+                </div>
+            </>}
         </div>
     </div>
 );
