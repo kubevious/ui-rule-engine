@@ -10,3 +10,4 @@ Contains rule engine related components such as:
 - AffectedObjects
 - ItemsList
 - BurgerMenu
+ 
