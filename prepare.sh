@@ -6,7 +6,8 @@ cd $MY_DIR
 rm -rf node_modules/
 rm -rf dist/
 
-npm install
-npm update the-lodash @kubevious/ui-framework @kubevious/ui-middleware @kubevious/ui-components
+yarn
+
+${MY_DIR}/update-dependencies.sh
 
 ${MY_DIR}/build.sh
