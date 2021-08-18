@@ -166,7 +166,7 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
 
         const selectedResultItems : DnShortcutComponentProps[] = [];
 
-        if (selectedItemData.items) {
+        if (selectedItem && selectedItemData.items) {
             for (const item of selectedItemData.items) {
                 selectedResultItems.push({
                     dn: item.dn,
@@ -179,7 +179,7 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
         return (
             <div
                 data-testid="marker-editor"
-                className="d-flex"
+                className={commonStyles.ruleEngineContainer}
             >
                 <Sider
                     header={this.props.itemListHeader}
@@ -211,7 +211,7 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
                                 className={cx(commonStyles.tabContainer, { [commonStyles.newTabContainer]: isNewItem })}
                             >
                                 {isNewItem && (
-                                    <div>
+                                    <div className={commonStyles.scrollableContainer}>
                                         <MarkerMainTab
                                             isNewItem={isNewItem}
                                             selectedItem={selectedItem!}
@@ -226,17 +226,21 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
                                 {!isNewItem && (
                                     <Tabs>
                                         <Tab key="edit" label="Edit markers">
-                                            <MarkerMainTab
-                                                selectedItem={selectedItem!}
-                                                saveItem={this.saveItem}
-                                                deleteItem={this.deleteItem}
-                                                createItem={this.createItem}
-                                                openSummary={this.openSummary}
-                                            />
+                                            <div className={commonStyles.scrollableContainer}>
+                                                <MarkerMainTab
+                                                    selectedItem={selectedItem!}
+                                                    saveItem={this.saveItem}
+                                                    deleteItem={this.deleteItem}
+                                                    createItem={this.createItem}
+                                                    openSummary={this.openSummary}
+                                                />
+                                            </div>
                                         </Tab>
 
                                         <Tab key="objects" label={`Affected objects [${selectedResultItems.length}]`}>
-                                            <DnResults items={selectedResultItems} />
+                                            <div className={commonStyles.scrollableContainer}>
+                                                <DnResults items={selectedResultItems} />
+                                            </div>
                                         </Tab>
                                     </Tabs>
                                 )}

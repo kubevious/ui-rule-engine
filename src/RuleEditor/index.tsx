@@ -177,8 +177,6 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
     render() {
         const { items, selectedItem, selectedItemKey, isNewItem, selectedItemData } = this.state;
 
-        // className="d-flex"
-
         return (
             <div
                 data-testid="rule-editor"
