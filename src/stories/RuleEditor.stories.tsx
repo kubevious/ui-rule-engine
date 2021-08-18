@@ -39,3 +39,20 @@ export const Default: Story = () => {
         </div>
     );
 };
+
+
+export const WithHeader: Story = () => {
+    const { createNewItem } = useRuleEditorActions();
+
+    return (
+        <div style={{ minHeight: '100vh', maxWidth: '100vw', width: '100vw', height: '100vh' }}>
+            <div style={{ background: '#2f3036', height: '100%', width: '100%', position: 'relative' }}>
+                <RuleEditor itemListHeader={
+                    <Button type="success" onClick={createNewItem} spacingLeft>
+                        Add New Rule
+                    </Button>} 
+                />
+            </div>
+        </div>
+    );
+};

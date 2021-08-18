@@ -23,10 +23,15 @@ const selectedItemDataInit : RuleResult = {
     logs: []
 };
 
-export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService> {
+export interface RuleEditorProps
+{
+    itemListHeader? : ReactNode;
+}
+
+export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState, IRuleService> {
     private _ruleResultSubscriber?: RuleResultSubscriber;
 
-    constructor(props: {} | Readonly<{}>) {
+    constructor(props: RuleEditorProps | Readonly<RuleEditorProps>) {
         super(props, null, { kind: 'rule' });
 
         this.state = {
@@ -180,6 +185,7 @@ export class RuleEditor extends ClassComponent<{}, RuleEditorState, IRuleService
                 style={{ height: `calc(100% - 20px)` }}
             >
                 <Sider
+                    header={this.props.itemListHeader}
                     type="rule"
                     items={
                         items.length > 0

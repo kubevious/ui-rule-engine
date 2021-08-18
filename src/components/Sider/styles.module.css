@@ -6,28 +6,6 @@
     overflow: hidden;
 }
 
-.ruleHeader {
-    position: absolute;
-    height: 80px;
-    background: #35373f;
-    width: 250px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10px;
-    border-bottom: 1px solid #4e515b;
-    color: black;
-}
-
-.ruleHeader :global(.btn-group) {
-    width: 100%;
-    justify-content: space-around;
-}
-
-.ruleHeader .newRuleBtn {
-    flex: 1;
-}
-
 .rules {
     display: flex;
     flex-direction: column;

@@ -2,7 +2,7 @@ import _ from 'the-lodash';
 import { Tab, Tabs, MarkerPreview, DnResults } from '@kubevious/ui-components';
 import { DnShortcutComponentProps } from '@kubevious/ui-components/dist/DnShortcutComponent/types';
 import cx from 'classnames';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { MarkerMainTab } from '../components/MarkerMainTab';
 import { Sider } from '../components/Sider';
 import styles from '../components/Sider/styles.module.css';
@@ -21,10 +21,16 @@ const selectedItemDataInit: MarkerResult = {
     items: []
 };
 
-export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerService> {
+
+export interface MarkerEditorProps
+{
+    itemListHeader? : ReactNode;
+}
+
+export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditorState, IMarkerService> {
     private _markerResultSubscriber?: MarkerResultSubscriber;
 
-    constructor(props: {} | Readonly<{}>) {
+    constructor(props: MarkerEditorProps | Readonly<MarkerEditorProps>) {
         super(props, null, { kind: 'marker' });
         this.state = {
             items: [],
@@ -178,6 +184,7 @@ export class MarkerEditor extends ClassComponent<{}, MarkerEditorState, IMarkerS
                 style={{ height: `calc(100% - 20px)` }}
             >
                 <Sider
+                    header={this.props.itemListHeader}
                     type="marker"
                     items={
                         items.length > 0

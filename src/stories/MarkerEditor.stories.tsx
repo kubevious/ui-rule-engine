@@ -37,3 +37,18 @@ export const Default: Story = () => {
         </div>
     );
 };
+
+
+export const WithHeader: Story = () => {
+    const { createNewItem } = useMarkerEditorActions();
+
+    return (
+        <div style={{ background: '#2f3036', height: '100vh' }}>
+            <MarkerEditor itemListHeader={
+                <Button type="success" onClick={createNewItem} spacingLeft>
+                    Add New Marker
+                </Button>} 
+            />
+        </div>
+    );
+};
