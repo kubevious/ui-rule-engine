@@ -5,7 +5,7 @@ import React, { ReactNode } from 'react';
 import { app, ClassComponent } from '@kubevious/ui-framework';
 import { IRuleService } from '@kubevious/ui-middleware';
 import { RuleMainTab } from '../components/RuleMainTab';
-import styles from '../components/Sider/styles.module.css';
+import siderStyles from '../components/Sider/styles.module.css';
 import { StartPage } from '../StartPage';
 import { RuleEditorState } from '../types.js';
 import { RuleConfig, RuleResult, RuleResultSubscriber } from '@kubevious/ui-middleware/dist/services/rule';
@@ -195,8 +195,8 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
                                   extraText: item.item_count && item.item_count > 0 && `[${item.item_count}]`,
                                   icon: (
                                       <div className="d-flex align-items-center">
-                                          <div className={cx(styles.indicator, ruleIndicatorClass(item))} />
-                                          {!item.is_current && <div className={styles.busyRuleIndicator} />}
+                                          <div className={cx(siderStyles.indicator, ruleIndicatorClass(item))} />
+                                          {!item.is_current && <div className={siderStyles.busyRuleIndicator} />}
                                       </div>
                                   ),
                               }))

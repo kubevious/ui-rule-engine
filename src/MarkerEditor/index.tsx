@@ -5,7 +5,7 @@ import cx from 'classnames';
 import React, { ReactNode } from 'react';
 import { MarkerMainTab } from '../components/MarkerMainTab';
 import { Sider } from '../components/Sider';
-import styles from '../components/Sider/styles.module.css';
+import siderStyles from '../components/Sider/styles.module.css';
 import { StartPage } from '../StartPage';
 import { MarkerEditorState } from '../types';
 import { app, ClassComponent } from '@kubevious/ui-framework';
@@ -180,8 +180,6 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
             <div
                 data-testid="marker-editor"
                 className="d-flex"
-                id="markerEditorComponent"
-                style={{ height: `calc(100% - 20px)` }}
             >
                 <Sider
                     header={this.props.itemListHeader}
@@ -193,7 +191,7 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
                                   title: item.name!,
                                   extraText: item.item_count && item.item_count > 0 && `[${item.item_count}]`,
                                   icon: (
-                                      <div className={styles.shapeWrapper}>
+                                      <div className={siderStyles.shapeWrapper}>
                                           <MarkerPreview shape={item.shape || ''} color={item.color || ''} />
                                       </div>
                                   ),

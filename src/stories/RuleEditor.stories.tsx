@@ -56,3 +56,14 @@ export const WithHeader: Story = () => {
         </div>
     );
 };
+
+
+export const WithPadding: Story = () => {
+    return (
+        <div style={{ minHeight: '100vh', maxWidth: '100vw', width: '100vw', height: '100vh', background: 'red' }}>
+            <div style={{ padding: '50px', height: '100%', width: '100%' }}>
+                <RuleEditor />
+            </div>
+        </div>
+    );
+};
