@@ -181,8 +181,6 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
             <div
                 data-testid="rule-editor"
                 className="d-flex"
-                id="ruleEditorComponent"
-                style={{ height: `calc(100% - 20px)` }}
             >
                 <Sider
                     header={this.props.itemListHeader}
