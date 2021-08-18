@@ -1,3 +1,9 @@
+.ruleEngineContainer {
+    height: 100%;
+    display: flex;
+}
+
+
 .labelWrapper {
     margin-bottom: 5px;
     color: white;
@@ -26,27 +32,19 @@
 
 .ruleEditor {
     height: 100%;
-    min-width: calc(100% - 250px);
-    max-width: calc(100% - 255px);
+    width: calc(100% - 250px);
     position: relative;
+    background: #2f3036;
 }
 
 .ruleContainer {
     overflow-y: hidden;
     height: 100%;
-    background: #2f3036;
 }
-
 .ruleContainer:hover {
     overflow-y: overlay;
 }
 
-.ruleContainer.main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #737888;
-}
 
 .newItemTitle {
     font-size: 20px;
@@ -59,7 +57,6 @@
 .tabContainer {
     background: #212122;
     height: 100%;
-    max-height: 85vh;
     padding: 30px;
     overflow-y: auto;
 }
@@ -74,4 +71,14 @@
 
 .newTabContainer > div > div:last-child {
     height: unset;
+}
+
+
+.scrollableContainer {
+    overflow-y: hidden;
+    height: 100%;
+    padding-right: 10px;
+}
+.scrollableContainer:hover {
+    overflow-y: overlay;
 }

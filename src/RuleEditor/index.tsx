@@ -177,10 +177,12 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
     render() {
         const { items, selectedItem, selectedItemKey, isNewItem, selectedItemData } = this.state;
 
+        // className="d-flex"
+
         return (
             <div
                 data-testid="rule-editor"
-                className="d-flex"
+                className={commonStyles.ruleEngineContainer}
             >
                 <Sider
                     header={this.props.itemListHeader}
@@ -213,7 +215,7 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
                                 className={cx(commonStyles.tabContainer, { [commonStyles.newTabContainer]: isNewItem })}
                             >
                                 {isNewItem && (
-                                    <div>
+                                    <div className={commonStyles.scrollableContainer}>
                                         <RuleMainTab
                                             isNewItem={isNewItem}
                                             selectedItem={selectedItem!}
@@ -228,18 +230,22 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
                                 {!isNewItem && (
                                     <Tabs>
                                         <Tab key="edit" label="Edit rules">
-                                            <RuleMainTab
-                                                selectedItem={selectedItem!}
-                                                selectedItemData={selectedItemData}
-                                                saveItem={this.saveItem}
-                                                deleteItem={this.deleteItem}
-                                                createItem={this.createItem}
-                                                openSummary={this.openSummary}
-                                            />
+                                            <div className={commonStyles.scrollableContainer}>
+                                                <RuleMainTab
+                                                    selectedItem={selectedItem!}
+                                                    selectedItemData={selectedItemData}
+                                                    saveItem={this.saveItem}
+                                                    deleteItem={this.deleteItem}
+                                                    createItem={this.createItem}
+                                                    openSummary={this.openSummary}
+                                                />
+                                            </div>
                                         </Tab>
 
                                         <Tab key="objects" label={`Affected objects [${selectedItemData.items.length}]`}>
-                                            <DnResults items={selectedItemData.items} />
+                                            <div className={commonStyles.scrollableContainer}>
+                                                <DnResults items={selectedItemData.items} />
+                                            </div>
                                         </Tab>
                                     </Tabs>
                                 )}

@@ -1,3 +1,9 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .field {
     display: flex;
     flex-direction: column;
@@ -79,6 +85,8 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+    max-height: 150px;
+    overflow-y: auto;
 }
 
 .editorErrors:empty {
