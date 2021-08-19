@@ -21,8 +21,12 @@ export class MarkerService implements IMarkerService {
 
     private _markers : Record<string, MarkerMockData> = {};
 
-    constructor()
+    constructor(empty?: boolean)
     {
+        if (empty) {
+            return;
+        }
+        
         for(let i = 1; i <= 50; i++)
         {
             const name = `marker ${i}`;

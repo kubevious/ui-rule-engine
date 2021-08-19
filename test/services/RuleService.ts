@@ -25,8 +25,12 @@ export class RuleService implements IRuleService {
 
     private _rules : Record<string, RuleMockData> = {};
 
-    constructor()
+    constructor(empty?: boolean)
     {
+        if (empty) {
+            return;
+        }
+
         for(let i = 1; i <= 50; i++)
         {
             const name = `rule ${i}`;

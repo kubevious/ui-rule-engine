@@ -10,12 +10,13 @@ export default {
     title: 'Marker Editor',
 };
 
-app.registerService({ kind: 'marker' }, () => {
-    return new MarkerService();
-});
 
 export const Default: Story = () => {
     const { burgerMenuItems, createNewItem } = useMarkerEditorActions();
+
+    app.registerService({ kind: 'marker' }, () => {
+        return new MarkerService();
+    });
 
     return (
         <div style={{ background: '#2f3036', height: '100vh' }}>
@@ -42,6 +43,10 @@ export const Default: Story = () => {
 export const WithHeader: Story = () => {
     const { createNewItem } = useMarkerEditorActions();
 
+    app.registerService({ kind: 'marker' }, () => {
+        return new MarkerService();
+    });
+
     return (
         <div style={{ background: '#2f3036', height: '100vh' }}>
             <MarkerEditor itemListHeader={
@@ -55,6 +60,27 @@ export const WithHeader: Story = () => {
 
 
 export const WithPadding: Story = () => {
+
+    app.registerService({ kind: 'marker' }, () => {
+        return new MarkerService();
+    });
+
+    return (
+        <div style={{ minHeight: '100vh', maxWidth: '100vw', width: '100vw', height: '100vh', background: 'red' }}>
+            <div style={{ padding: '50px', height: '100%', width: '100%' }}>
+                <MarkerEditor />
+            </div>
+        </div>
+    );
+};
+
+
+export const EmptyList: Story = () => {
+   
+    app.registerService({ kind: 'marker' }, () => {
+        return new MarkerService(true);
+    });
+
     return (
         <div style={{ minHeight: '100vh', maxWidth: '100vw', width: '100vw', height: '100vh', background: 'red' }}>
             <div style={{ padding: '50px', height: '100%', width: '100%' }}>
