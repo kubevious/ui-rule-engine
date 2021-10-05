@@ -50,6 +50,9 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
     }
 
     componentDidMount(): void {
+        
+        this.sharedState.set('need_markers_list', true);
+
         this.service.subscribeItemStatuses((value) => {
             this.setState({
                 items: _.orderBy(value, (item) => item.name),
@@ -102,6 +105,11 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.sharedState.set('need_markers_list', false);
     }
 
     selectItem(key: string): void {
