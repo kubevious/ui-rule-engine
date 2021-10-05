@@ -5,4 +5,5 @@ REPO_DEPENDENCIES=(
     "@kubevious/ui-framework"
     "@kubevious/ui-middleware"
     "@kubevious/ui-components"
+    "@kubevious/entity-meta"
 )

@@ -17,6 +17,8 @@ interface MarkerMockData
     items: MarkerResultItem[];
 }
 
+import { MARKER_LIST } from './mock/markers'
+
 export class MarkerService implements IMarkerService {
 
     private _markers : Record<string, MarkerMockData> = {};
@@ -27,28 +29,22 @@ export class MarkerService implements IMarkerService {
             return;
         }
         
-        for(let i = 1; i <= 50; i++)
+        
+        for(let i = 0; i < MARKER_LIST.length; i++)
         {
-            const name = `marker ${i}`;
-
-            const config : MarkerConfig = {
-                name: name,
-                shape: `f164`,
-                color: '#A5A5A5',
-                propagate: false
-            }
+            const config = MARKER_LIST[i];
 
             const items: MarkerResultItem[] = [];
             if ((i % 10) > 5) {
                 for(let j = 1; j <= i * 5; j++)
                 {
                     items.push({ 
-                        dn: 'root/ns-[kube-system]'
+                        dn: 'root/logic/ns-[kube-system]'
                     });
                 }
             }
 
-            this._markers[name] = {
+            this._markers[config.name] = {
                 config: config,
                 items: items
             };

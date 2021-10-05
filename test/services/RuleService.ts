@@ -47,7 +47,7 @@ export class RuleService implements IRuleService {
                 for(let j = 1; j <= i * 5; j++)
                 {
                     items.push({ 
-                        dn: 'root/ns-[kube-system]'
+                        dn: 'root/logic/ns-[kube-system]'
                     });
                 }
             }
