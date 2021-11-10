@@ -1,24 +1,20 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Button, Checkbox, Input } from '@kubevious/ui-components';
+import { CodeControl } from '@kubevious/ui-components';
+// import { CodeMirror } from '@kubevious/ui-components';
+
 import { RuleConfig } from '@kubevious/ui-middleware/dist/services/rule';
-import { Controlled as CodeMirrorEditor } from 'react-codemirror2';
 import cx from 'classnames';
 import { isEmptyArray, makeNewRule } from '../../utils';
-import Codemirror from 'codemirror';
-import { snippets } from '../../constants';
-
-import 'codemirror/addon/hint/show-hint';
-import 'codemirror/addon/hint/show-hint.css';
-import 'codemirror/theme/darcula.css';
-import 'codemirror/lib/codemirror.css';
+// import { snippets } from '../../constants';
 
 import { RuleMainTabProps } from '../../types';
 
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
 
-const LEFT_WINDOW_CODE_KEY = 91;
-const EMPTY_CODE_KEY = 64;
+// const LEFT_WINDOW_CODE_KEY = 91;
+// const EMPTY_CODE_KEY = 64;
 
 export enum EditorTab {
     target = 'target',
@@ -49,65 +45,57 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
         return !formData.name || !formData.target || !formData.script;
     }, [formData]);
 
-    const handleScriptKeyUp = ({ editor, data }: { editor: Codemirror.Editor; data: KeyboardEvent }): void => {
-        if (
-            !editor.state.completionActive &&
-            //Select only keycode letters
-            data.keyCode > EMPTY_CODE_KEY &&
-            data.keyCode < LEFT_WINDOW_CODE_KEY
-        ) {
-            //***
-            // "autocomplete" is not exists in CommandActions type, but exists in Codemirror.commands
-            //***
-            // @ts-ignore: Unreachable code error
-            Codemirror.commands.autocomplete(editor, null, {
-                completeSingle: false,
-            });
-        }
-    };
+    // const handleScriptKeyUp = (editor: CodeMirror.Editor, data: KeyboardEvent): void => {
+    //     // if (
+    //     //     !editor.state.completionActive &&
+    //     //     //Select only keycode letters
+    //     //     data.keyCode > EMPTY_CODE_KEY &&
+    //     //     data.keyCode < LEFT_WINDOW_CODE_KEY
+    //     // ) {
+    //     //     //***
+    //     //     // "autocomplete" is not exists in CommandActions type, but exists in Codemirror.commands
+    //     //     //***
+    //     //     // @ts-ignore: Unreachable code error
+    //     //     CodeMirror.commands.autocomplete(editor, null, {
+    //     //         completeSingle: false,
+    //     //     });
+    //     // }
+    // };
 
-    const handleTargetKeyUp = ({ editor, data }: { editor: Codemirror.Editor; data: KeyboardEvent }): void => {
-        //Select only keycode letters
-        if (data.keyCode > EMPTY_CODE_KEY && data.keyCode < LEFT_WINDOW_CODE_KEY) {
-            showSnippets(editor);
-        }
-    };
+    // const handleTargetKeyUp = (editor: CodeMirror.Editor, data: KeyboardEvent): void => {
+    //     // //Select only keycode letters
+    //     // if (data.keyCode > EMPTY_CODE_KEY && data.keyCode < LEFT_WINDOW_CODE_KEY) {
+    //     //     showSnippets(editor);
+    //     // }
+    // };
 
-    const showSnippets = (editor: Codemirror.Editor): void => {
-        Codemirror.showHint(
-            editor,
-            () => {
-                const cursor = editor.getCursor();
-                const token = editor.getTokenAt(cursor);
-                const start = token.start;
-                const end = cursor.ch;
-                const line = cursor.line;
-                const currentWord = token.string;
+    // const showSnippets = (editor: CodeMirror.Editor): void => {
+    //     // CodeMirror.showHint(
+    //     //     editor,
+    //     //     () => {
+    //     //         const cursor = editor.getCursor();
+    //     //         const token = editor.getTokenAt(cursor);
+    //     //         const start = token.start;
+    //     //         const end = cursor.ch;
+    //     //         const line = cursor.line;
+    //     //         const currentWord = token.string;
 
-                const list = snippets.filter(
-                    (item: { text: string | string[] }) => item.text.indexOf(currentWord) >= 0,
-                );
+    //     //         const list = snippets.filter(
+    //     //             (item: { text: string | string[] }) => item.text.indexOf(currentWord) >= 0,
+    //     //         );
 
-                return {
-                    list: list.length ? list : snippets,
-                    from: Codemirror.Pos(line, start),
-                    to: Codemirror.Pos(line, end),
-                };
-            },
-            { completeSingle: false },
-        );
-    };
+    //     //         return {
+    //     //             list: list.length ? list : snippets,
+    //     //             from: CodeMirror.Pos(line, start),
+    //     //             to: CodeMirror.Pos(line, end),
+    //     //         };
+    //     //     },
+    //     //     { completeSingle: false },
+    //     // );
+    // };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleChangeTarget = (value: string): void => {
-        setFormData({ ...formData, target: value });
-    };
-
-    const handleChangeScript = (value: string): void => {
-        setFormData({ ...formData, script: value });
     };
 
     const changeEnable = (): void => {
@@ -167,54 +155,38 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
                 <div className={styles.editor}>
                     {visibleEditor === EditorTab.target && (
-                        <CodeMirrorEditor
-                            className="test-editor"
+                        <CodeControl
                             value={target || ''}
-                            options={{
-                                mode: 'javascript',
-                                theme: 'darcula',
-                                lineNumbers: false,
-                                extraKeys: {
-                                    'Ctrl-Space': 'autocomplete',
-                                },
+                            syntax='javascript'
+                            showLineNumbers={false}
+                            extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
+                            // onKeyUp={(editor, data) => {
+                            //     // handleTargetKeyUp(editor, data)
+                            // }}
+                            handleChange={(value) => {
+                                setFormData({ ...formData, target: value });
                             }}
-                            editorDidMount={(editor) => editor.refresh()}
-                            onKeyUp={(editor: Codemirror.Editor, data: KeyboardEvent) =>
-                                handleTargetKeyUp({ editor, data })
-                            }
-                            onBeforeChange={(
-                                _editor: Codemirror.Editor,
-                                _data: Codemirror.EditorChange,
-                                value: string,
-                            ) => handleChangeTarget(value)}
                         />
                     )}
 
                     {visibleEditor === EditorTab.script && (
-                        <CodeMirrorEditor
+                        <CodeControl
                             value={script || ''}
-                            options={{
-                                mode: 'javascript',
-                                theme: 'darcula',
-                                lineNumbers: false,
-                                extraKeys: {
-                                    'Ctrl-Space': 'autocomplete',
-                                },
+                            syntax='javascript'
+                            showLineNumbers={false}
+                            extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
+                            // onKeyUp={(editor, data) => {
+                            //     // handleScriptKeyUp(editor, data)
+                            // }}
+                            handleChange={(value) => {
+                                setFormData({ ...formData, script: value });
                             }}
-                            onKeyUp={(editor: Codemirror.Editor, data: KeyboardEvent) =>
-                                handleScriptKeyUp({ editor, data })
-                            }
-                            onBeforeChange={(
-                                _editor: Codemirror.Editor,
-                                _data: Codemirror.EditorChange,
-                                value: string,
-                            ) => handleChangeScript(value)}
                         />
                     )}
                 </div>
             </div>
 
-            {console.log(`selectedItemData`, selectedItemData)}
+            {/* {console.log(`selectedItemData`, selectedItemData)} */}
             <div className={styles.editorErrors}>
                 {selectedItemData &&
                     !isEmptyArray(selectedItemData.logs) &&
