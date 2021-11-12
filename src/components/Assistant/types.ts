@@ -1,6 +1,8 @@
 export type AssistantProps = {
     dn: string;
     scripts: RuleAssistantSnippet[];
+
+    handleInsert?: (script: RuleAssistantSnippet) => void;
 };
 
 export interface RuleAssistantData

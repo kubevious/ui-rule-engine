@@ -13,7 +13,7 @@ import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
 import { subscribeToSharedState } from '@kubevious/ui-framework';
 
-import { RuleAssistantData } from '../Assistant/types';
+import { RuleAssistantData, RuleAssistantSnippet } from '../Assistant/types';
 import { Assistant } from '../Assistant';
 
 // const LEFT_WINDOW_CODE_KEY = 91;
@@ -118,6 +118,17 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
             return acc;
         }, 0) || 0;
 
+    const handleInsertTargetSnippet = (snippet: RuleAssistantSnippet) => {
+
+        setFormData({ ...formData, target: target + snippet.code });
+    };
+
+    const handleInsertRuleSnippet = (snippet: RuleAssistantSnippet) => {
+
+        setFormData({ ...formData, script: script + snippet.code });
+
+    };
+
     return (
         <div className={styles.container}>
 
@@ -181,7 +192,9 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
                             { assistantData && <div className={styles.assistantWrapper}>
                                 <div className={styles.assistantInner}>
-                                    <Assistant dn={assistantData.dn} scripts={assistantData.targetScripts} />
+                                    <Assistant dn={assistantData.dn}
+                                               scripts={assistantData.targetScripts} 
+                                               handleInsert={handleInsertTargetSnippet} />
                                 </div>
                             </div>}
                         </div>
@@ -207,7 +220,9 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
                             { assistantData && <div className={styles.assistantWrapper}>
                                 <div className={styles.assistantInner}>
-                                    <Assistant dn={assistantData.dn} scripts={assistantData.ruleScripts} />
+                                    <Assistant dn={assistantData.dn}
+                                               scripts={assistantData.ruleScripts}
+                                               handleInsert={handleInsertRuleSnippet} />
                                 </div>
                             </div>}
                         </div>

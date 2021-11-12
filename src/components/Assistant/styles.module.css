@@ -11,4 +11,22 @@
 
 .snippetContainer {
     margin: 10px;
+    position: relative;
+}
+
+.nameWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.pasteButton {
+    width: 32px;
+    height: 32px;
+    min-width: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

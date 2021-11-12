@@ -52,5 +52,48 @@ const SCRIPTS = [
     {
         "name": "item.getProperties('cluster-consumption')",
         "code": "{\n    \"cpu\": {\n        \"unit\": \"%\",\n        \"value\": 0\n    },\n    \"memory\": {\n        \"unit\": \"%\",\n        \"value\": 0\n    }\n}"
+    },
+    { 
+        "name": "item.config",
+        "code": JSON.stringify(
+            {
+                "kind": "Deployment",
+                "spec": {
+                    "replicas": 1,
+                    "selector": {
+                        "matchLabels": {
+                            "app": "isolated-nginx"
+                        }
+                    },
+                    "template": {
+                        "spec": {
+                            "dnsPolicy": "ClusterFirst",
+                            "containers": [
+                                {
+                                    "name": "nginx",
+                                    "image": "nginx"
+                                }
+                            ],
+                            "restartPolicy": "Always",
+                            "terminationGracePeriodSeconds": 30
+                        },
+                        "metadata": {
+                            "labels": {
+                                "app": "isolated-nginx"
+                            }
+                        }
+                    }
+                },
+                "metadata": {
+                    "name": "isolated-nginx",
+                    "labels": {
+                        "app": "isolated-nginx"
+                    },
+                    "namespace": "test-ingress-isolated-pod"
+                },
+                "apiVersion": "apps/v1"
+            }, null, 4
+        )
     }
 ];
+
