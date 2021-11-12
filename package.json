@@ -1,6 +1,6 @@
 {
   "name": "@kubevious/ui-rule-engine",
-  "version": "1.0.72",
+  "version": "1.0.73",
   "description": "Kubevious UI Rule Engine Components",
   "main": "dist/index.js",
   "types": "dist",
