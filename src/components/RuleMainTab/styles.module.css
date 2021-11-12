@@ -11,34 +11,42 @@
 }
 
 .editorContainer {
-    height: calc(100% - 160px);
-    min-height: 150px;
+    /* height: calc(100% - 160px);
+    min-height: 150px; */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .editor {
-    height: calc(100% - 50px);
-    min-height: 100px;
+    flex-grow: 1;
+    min-height: 200px;
     margin-bottom: 15px;
+    padding: 10px;
+
+    background: #35373e;
+    border: 1px solid #656565;
+    border-radius: 0 3px 3px 3px;
 }
 
-.editor :global(.react-codemirror2) {
+/* .editor :global(.react-codemirror2) {
     min-height: 100%;
     height: 100%;
-}
+} */
 
-.editor :global(.react-codemirror2 .CodeMirror.cm-s-darcula) {
+/* .editor :global(.react-codemirror2 .CodeMirror.cm-s-darcula) {
     background: #35373e;
     border: 1px solid #656565;
     border-radius: 0 3px 3px 3px;
     min-height: 100%;
     height: 100%;
     max-width: 100%;
-}
+} */
 
-.editor :global(.react-codemirror2 .CodeMirror.cm-s-darcula .CodeMirror-scroll) {
+/* .editor :global(.react-codemirror2 .CodeMirror.cm-s-darcula .CodeMirror-scroll) {
     height: 100%;
     min-height: 100%;
-}
+} */
 
 .tabs {
     display: flex;
@@ -121,4 +129,36 @@
 
 .checkboxContainer {
     margin-bottom: 12px;
+}
+
+.tabWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.codeWrapper {
+    flex-grow: 1;
+}
+
+.assistantWrapper {
+    width: 50%;
+    height: 100%;
+    color: #ffffff;
+    padding: 10px;
+    background-color: rgb(30, 30, 30);
+
+    position: relative;
+}
+
+.assistantInner {
+    position: absolute;
+    overflow-y: auto;
+
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    bottom: 10px;
 }

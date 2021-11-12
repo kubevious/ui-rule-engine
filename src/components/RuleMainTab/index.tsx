@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Button, Checkbox, Input } from '@kubevious/ui-components';
 import { CodeControl } from '@kubevious/ui-components';
-// import { CodeMirror } from '@kubevious/ui-components';
 
 import { RuleConfig } from '@kubevious/ui-middleware/dist/services/rule';
 import cx from 'classnames';
@@ -12,6 +11,10 @@ import { RuleMainTabProps } from '../../types';
 
 import styles from './styles.module.css';
 import commonStyles from '../../common.module.css';
+import { subscribeToSharedState } from '@kubevious/ui-framework';
+
+import { RuleAssistantData } from '../Assistant/types';
+import { Assistant } from '../Assistant';
 
 // const LEFT_WINDOW_CODE_KEY = 91;
 // const EMPTY_CODE_KEY = 64;
@@ -32,6 +35,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 }) => {
     const [formData, setFormData] = useState<RuleConfig>(makeNewRule());
     const [visibleEditor, setVisibleEditor] = useState<EditorTab>(EditorTab.target);
+    const [assistantData, setAssistantData] = useState<RuleAssistantData | null>(null);
 
     useEffect(() => {
         if (selectedItem) {
@@ -44,6 +48,8 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     const validation = useMemo(() => {
         return !formData.name || !formData.target || !formData.script;
     }, [formData]);
+
+    subscribeToSharedState("rule_engine_assistant_data", setAssistantData);
 
     // const handleScriptKeyUp = (editor: CodeMirror.Editor, data: KeyboardEvent): void => {
     //     // if (
@@ -114,7 +120,9 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
     return (
         <div className={styles.container}>
+
             {isNewItem && <div className={commonStyles.newItemTitle}>Create new rule</div>}
+
             <div className={styles.field}>
                 <Input
                     type="text"
@@ -155,33 +163,54 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
                 <div className={styles.editor}>
                     {visibleEditor === EditorTab.target && (
-                        <CodeControl
-                            value={target || ''}
-                            syntax='javascript'
-                            showLineNumbers={false}
-                            extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
-                            // onKeyUp={(editor, data) => {
-                            //     // handleTargetKeyUp(editor, data)
-                            // }}
-                            handleChange={(value) => {
-                                setFormData({ ...formData, target: value });
-                            }}
-                        />
+                        <div className={styles.tabWrapper}>
+                            <div className={styles.codeWrapper}>
+                                <CodeControl
+                                    value={target || ''}
+                                    syntax='javascript'
+                                    showLineNumbers={false}
+                                    extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
+                                    // onKeyUp={(editor, data) => {
+                                    //     // handleTargetKeyUp(editor, data)
+                                    // }}
+                                    handleChange={(value) => {
+                                        setFormData({ ...formData, target: value });
+                                    }}
+                                />
+                            </div>
+
+                            { assistantData && <div className={styles.assistantWrapper}>
+                                <div className={styles.assistantInner}>
+                                    <Assistant dn={assistantData.dn} scripts={assistantData.targetScripts} />
+                                </div>
+                            </div>}
+                        </div>
                     )}
 
                     {visibleEditor === EditorTab.script && (
-                        <CodeControl
-                            value={script || ''}
-                            syntax='javascript'
-                            showLineNumbers={false}
-                            extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
-                            // onKeyUp={(editor, data) => {
-                            //     // handleScriptKeyUp(editor, data)
-                            // }}
-                            handleChange={(value) => {
-                                setFormData({ ...formData, script: value });
-                            }}
-                        />
+                        <div className={styles.tabWrapper}>
+                            <div className={styles.codeWrapper}>
+
+                                <CodeControl
+                                    value={script || ''}
+                                    syntax='javascript'
+                                    showLineNumbers={false}
+                                    extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
+                                    // onKeyUp={(editor, data) => {
+                                    //     // handleScriptKeyUp(editor, data)
+                                    // }}
+                                    handleChange={(value) => {
+                                        setFormData({ ...formData, script: value });
+                                    }}
+                                />
+                            </div>
+
+                            { assistantData && <div className={styles.assistantWrapper}>
+                                <div className={styles.assistantInner}>
+                                    <Assistant dn={assistantData.dn} scripts={assistantData.ruleScripts} />
+                                </div>
+                            </div>}
+                        </div>
                     )}
                 </div>
             </div>
@@ -238,3 +267,4 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
         </div>
     );
 };
+

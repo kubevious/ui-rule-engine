@@ -4,10 +4,12 @@ import { Story } from '@storybook/react';
 import React, { useEffect } from 'react';
 import { RuleService } from '../../test/services/RuleService';
 import { useRuleEditorActions } from '../hooks/useRuleEditorActions';
-import { RuleEditor } from '../RuleEditor';
+
+import { RuleEditor } from './';
 
 export default {
     title: 'Rule Editor',
+    component: RuleEditor
 };
 
 

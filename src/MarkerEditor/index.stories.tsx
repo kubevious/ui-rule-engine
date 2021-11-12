@@ -4,10 +4,12 @@ import { Story } from '@storybook/react';
 import React from 'react';
 import { MarkerService } from '../../test/services/MarkerService';
 import { useMarkerEditorActions } from '../hooks/useMarkerEditorActions';
-import { MarkerEditor } from '../MarkerEditor';
+
+import { MarkerEditor } from './';
 
 export default {
     title: 'Marker Editor',
+    component: MarkerEditor
 };
 
 

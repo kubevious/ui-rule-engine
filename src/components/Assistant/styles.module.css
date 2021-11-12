@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.title {
+    color: white;
+    font-size: 16px;
+}
+
+.snippetContainer {
+    margin: 10px;
+}

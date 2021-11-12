@@ -22,8 +22,8 @@
   "author": "Ruben Hakopian <ruben.hakopian@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@kubevious/entity-meta": "^1.0.41",
-    "@kubevious/ui-components": "^1.0.181",
+    "@kubevious/entity-meta": "^1.0.42",
+    "@kubevious/ui-components": "^1.0.182",
     "@kubevious/ui-framework": "^1.0.50",
     "@kubevious/ui-middleware": "^1.0.40",
     "bootstrap": "^5.0.0",
