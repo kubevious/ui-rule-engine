@@ -215,7 +215,6 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                 </div>
             </div>
 
-            {/* {console.log(`selectedItemData`, selectedItemData)} */}
             <div className={styles.editorErrors}>
                 {selectedItemData &&
                     !isEmptyArray(selectedItemData.logs) &&

@@ -216,7 +216,7 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
 
                         {(selectedItemKey || isNewItem) && (
                             <div
-                                className={cx(commonStyles.tabContainer, { [commonStyles.newTabContainer]: isNewItem })}
+                                className={cx(commonStyles.tabContainer)}
                             >
                                 {isNewItem && (
                                     <div className={commonStyles.scrollableContainer}>

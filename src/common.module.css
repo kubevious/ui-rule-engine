@@ -69,11 +69,6 @@
     height: calc(100% - 50px);
 }
 
-.newTabContainer > div > div:last-child {
-    height: unset;
-}
-
-
 .scrollableContainer {
     overflow-y: hidden;
     height: 100%;

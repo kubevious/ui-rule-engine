@@ -9,6 +9,7 @@ import commonStyles from '../../common.module.css';
 import { MarkerConfig } from '@kubevious/ui-middleware/dist/services/marker';
 import { makeNewMarker } from '../../utils';
 import { ChromePicker } from 'react-color';
+import { ScrollbarComponent } from '@kubevious/ui-components/dist';
 
 export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     selectedItem,
@@ -46,10 +47,10 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
     };
 
     return (
-        <>
+        <div className={styles.container}>
             {isNewItem && <div className={commonStyles.newItemTitle}>Create new marker</div>}
 
-            <div className={styles.field}>
+            <div>
                 <Input
                     label="Name"
                     type="text"
@@ -60,11 +61,11 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                 />
             </div>
 
-            <div className={styles.markerInfoWrapper}>
-                <div className={styles.field}>
-                    <div className={commonStyles.labelWrapper}>Icon</div>
-                    <div className={styles.markerArea}>
-                        <div className={styles.areaWrapper}>
+            <div className={styles.markerIconWrapper}>
+                <div className={commonStyles.labelWrapper}>Icon</div>
+                <div className={styles.markerArea}>
+                    <ScrollbarComponent>
+                        <div className={styles.itemsContents}>
                             {SHAPES.map((item, index) => (
                                 <div
                                     className={cx(styles.markerWrapper, item === shape && styles.selectedMarkerWrapper)}
@@ -76,31 +77,33 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                                     </div>
                                 </div>
                             ))}
-                            <span className={styles.empty} />
                         </div>
+                    </ScrollbarComponent>
+                </div>
+            </div>
+
+            <div className={styles.markerColorWrapper}>
+                <div className={cx(commonStyles.labelWrapper, 'd-flex')}>
+                    Color
+                    <div className="position-relative">
+                        <button
+                            className={styles.customColor}
+                            onClick={() => setDisplayColorPicker(!displayColorPicker)}
+                        >
+                            Pick custom color
+                        </button>
+                        {displayColorPicker && (
+                            <div className={styles.colorPopover}>
+                                <div className={styles.cover} onClick={() => setDisplayColorPicker(false)} />
+                                <ChromePicker onChange={(color) => handleChangeColor(color.hex)} color={color} />
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                <div className={styles.field}>
-                    <div className={cx(commonStyles.labelWrapper, 'd-flex')}>
-                        Color
-                        <div className="position-relative">
-                            <button
-                                className={styles.customColor}
-                                onClick={() => setDisplayColorPicker(!displayColorPicker)}
-                            >
-                                Pick custom color
-                            </button>
-                            {displayColorPicker && (
-                                <div className={styles.colorPopover}>
-                                    <div className={styles.cover} onClick={() => setDisplayColorPicker(false)} />
-                                    <ChromePicker onChange={(color) => handleChangeColor(color.hex)} color={color} />
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div className={styles.markerArea}>
-                        <div className={styles.areaWrapper}>
+                <div className={styles.markerArea}>
+                    <ScrollbarComponent>
+                        <div className={styles.itemsContents}>
                             {COLORS.map((item, index) => (
                                 <div
                                     className={cx(styles.markerWrapper, {
@@ -115,8 +118,9 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </ScrollbarComponent>
                 </div>
+
             </div>
 
             <div className="d-flex align-items-center justify-content-between">
@@ -151,6 +155,6 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                     </>
                 )}
             </div>
-        </>
+        </div>
     );
 };

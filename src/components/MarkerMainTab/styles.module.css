@@ -1,9 +1,8 @@
-.field {
-    margin-bottom: 15px;
-}
-
-.nameWrapper {
-    border: 1px solid #4e515b;
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
 }
 
 .markerArea {
@@ -11,60 +10,29 @@
     border: 1px solid #656565;
     border-radius: 3px;
     padding: 10px 10px;
-    min-height: 85%;
-    overflow: hidden;
+    overflow-y: hidden;
+
+    flex-grow: 1;
 }
 
-.markerArea::-webkit-scrollbar-thumb {
-    background-color: #333;
-}
-
-.markerArea::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #666;
-}
-
-.markerArea::-webkit-scrollbar {
-    width: 6px;
-    background-color: #f5f5f5;
-}
-
-.markerArea:hover {
-    overflow: overlay;
-}
-
-.nameArea {
+.itemsContents {
     display: flex;
-    align-items: center;
-    padding: 0 10px;
-    min-height: unset;
-    border: none;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
-.shape {
-    min-width: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+.markerIconWrapper {
+    flex-grow: 2;
 
-.markerInfoWrapper {
-    height: calc(100% - 175px);
-    min-height: 450px;
-    margin-bottom: 10px;
-}
-
-.markerInfoWrapper .field {
     display: flex;
     flex-direction: column;
-    height: calc(100% / 2);
-    margin-bottom: 10px;
 }
 
-.areaWrapper {
-    width: calc(100% - 10px);
+.markerColorWrapper {
+    flex-grow: 1;
+
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 .customColor {
@@ -117,8 +85,4 @@
 
 .iconWrapper i {
     font-size: 23px;
-}
-
-.markerFieldInput {
-    border: none !important;
 }
