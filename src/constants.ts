@@ -144,7 +144,6 @@ export const SHAPES = [
     "f206",
     "f0fb",
     "f533",
-    "f21c",
     "f1d8",
     "f072",
     "f7d2",

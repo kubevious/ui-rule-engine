@@ -122,6 +122,18 @@
 
 .codeWrapper {
     flex-grow: 1;
+
+    position: relative;
+}
+
+.codeInner {
+    position: absolute;
+    overflow: auto;
+
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
 }
 
 .assistantWrapper {
@@ -136,7 +148,7 @@
 
 .assistantInner {
     position: absolute;
-    overflow-y: auto;
+    overflow: auto;
 
     left: 10px;
     right: 10px;

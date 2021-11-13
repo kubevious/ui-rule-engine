@@ -1,8 +1,7 @@
-import { BurgerMenu, Button, InnerPage, PageHeader } from '@kubevious/ui-components';
 import { app } from '@kubevious/ui-framework';
 import { RuleConfig } from '@kubevious/ui-middleware/dist/services/rule';
 import { Story } from '@storybook/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RuleAssistantData } from './types';
 
 import { RuleMainTab } from './';

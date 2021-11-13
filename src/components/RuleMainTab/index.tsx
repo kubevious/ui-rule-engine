@@ -120,13 +120,21 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
 
     const handleInsertTargetSnippet = (snippet: RuleAssistantSnippet) => {
 
-        setFormData({ ...formData, target: target + snippet.code });
+        setFormData({ ...formData, target: combineSnippet(target, snippet.code) });
     };
 
     const handleInsertRuleSnippet = (snippet: RuleAssistantSnippet) => {
 
-        setFormData({ ...formData, script: script + snippet.code });
+        setFormData({ ...formData, script: combineSnippet(script, snippet.name) });
 
+    };
+
+    const combineSnippet = (code: string, snippetCode: string) => {
+        if (code) {
+            return code + '\n' + snippetCode;
+        }
+
+        return snippetCode;
     };
 
     return (
@@ -176,18 +184,22 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                     {visibleEditor === EditorTab.target && (
                         <div className={styles.tabWrapper}>
                             <div className={styles.codeWrapper}>
-                                <CodeControl
-                                    value={target || ''}
-                                    syntax='javascript'
-                                    showLineNumbers={false}
-                                    extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
-                                    // onKeyUp={(editor, data) => {
-                                    //     // handleTargetKeyUp(editor, data)
-                                    // }}
-                                    handleChange={(value) => {
-                                        setFormData({ ...formData, target: value });
-                                    }}
-                                />
+
+                                <div className={styles.codeInner}>
+                                    <CodeControl
+                                        value={target || ''}
+                                        syntax='javascript'
+                                        showLineNumbers={false}
+                                        extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
+                                        // onKeyUp={(editor, data) => {
+                                        //     // handleTargetKeyUp(editor, data)
+                                        // }}
+                                        handleChange={(value) => {
+                                            setFormData({ ...formData, target: value });
+                                        }}
+                                    />
+                                </div>
+
                             </div>
 
                             { assistantData && <div className={styles.assistantWrapper}>
@@ -204,18 +216,23 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                         <div className={styles.tabWrapper}>
                             <div className={styles.codeWrapper}>
 
-                                <CodeControl
-                                    value={script || ''}
-                                    syntax='javascript'
-                                    showLineNumbers={false}
-                                    extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
-                                    // onKeyUp={(editor, data) => {
-                                    //     // handleScriptKeyUp(editor, data)
-                                    // }}
-                                    handleChange={(value) => {
-                                        setFormData({ ...formData, script: value });
-                                    }}
-                                />
+                                <div className={styles.codeInner}>
+
+                                    <CodeControl
+                                        value={script || ''}
+                                        syntax='javascript'
+                                        showLineNumbers={false}
+                                        extraKeys={{ 'Ctrl-Space': 'autocomplete' }}
+                                        // onKeyUp={(editor, data) => {
+                                        //     // handleScriptKeyUp(editor, data)
+                                        // }}
+                                        handleChange={(value) => {
+                                            setFormData({ ...formData, script: value });
+                                        }}
+                                    />
+
+                                </div>
+
                             </div>
 
                             { assistantData && <div className={styles.assistantWrapper}>
