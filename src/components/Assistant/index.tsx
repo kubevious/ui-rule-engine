@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
 import { Button, DnComponent, Label } from '@kubevious/ui-components';
+import { FontAwesomeIcon, FASolidIcons  } from '@kubevious/ui-components';
 import { CodeControl } from '@kubevious/ui-components';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { AssistantProps } from './types';
 
@@ -34,7 +32,7 @@ export const Assistant: FC<AssistantProps> = ({
                                         handleInsert(script)
                                     }
                                 }}>
-                            <FontAwesomeIcon icon={faArrowLeft} />
+                            <FontAwesomeIcon icon={FASolidIcons.faArrowLeft} />
                         </Button>
 
                         <Label text={script.name} />

@@ -1,4 +1,4 @@
-import { faFileDownload, faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
+import { FASolidIcons } from '@kubevious/ui-components';
 import { BurgerMenuItem } from '@kubevious/ui-components/dist/BurgerMenu/types';
 import { useService, useSharedState } from '@kubevious/ui-framework';
 import { IRuleService } from '@kubevious/ui-middleware/dist';
@@ -23,20 +23,20 @@ export const useRuleEditorActions = (): RuleEditorMenuActions => {
         {
             key: 'rule-export',
             text: 'Export rules',
-            icon: faFileExport,
+            icon: FASolidIcons.faFileExport,
             action: () => exportFile({ service }),
         },
         {
             key: 'rule-import',
             text: 'Import rules',
-            icon: faFileImport,
+            icon: FASolidIcons.faFileImport,
             action: () => uploadFile({ service, deleteExtra: false, selector: 'rule-import' }),
             isUploadFile: true,
         },
         {
             key: 'rule-replace',
             text: 'Replace rules',
-            icon: faFileDownload,
+            icon: FASolidIcons.faFileDownload,
             action: () => uploadFile({ service, deleteExtra: true, selector: 'rule-replace' }),
             isUploadFile: true,
         },
