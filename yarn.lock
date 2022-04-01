@@ -1566,10 +1566,10 @@
     the-promise "^2.0.12"
     uuid "^8.3.2"
 
-"@kubevious/ui-components@^1.0.202":
-  version "1.0.202"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.202.tgz#b54d5dc7cde33bf4ea37e18b8ee6b191554f3be5"
-  integrity sha512-a3+kPtF1pvvQh7X+K6M6PQRfjv8v3khN/HGb1bWVti0tM/CiyljcTb9XWTGNdPHH9jsv9d7jQc2h625VrxhoAg==
+"@kubevious/ui-components@^1.0.204":
+  version "1.0.204"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.204.tgz#a9591c1addf97af45a5ef480b4aa3c532d82d7e0"
+  integrity sha512-g+u4vH1Ur2I8q/ytKNosQahheolf2yeYiwIqC/Vuo4CUD1tdhTGsrjFeMALr7xsbq0fCw5VAqNhTyVrw1BnL0Q==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1611,12 +1611,33 @@
     the-promise "^2.0.13"
     uuid "^8.3.2"
 
+"@kubevious/ui-framework@^1.0.57":
+  version "1.0.57"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-framework/-/ui-framework-1.0.57.tgz#04b0a5abd7d65854afa20d033c6b35da440bfcda"
+  integrity sha512-0YqZFVnnpkdtKy5LFa/OZqHvdqQ7OOn43L3vAGkq4f6BvDcVWuym2P7WyFib90Iyy1Pz0El59AAgEVp9VT8Mzg==
+  dependencies:
+    "@kubevious/http-client" "^1.0.19"
+    moment "^2.29.1"
+    react "^17.0.2"
+    react-router-dom "^5.2.0"
+    the-lodash "^2.0.9"
+    the-promise "^2.0.13"
+    uuid "^8.3.2"
+
 "@kubevious/ui-middleware@^1.0.43":
   version "1.0.43"
   resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.43.tgz#c2d21109217fe3cc58b7f14216b73c9178b4e2cc"
   integrity sha512-i4UzzBznqEO8nyysb3LjuFoxxV/VrtT3uQ/iEUtErB8SE/z54xjXYoYx2ZHBb+uTgmQnJCj/bHYqkqiMQb7OEw==
   dependencies:
     "@kubevious/entity-meta" "^1.0.42"
+    the-promise "^2.0.13"
+
+"@kubevious/ui-middleware@^1.0.46":
+  version "1.0.46"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.46.tgz#10d8ca7739bbf32d44bf0158ea48a38b9a8124df"
+  integrity sha512-+vqrUrNL7QaJkQQkadI9IrBWNCFzt3kkrBcO6lIO/VT0TwpfVlwoVrnjHL8AifmKIgb4sb3fzA4JO4NVEunAkA==
+  dependencies:
+    "@kubevious/entity-meta" "^1.0.56"
     the-promise "^2.0.13"
 
 "@mdx-js/loader@^1.6.22":

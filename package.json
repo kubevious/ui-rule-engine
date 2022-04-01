@@ -23,9 +23,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@kubevious/entity-meta": "^1.0.56",
-    "@kubevious/ui-components": "^1.0.202",
-    "@kubevious/ui-framework": "^1.0.56",
-    "@kubevious/ui-middleware": "^1.0.43",
+    "@kubevious/ui-components": "^1.0.204",
+    "@kubevious/ui-framework": "^1.0.57",
+    "@kubevious/ui-middleware": "^1.0.46",
     "bootstrap": "^5.0.0",
     "classnames": "^2.2.6",
     "node-sass": "^4.14.1",
