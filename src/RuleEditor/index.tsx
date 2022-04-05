@@ -122,12 +122,15 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
     }
 
     loadItem(): void {
-        const itemKey = this.sharedState.get('rule_editor_selected_rule_key');
+        const itemKey = this.sharedState.tryGet<string>('rule_editor_selected_rule_key');
+        if (!itemKey) {
+            return;
+        }
 
         this.service.getItem(itemKey).then((data) => {
             if (
-                this.sharedState.get('rule_editor_selected_rule_key') !== itemKey ||
-                this.sharedState.get('rule_editor_is_new_rule')
+                itemKey !== this.sharedState.tryGet('rule_editor_selected_rule_key') ||
+                this.sharedState.tryGet('rule_editor_is_new_rule')
             ) {
                 return;
             }

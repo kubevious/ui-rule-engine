@@ -117,12 +117,15 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
     }
 
     loadItem(): void {
-        const itemKey = this.sharedState.get('marker_editor_selected_marker_key');
+        const itemKey = this.sharedState.tryGet<string>('marker_editor_selected_marker_key');
+        if (!itemKey) {
+            return;
+        }
 
         this.service.getItem(itemKey).then((data) => {
             if (
-                this.sharedState.get('marker_editor_selected_marker_key') !== itemKey ||
-                this.sharedState.get('marker_editor_is_new_marker')
+                itemKey !== this.sharedState.tryGet<string>('marker_editor_selected_marker_key')  ||
+                this.sharedState.tryGet('marker_editor_is_new_marker')
             ) {
                 return;
             }
