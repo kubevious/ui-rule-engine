@@ -14,14 +14,17 @@ export const StartPage: FC = () => (
 
             <PageLink name="Learn more about rules engine"
                       path={RULES_ENGINE_HELP}
+                      target="_blank"
                       />
 
             <PageLink name="Browse rules library"
                       path={RULES_LIBRARY}
+                      target="_blank"
                       />
 
             <PageLink name="Get help in slack channel"
                       path={KUBEVIOUS_SLACK}
+                      target="_blank"
                       />
 
         </div>
