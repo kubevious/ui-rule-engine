@@ -131,8 +131,19 @@ export class MarkerService implements IMarkerService {
         cb({});
     }
 
+    subscribeMarkers(cb: (items: MarkerListItem[]) => void) {
+        this.getList().then((result) => cb(result));
+        return {
+            close: () => {}
+        };
+    }
+
+
     subscribeItemStatuses(cb: (items: MarkerStatus[]) => void) {
-        return this.getItemStatuses().then((result) => cb(result));
+        this.getItemStatuses().then((result) => cb(result));
+        return {
+            close: () => {}
+        };
     }
 
     subscribeItemResult(cb: (result: MarkerResult) => void) {
