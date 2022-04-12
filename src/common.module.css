@@ -1,48 +1,18 @@
 .ruleEngineContainer {
     height: 100%;
     display: flex;
+    flex-direction: row;
+    gap: 0px;
 }
 
 
-.labelWrapper {
-    margin-bottom: 5px;
-    color: white;
-    font-size: 14px;
-    font-family: "Roboto", sans-serif;
-}
+.ruleEngineMainContainer {
+    flex-grow: 1;
+    flex-shrink: 1;
 
-.labelWrapper.color {
-    position: relative;
-}
-
-.labelWrapper label {
-    font-size: 14px;
-    color: #737888;
-    margin: 0;
-}
-
-.fieldInput {
-    width: 100%;
-    outline: none;
-    padding: 10px 20px;
-    background: #35373e;
-    border: 1px solid #4e515b;
-    color: white;
-}
-
-.ruleEditor {
     height: 100%;
-    width: calc(100% - 250px);
-    position: relative;
+
     background: #2f3036;
-}
-
-.ruleContainer {
-    overflow-y: hidden;
-    height: 100%;
-}
-.ruleContainer:hover {
-    overflow-y: overlay;
 }
 
 
@@ -58,22 +28,4 @@
     background: #212122;
     height: 100%;
     padding: 30px;
-    overflow-y: auto;
-}
-
-.tabContainer > div {
-    height: 100%;
-}
-
-.tabContainer > div > div:last-child {
-    height: calc(100% - 50px);
-}
-
-.scrollableContainer {
-    overflow-y: hidden;
-    height: 100%;
-    padding-right: 10px;
-}
-.scrollableContainer:hover {
-    overflow-y: overlay;
 }

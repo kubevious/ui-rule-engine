@@ -12,7 +12,7 @@ export type SiderProps = {
     items: SiderMenuItem[];
     onSelect: (key: string) => void;
     selectedItemKey: string | null;
-    header?: ReactNode;
+    emptyText: string;
 };
 
 export enum EditorType {

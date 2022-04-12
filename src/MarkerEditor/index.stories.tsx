@@ -13,7 +13,21 @@ export default {
 };
 
 
-export const Default: Story = () => {
+
+
+export const ComponentOnly: Story = () => {
+    app.registerService({ kind: 'marker' }, () => {
+        return new MarkerService();
+    });
+
+    return (
+        <div style={{ background: '#2f3036', height: '100vh' }}>
+            <MarkerEditor />
+        </div>
+    );
+};
+
+export const Page: Story = () => {
     const { burgerMenuItems, createNewItem } = useMarkerEditorActions();
 
     app.registerService({ kind: 'marker' }, () => {
@@ -34,6 +48,7 @@ export const Default: Story = () => {
                         </div>
                     </PageHeader>
                 }
+                fullHeight
             >
                 <MarkerEditor />
             </InnerPage>
@@ -41,24 +56,6 @@ export const Default: Story = () => {
     );
 };
 
-
-export const WithHeader: Story = () => {
-    const { createNewItem } = useMarkerEditorActions();
-
-    app.registerService({ kind: 'marker' }, () => {
-        return new MarkerService();
-    });
-
-    return (
-        <div style={{ background: '#2f3036', height: '100vh' }}>
-            <MarkerEditor itemListHeader={
-                <Button type="success" onClick={createNewItem} spacingLeft>
-                    Add New Marker
-                </Button>} 
-            />
-        </div>
-    );
-};
 
 
 export const WithPadding: Story = () => {

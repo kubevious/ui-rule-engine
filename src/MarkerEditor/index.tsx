@@ -1,8 +1,8 @@
 import _ from 'the-lodash';
-import { Tab, Tabs, MarkerPreview, DnResults } from '@kubevious/ui-components';
+import { Tab, Tabs, MarkerPreview, DnResults, ScrollbarComponent } from '@kubevious/ui-components';
 import { DnShortcutComponentProps } from '@kubevious/ui-components/dist/DnShortcutComponent/types';
 import cx from 'classnames';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { MarkerMainTab } from '../components/MarkerMainTab';
 import { Sider } from '../components/Sider';
 import siderStyles from '../components/Sider/styles.module.css';
@@ -24,7 +24,6 @@ const selectedItemDataInit: MarkerResult = {
 
 export interface MarkerEditorProps
 {
-    itemListHeader? : ReactNode;
 }
 
 export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditorState, IMarkerService> {
@@ -194,8 +193,8 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
                 className={commonStyles.ruleEngineContainer}
             >
                 <Sider
-                    header={this.props.itemListHeader}
                     type="marker"
+                    emptyText="No markers present"
                     items={
                         items.length > 0
                             ? items.map((item) => ({
@@ -214,51 +213,49 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
                     onSelect={this.selectItem}
                 />
 
-                <div id="marker-editor" className={commonStyles.ruleEditor}>
-                    <div className={commonStyles.ruleContainer}>
-                        {!(selectedItemKey || isNewItem) && <StartPage />}
+                <div id="marker-editor" className={commonStyles.ruleEngineMainContainer}>
+                    {!(selectedItemKey || isNewItem) && <StartPage />}
 
-                        {(selectedItemKey || isNewItem) && (
-                            <div
-                                className={cx(commonStyles.tabContainer)}
-                            >
-                                {isNewItem && (
-                                    <div className={commonStyles.scrollableContainer}>
-                                        <MarkerMainTab
-                                            isNewItem={isNewItem}
-                                            selectedItem={selectedItem!}
-                                            saveItem={this.saveItem}
-                                            deleteItem={this.deleteItem}
-                                            createItem={this.createItem}
-                                            openSummary={this.openSummary}
-                                        />
-                                    </div>
-                                )}
+                    {(selectedItemKey || isNewItem) && (
+                        <div
+                            className={cx(commonStyles.tabContainer)}
+                        >
+                            {isNewItem && (
+                                <ScrollbarComponent>
+                                    <MarkerMainTab
+                                        isNewItem={isNewItem}
+                                        selectedItem={selectedItem!}
+                                        saveItem={this.saveItem}
+                                        deleteItem={this.deleteItem}
+                                        createItem={this.createItem}
+                                        openSummary={this.openSummary}
+                                    />
+                                </ScrollbarComponent>
+                            )}
 
-                                {!isNewItem && (
-                                    <Tabs>
-                                        <Tab key="edit" label="Edit markers">
-                                            <div className={commonStyles.scrollableContainer}>
-                                                <MarkerMainTab
-                                                    selectedItem={selectedItem!}
-                                                    saveItem={this.saveItem}
-                                                    deleteItem={this.deleteItem}
-                                                    createItem={this.createItem}
-                                                    openSummary={this.openSummary}
-                                                />
-                                            </div>
-                                        </Tab>
+                            {!isNewItem && (
+                                <Tabs>
+                                    <Tab key="edit" label="Edit markers">
+                                        <ScrollbarComponent>
+                                            <MarkerMainTab
+                                                selectedItem={selectedItem!}
+                                                saveItem={this.saveItem}
+                                                deleteItem={this.deleteItem}
+                                                createItem={this.createItem}
+                                                openSummary={this.openSummary}
+                                            />
+                                        </ScrollbarComponent>
+                                    </Tab>
 
-                                        <Tab key="objects" label={`Affected objects [${selectedResultItems.length}]`}>
-                                            <div className={commonStyles.scrollableContainer}>
-                                                <DnResults items={selectedResultItems} />
-                                            </div>
-                                        </Tab>
-                                    </Tabs>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                                    <Tab key="objects" label={`Affected objects [${selectedResultItems.length}]`}>
+                                        <ScrollbarComponent>
+                                            <DnResults items={selectedResultItems} />
+                                        </ScrollbarComponent>
+                                    </Tab>
+                                </Tabs>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         );

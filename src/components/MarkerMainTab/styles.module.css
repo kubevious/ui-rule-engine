@@ -86,3 +86,20 @@
 .iconWrapper i {
     font-size: 23px;
 }
+
+
+
+.labelWrapper {
+    margin-bottom: 5px;
+    color: white;
+    font-size: 14px;
+    font-family: "Roboto", sans-serif;
+}
+.labelWrapper.color {
+    position: relative;
+}
+.labelWrapper label {
+    font-size: 14px;
+    color: #737888;
+    margin: 0;
+}

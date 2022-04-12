@@ -1,5 +1,5 @@
 import _ from 'the-lodash';
-import { Tab, Tabs, DnResults } from '@kubevious/ui-components';
+import { Tab, Tabs, DnResults, ScrollbarComponent } from '@kubevious/ui-components';
 import cx from 'classnames';
 import React, { ReactNode } from 'react';
 import { app, ClassComponent } from '@kubevious/ui-framework';
@@ -25,7 +25,6 @@ const selectedItemDataInit : RuleResult = {
 
 export interface RuleEditorProps
 {
-    itemListHeader? : ReactNode;
 }
 
 export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState, IRuleService> {
@@ -182,7 +181,8 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
         return (
             !this.state.isNewItem &&
             this.state.selectedItemData &&
-            !this.state.selectedItemData.is_current && <div className={commonStyles.busyRuleIndicator} />
+            !this.state.selectedItemData.is_current && 
+            <div className={commonStyles.busyRuleIndicator} />
         );
     }
 
@@ -195,8 +195,8 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
                 className={commonStyles.ruleEngineContainer}
             >
                 <Sider
-                    header={this.props.itemListHeader}
                     type="rule"
+                    emptyText="No rules present"
                     items={
                         items.length > 0
                             ? items.map((item) => ({
@@ -216,52 +216,50 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
                     onSelect={this.selectItem}
                 />
 
-                <div id="rule-editor" className={commonStyles.ruleEditor}>
-                    <div className={commonStyles.ruleContainer}>
-                        {!(selectedItemKey || isNewItem) && <StartPage />}
+                <div id="rule-editor" className={commonStyles.ruleEngineMainContainer}>
+                    {!(selectedItemKey || isNewItem) && <StartPage />}
 
-                        {(selectedItemKey || isNewItem) && (
-                            <div
-                                className={cx(commonStyles.tabContainer)}
-                            >
-                                {isNewItem && (
-                                    <div className={commonStyles.scrollableContainer}>
-                                        <RuleMainTab
-                                            isNewItem={isNewItem}
-                                            selectedItem={selectedItem!}
-                                            saveItem={this.saveItem}
-                                            deleteItem={this.deleteItem}
-                                            createItem={this.createItem}
-                                            openSummary={this.openSummary}
-                                        />
-                                    </div>
-                                )}
+                    {(selectedItemKey || isNewItem) && (
+                        <div
+                            className={cx(commonStyles.tabContainer)}
+                        >
+                            {isNewItem && (
+                                <ScrollbarComponent>
+                                    <RuleMainTab
+                                        isNewItem={isNewItem}
+                                        selectedItem={selectedItem!}
+                                        saveItem={this.saveItem}
+                                        deleteItem={this.deleteItem}
+                                        createItem={this.createItem}
+                                        openSummary={this.openSummary}
+                                    />
+                                </ScrollbarComponent>
+                            )}
 
-                                {!isNewItem && (
-                                    <Tabs>
-                                        <Tab key="edit" label="Edit rules">
-                                            <div className={commonStyles.scrollableContainer}>
-                                                <RuleMainTab
-                                                    selectedItem={selectedItem!}
-                                                    selectedItemData={selectedItemData}
-                                                    saveItem={this.saveItem}
-                                                    deleteItem={this.deleteItem}
-                                                    createItem={this.createItem}
-                                                    openSummary={this.openSummary}
-                                                />
-                                            </div>
-                                        </Tab>
+                            {!isNewItem && (
+                                <Tabs>
+                                    <Tab key="edit" label="Edit rules">
+                                        <ScrollbarComponent>
+                                            <RuleMainTab
+                                                selectedItem={selectedItem!}
+                                                selectedItemData={selectedItemData}
+                                                saveItem={this.saveItem}
+                                                deleteItem={this.deleteItem}
+                                                createItem={this.createItem}
+                                                openSummary={this.openSummary}
+                                            />
+                                       </ScrollbarComponent>
+                                    </Tab>
 
-                                        <Tab key="objects" label={`Affected objects [${selectedItemData.items.length}]`}>
-                                            <div className={commonStyles.scrollableContainer}>
-                                                <DnResults items={selectedItemData.items} />
-                                            </div>
-                                        </Tab>
-                                    </Tabs>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                                    <Tab key="objects" label={`Affected objects [${selectedItemData.items.length}]`}>
+                                        <ScrollbarComponent>
+                                            <DnResults items={selectedItemData.items} />
+                                        </ScrollbarComponent>
+                                    </Tab>
+                                </Tabs>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         );

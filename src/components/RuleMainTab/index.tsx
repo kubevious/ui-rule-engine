@@ -1,11 +1,10 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Button, Checkbox, Input } from '@kubevious/ui-components';
+import { Button, Checkbox, Input, ScrollbarComponent } from '@kubevious/ui-components';
 import { CodeControl } from '@kubevious/ui-components';
 
 import { RuleConfig } from '@kubevious/ui-middleware/dist/services/rule';
 import cx from 'classnames';
 import { isEmptyArray, makeNewRule } from '../../utils';
-// import { snippets } from '../../constants';
 
 import { RuleMainTabProps } from '../../types';
 
@@ -247,16 +246,20 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                 </div>
             </div>
 
-            <div className={styles.editorErrors}>
-                {selectedItemData &&
-                    !isEmptyArray(selectedItemData.logs) &&
-                    selectedItemData.logs.map((err, index) => (
-                        <div className={styles.errBox} key={index}>
-                            <div className={styles.errorBullet} />
-                            <div className={cx(styles.alertItem, styles.errorMessage)}>{err.msg.msg}</div>
-                        </div>
-                    ))}
-            </div>
+            {selectedItemData &&
+                !isEmptyArray(selectedItemData.logs) &&
+                <div className={styles.editorErrors}>
+                    <ScrollbarComponent>
+                        {selectedItemData.logs.map((err, index) => (
+                                <div className={styles.errBox} key={index}>
+                                    <div className={styles.errorBullet} />
+                                    <div className={cx(styles.alertItem, styles.errorMessage)}>{err.msg.msg}</div>
+                                </div>
+                            ))}
+                    </ScrollbarComponent>
+                </div>
+            }
+            
 
             <div className={styles.checkboxContainer}>
                 <Checkbox checked={enabled} label={enabled ? 'Enable' : 'Disable'} onChange={changeEnable} />

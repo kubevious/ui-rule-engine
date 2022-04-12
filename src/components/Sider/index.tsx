@@ -1,45 +1,53 @@
 import React, { FC } from 'react';
-import { isEmptyArray } from '../../utils';
 import cx from 'classnames';
 import { EditorType, SiderProps } from './types';
 
 import styles from './styles.module.css';
+import { Label, ScrollbarComponent } from '@kubevious/ui-components';
 
-export const Sider: FC<SiderProps> = ({ header, type, items, selectedItemKey, onSelect }) => (
-    <div id="rule-list" className={styles.ruleList}>
+export const Sider: FC<SiderProps> = ({ type, emptyText, items, selectedItemKey, onSelect }) => (
+    <div id="rule-engine-list"
+         className={styles.ruleList}>
 
-        { header }
+        {items && <>
 
-        <div className={cx(styles.rules, { [styles.markers]: type === EditorType.marker })}>
-            {!isEmptyArray(items) &&
-                items.map((item, index) => (
-                    <button
-                        key={index}
-                        id="ruleItemButton"
-                        className={cx(styles.ruleItemButton, {
-                            [styles.selectedItemButton]: item.key === selectedItemKey,
-                        })}
-                        onClick={() => onSelect(item.key)}
-                    >
-                        <div className={styles.item}>
-                            {item.icon}
+            {(items.length > 0) &&
+                <ScrollbarComponent>
+        
+                    <div className={cx(styles.rules, { [styles.markers]: type === EditorType.marker })}>
+                        {items.map((item, index) => (
+                            <button
+                                key={index}
+                                id="ruleEngineItemButton"
+                                className={cx(styles.ruleItemButton, {
+                                    [styles.selectedItemButton]: item.key === selectedItemKey,
+                                })}
+                                onClick={() => onSelect(item.key)}
+                            >
+                                <div className={styles.item}>
+                                    {item.icon}
 
-                            {item.title}
-                        </div>
-                        {item.extraText}
-                    </button>
-                ))}
+                                    {item.title}
+                                </div>
+                                {item.extraText}
+                            </button>
+                        ))}
+                    </div>
 
-            {items && (items.length == 0) && <>
+                </ScrollbarComponent>
+            }
+
+            {(items.length == 0) && <>
                 <div className={styles.noItemsLabel}>
-                    {(type == 'rule') && <>
-                        No rules present
-                    </>}
-                    {(type == 'marker') && <>
-                        No markers present
-                    </>}
+
+                    <Label
+                           text={emptyText}
+                           size="large" />
+
                 </div>
             </>}
-        </div>
+
+        </>}                
+
     </div>
 );

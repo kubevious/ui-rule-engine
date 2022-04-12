@@ -13,6 +13,19 @@ export default {
 };
 
 
+
+export const ComponentOnly: Story = () => {
+    app.registerService({ kind: 'rule' }, () => {
+        return new RuleService();
+    });
+
+    return (
+        <div style={{ width: '100vw', height: '100vh' }}>
+            <RuleEditor />
+        </div>
+    );
+};
+
 export const Default: Story = () => {
     const { burgerMenuItems, createNewItem } = useRuleEditorActions();
 
@@ -21,48 +34,27 @@ export const Default: Story = () => {
     });
 
     return (
-        <div style={{ minHeight: '100vh', maxWidth: '100vw', width: '100vw', height: '100vh' }}>
-            <div style={{ background: '#2f3036', height: '100%', width: '100%', position: 'relative' }}>
-                <InnerPage
-                    header={
-                        <PageHeader title="Rules">
-                            <div className="d-flex">
-                                <BurgerMenu items={burgerMenuItems} />
+        <div style={{ minHeight: '100vh', maxWidth: '100vw', width: '100vw', height: '100vh', background: 'black' }}>
+            <InnerPage
+                header={
+                    <PageHeader title="Rules">
+                        <div className="d-flex">
+                            <BurgerMenu items={burgerMenuItems} />
 
-                                <Button type="success" onClick={createNewItem} spacingLeft>
-                                    Add New Rule
-                                </Button>
-                            </div>
-                        </PageHeader>
-                    }
-                >
-                    <RuleEditor />
-                </InnerPage>
-            </div>
+                            <Button type="success" onClick={createNewItem} spacingLeft>
+                                Add New Rule
+                            </Button>
+                        </div>
+                    </PageHeader>
+                }
+                fullHeight
+            >
+                <RuleEditor />
+            </InnerPage>
         </div>
     );
 };
 
-
-export const WithHeader: Story = () => {
-    const { createNewItem } = useRuleEditorActions();
-
-    app.registerService({ kind: 'rule' }, () => {
-        return new RuleService();
-    });
-
-    return (
-        <div style={{ minHeight: '100vh', maxWidth: '100vw', width: '100vw', height: '100vh' }}>
-            <div style={{ background: '#2f3036', height: '100%', width: '100%', position: 'relative' }}>
-                <RuleEditor itemListHeader={
-                    <Button type="success" onClick={createNewItem} spacingLeft>
-                        Add New Rule
-                    </Button>} 
-                />
-            </div>
-        </div>
-    );
-};
 
 
 export const WithPadding: Story = () => {

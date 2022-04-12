@@ -11,11 +11,11 @@
 }
 
 .editorContainer {
-    /* height: calc(100% - 160px);
-    min-height: 150px; */
+    flex-grow: 1;
+    flex-shrink: 1;
+
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
 }
 
 .editor {
@@ -71,9 +71,13 @@
 }
 
 .editorErrors {
+    flex-grow: 1;
+    flex-shrink: 1;
+
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+    min-height: 50px;
     max-height: 150px;
     overflow-y: auto;
 }

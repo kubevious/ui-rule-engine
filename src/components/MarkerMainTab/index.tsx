@@ -54,7 +54,6 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                 <Input
                     label="Name"
                     type="text"
-                    id="fieldInput"
                     value={name || ''}
                     name="name"
                     onChange={handleChange}
@@ -62,7 +61,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
             </div>
 
             <div className={styles.markerIconWrapper}>
-                <div className={commonStyles.labelWrapper}>Icon</div>
+                <div className={styles.labelWrapper}>Icon</div>
                 <div className={styles.markerArea}>
                     <ScrollbarComponent>
                         <div className={styles.itemsContents}>
