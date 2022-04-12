@@ -51,7 +51,7 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
 
     componentDidMount(): void {
         
-        this.sharedState.set('need_markers_list', true);
+        this.sharedState.markUserFlag('need_markers_list', 'rule-editor');
 
         this.service.subscribeItemStatuses((value) => {
             this.setState({
@@ -109,7 +109,8 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
 
     componentWillUnmount() {
         super.componentWillUnmount();
-        this.sharedState.set('need_markers_list', false);
+
+        this.sharedState.clearUserFlag('need_markers_list', 'rule-editor');
     }
 
     selectItem(key: string): void {

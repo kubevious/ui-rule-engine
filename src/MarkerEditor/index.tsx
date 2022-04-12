@@ -49,7 +49,7 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
 
     componentDidMount(): void {
 
-        this.sharedState.set('need_markers_list', true);
+        this.sharedState.markUserFlag('need_markers_list', 'marker-editor');
 
         this.service.subscribeItemStatuses((value) => {
             this.setState({
@@ -104,7 +104,8 @@ export class MarkerEditor extends ClassComponent<MarkerEditorProps, MarkerEditor
 
     componentWillUnmount() {
         super.componentWillUnmount();
-        this.sharedState.set('need_markers_list', false);
+
+        this.sharedState.clearUserFlag ('need_markers_list', 'marker-editor');
     }
 
     selectItem(key: string): void {
