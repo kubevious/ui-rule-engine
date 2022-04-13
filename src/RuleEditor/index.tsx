@@ -204,9 +204,9 @@ export class RuleEditor extends ClassComponent<RuleEditorProps, RuleEditorState,
                                   title: item.name!,
                                   extraText: item.item_count && item.item_count > 0 && `[${item.item_count}]`,
                                   icon: (
-                                      <div className="d-flex align-items-center">
+                                      <div className={siderStyles.iconsContainer}>
                                           <div className={cx(siderStyles.indicator, ruleIndicatorClass(item))} />
-                                          {!item.is_current && <div className={siderStyles.busyRuleIndicator} />}
+                                          {(!item.is_current) && <div className={siderStyles.busyRuleIndicator} />}
                                       </div>
                                   ),
                               }))
