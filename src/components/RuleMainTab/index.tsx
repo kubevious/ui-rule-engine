@@ -1,5 +1,5 @@
 import _ from 'the-lodash';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, Checkbox, Input, ScrollbarComponent } from '@kubevious/ui-components';
 import { CodeControl } from '@kubevious/ui-components';
 
