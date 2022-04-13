@@ -1,0 +1,49 @@
+
+    // const handleScriptKeyUp = (editor: CodeMirror.Editor, data: KeyboardEvent): void => {
+    //     // if (
+    //     //     !editor.state.completionActive &&
+    //     //     //Select only keycode letters
+    //     //     data.keyCode > EMPTY_CODE_KEY &&
+    //     //     data.keyCode < LEFT_WINDOW_CODE_KEY
+    //     // ) {
+    //     //     //***
+    //     //     // "autocomplete" is not exists in CommandActions type, but exists in Codemirror.commands
+    //     //     //***
+    //     //     // @ts-ignore: Unreachable code error
+    //     //     CodeMirror.commands.autocomplete(editor, null, {
+    //     //         completeSingle: false,
+    //     //     });
+    //     // }
+    // };
+
+    // const handleTargetKeyUp = (editor: CodeMirror.Editor, data: KeyboardEvent): void => {
+    //     // //Select only keycode letters
+    //     // if (data.keyCode > EMPTY_CODE_KEY && data.keyCode < LEFT_WINDOW_CODE_KEY) {
+    //     //     showSnippets(editor);
+    //     // }
+    // };
+
+    // const showSnippets = (editor: CodeMirror.Editor): void => {
+    //     // CodeMirror.showHint(
+    //     //     editor,
+    //     //     () => {
+    //     //         const cursor = editor.getCursor();
+    //     //         const token = editor.getTokenAt(cursor);
+    //     //         const start = token.start;
+    //     //         const end = cursor.ch;
+    //     //         const line = cursor.line;
+    //     //         const currentWord = token.string;
+
+    //     //         const list = snippets.filter(
+    //     //             (item: { text: string | string[] }) => item.text.indexOf(currentWord) >= 0,
+    //     //         );
+
+    //     //         return {
+    //     //             list: list.length ? list : snippets,
+    //     //             from: CodeMirror.Pos(line, start),
+    //     //             to: CodeMirror.Pos(line, end),
+    //     //         };
+    //     //     },
+    //     //     { completeSingle: false },
+    //     // );
+    // };

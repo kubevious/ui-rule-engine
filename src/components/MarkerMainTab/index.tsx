@@ -57,6 +57,7 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
                     value={name || ''}
                     name="name"
                     onChange={handleChange}
+                    autoComplete="off"
                 />
             </div>
 
@@ -122,38 +123,36 @@ export const MarkerMainTab: FC<MarkerMainTabProps> = ({
 
             </div>
 
-            <div className="d-flex align-items-center justify-content-between">
-                {!isNewItem && (
-                    <>
-                        <div>
-                            <Button type="ghost" onClick={openSummary} spacingRight>
-                                Cancel
-                            </Button>
-                            <Button onClick={() => saveItem(formData)} disabled={validation}>
-                                Save
-                            </Button>
-                        </div>
-
-                        <div>
-                            <Button type="danger" onClick={() => deleteItem(formData)} bordered={false}>
-                                Delete marker
-                            </Button>
-                        </div>
-                    </>
-                )}
-
-                {isNewItem && (
-                    <>
-                        <Button type="ghost" onClick={() => openSummary()} spacingRight>
+            {!isNewItem && (
+                <div className="d-flex align-items-center justify-content-between">
+                    <div>
+                        <Button type="ghost" onClick={openSummary} spacingRight>
                             Cancel
                         </Button>
-
-                        <Button id="markerCreateButton" onClick={() => createItem(formData)} disabled={validation}>
-                            Create
+                        <Button onClick={() => saveItem(formData)} disabled={validation}>
+                            Save
                         </Button>
-                    </>
-                )}
-            </div>
+                    </div>
+
+                    <div>
+                        <Button type="danger" onClick={() => deleteItem(formData)} bordered={false}>
+                            Delete marker
+                        </Button>
+                    </div>
+                </div>
+            )}
+
+            {isNewItem && (
+                <div className="d-flex align-items-center">
+                    <Button type="ghost" onClick={() => openSummary()} spacingRight>
+                        Cancel
+                    </Button>
+
+                    <Button id="markerCreateButton" onClick={() => createItem(formData)} disabled={validation}>
+                        Create
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };

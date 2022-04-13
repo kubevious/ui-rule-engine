@@ -1,8 +1,9 @@
+import _ from 'the-lodash';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Button, Checkbox, Input, ScrollbarComponent } from '@kubevious/ui-components';
 import { CodeControl } from '@kubevious/ui-components';
 
-import { RuleConfig } from '@kubevious/ui-middleware/dist/services/rule';
+import { RuleConfig, RuleResultLog } from '@kubevious/ui-middleware/dist/services/rule';
 import cx from 'classnames';
 import { isEmptyArray, makeNewRule } from '../../utils';
 
@@ -14,6 +15,8 @@ import { subscribeToSharedState } from '@kubevious/ui-framework';
 
 import { RuleAssistantData, RuleAssistantSnippet } from '../Assistant/types';
 import { Assistant } from '../Assistant';
+
+import { isEmptyString } from '../../utils/string-utils';
 
 // const LEFT_WINDOW_CODE_KEY = 91;
 // const EMPTY_CODE_KEY = 64;
@@ -35,6 +38,8 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
     const [formData, setFormData] = useState<RuleConfig>(makeNewRule());
     const [visibleEditor, setVisibleEditor] = useState<EditorTab>(EditorTab.target);
     const [assistantData, setAssistantData] = useState<RuleAssistantData | null>(null);
+    const [editorLogs, setEditorLogs] = useState<RuleResultLog[]>([]);
+    
 
     useEffect(() => {
         if (selectedItem) {
@@ -44,60 +49,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
         }
     }, [selectedItem]);
 
-    const validation = useMemo(() => {
-        return !formData.name || !formData.target || !formData.script;
-    }, [formData]);
-
     subscribeToSharedState("rule_engine_assistant_data", setAssistantData);
-
-    // const handleScriptKeyUp = (editor: CodeMirror.Editor, data: KeyboardEvent): void => {
-    //     // if (
-    //     //     !editor.state.completionActive &&
-    //     //     //Select only keycode letters
-    //     //     data.keyCode > EMPTY_CODE_KEY &&
-    //     //     data.keyCode < LEFT_WINDOW_CODE_KEY
-    //     // ) {
-    //     //     //***
-    //     //     // "autocomplete" is not exists in CommandActions type, but exists in Codemirror.commands
-    //     //     //***
-    //     //     // @ts-ignore: Unreachable code error
-    //     //     CodeMirror.commands.autocomplete(editor, null, {
-    //     //         completeSingle: false,
-    //     //     });
-    //     // }
-    // };
-
-    // const handleTargetKeyUp = (editor: CodeMirror.Editor, data: KeyboardEvent): void => {
-    //     // //Select only keycode letters
-    //     // if (data.keyCode > EMPTY_CODE_KEY && data.keyCode < LEFT_WINDOW_CODE_KEY) {
-    //     //     showSnippets(editor);
-    //     // }
-    // };
-
-    // const showSnippets = (editor: CodeMirror.Editor): void => {
-    //     // CodeMirror.showHint(
-    //     //     editor,
-    //     //     () => {
-    //     //         const cursor = editor.getCursor();
-    //     //         const token = editor.getTokenAt(cursor);
-    //     //         const start = token.start;
-    //     //         const end = cursor.ch;
-    //     //         const line = cursor.line;
-    //     //         const currentWord = token.string;
-
-    //     //         const list = snippets.filter(
-    //     //             (item: { text: string | string[] }) => item.text.indexOf(currentWord) >= 0,
-    //     //         );
-
-    //     //         return {
-    //     //             list: list.length ? list : snippets,
-    //     //             from: CodeMirror.Pos(line, start),
-    //     //             to: CodeMirror.Pos(line, end),
-    //     //         };
-    //     //     },
-    //     //     { completeSingle: false },
-    //     // );
-    // };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -136,6 +88,38 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
         return snippetCode;
     };
 
+    const validateForm = () => {
+        const newLogs : RuleResultLog[] = [];
+        console.log('validateForm', formData)
+        if (isEmptyString(formData.name)) {
+            newLogs.push({ kind: 'error', msg: { source: [], msg: 'Rule name cannot be empty.' }});
+        }
+        if (isEmptyString(formData.target)) {
+            newLogs.push({ kind: 'error', msg: { source: [], msg: 'Target script cannot be empty.' }});
+        }
+        if (isEmptyString(formData.script)) {
+            newLogs.push({ kind: 'error', msg: { source: [], msg: 'Rule script cannot be empty.' }});
+        }
+        return newLogs;
+    }
+
+    const persist = (handler: (data: RuleConfig) => void) =>
+    {
+        const newLogs = validateForm();
+        setEditorLogs(newLogs);
+
+        if (newLogs.length > 0) {
+            return;
+        }
+
+        handler(formData);
+    }
+
+    const allRuleLogs = _.concat(
+        editorLogs,
+        selectedItemData?.logs ?? []
+    );
+
     return (
         <div className={styles.container}>
 
@@ -149,6 +133,7 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                     onChange={handleChange}
                     data-testid="rule-name-input"
                     label="Name"
+                    autoComplete="off"
                 />
             </div>
 
@@ -246,11 +231,10 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                 </div>
             </div>
 
-            {selectedItemData &&
-                !isEmptyArray(selectedItemData.logs) &&
+            {!isEmptyArray(allRuleLogs) &&
                 <div className={styles.editorErrors}>
                     <ScrollbarComponent>
-                        {selectedItemData.logs.map((err, index) => (
+                        {allRuleLogs.map((err, index) => (
                                 <div className={styles.errBox} key={index}>
                                     <div className={styles.errorBullet} />
                                     <div className={cx(styles.alertItem, styles.errorMessage)}>{err.msg.msg}</div>
@@ -265,39 +249,37 @@ export const RuleMainTab: FC<RuleMainTabProps> = ({
                 <Checkbox checked={enabled} label={enabled ? 'Enable' : 'Disable'} onChange={changeEnable} />
             </div>
 
-            <div className="d-flex align-items-center justify-content-between">
-                {!isNewItem && (
-                    <>
-                        <div>
-                            <Button type="ghost" onClick={openSummary} spacingRight>
-                                Cancel
-                            </Button>
-
-                            <Button onClick={() => saveItem(formData)} disabled={validation}>
-                                Save
-                            </Button>
-                        </div>
-
-                        <div>
-                            <Button type="danger" onClick={() => deleteItem(formData)} bordered={false}>
-                                Delete Rule
-                            </Button>
-                        </div>
-                    </>
-                )}
-
-                {isNewItem && (
-                    <>
+            {!isNewItem && (
+                <div className="d-flex align-items-center justify-content-between">
+                    <div>
                         <Button type="ghost" onClick={openSummary} spacingRight>
                             Cancel
                         </Button>
 
-                        <Button onClick={() => createItem(formData)} disabled={validation}>
-                            Create
+                        <Button onClick={() => persist(saveItem)}>
+                            Save
                         </Button>
-                    </>
-                )}
-            </div>
+                    </div>
+
+                    <div>
+                        <Button type="danger" onClick={() => deleteItem(formData)} bordered={false}>
+                            Delete Rule
+                        </Button>
+                    </div>
+                </div>
+            )}
+
+            {isNewItem && (
+                <div className="d-flex align-items-center">
+                    <Button type="ghost" onClick={openSummary} spacingRight>
+                        Cancel
+                    </Button>
+
+                    <Button onClick={() => persist(createItem)}>
+                        Create
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };
