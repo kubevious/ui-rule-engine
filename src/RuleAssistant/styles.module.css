@@ -1,0 +1,18 @@
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionTitle {
+    display: block;
+    position: relative;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.sectionCode {
+    display: block;
+    position: relative;
+}
