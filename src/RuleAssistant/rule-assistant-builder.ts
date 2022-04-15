@@ -100,7 +100,7 @@ export class RuleAssistantBuilder
                 for(const linkName of _.keys(config.config))
                 {
                     const links = config.config[linkName];
-                    const linksCode = links.map(x => `// -> ${x.dn}`).join('\n');
+                    const linksCode = links.map((x: any) => `// -> ${x.dn}`).join('\n');
                     this._ruleScripts.push({
                         name: `item.links("${linkName}")`,
                         code: linksCode

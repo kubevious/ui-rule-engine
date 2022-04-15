@@ -66,7 +66,7 @@ export const RuleAssistant: FC<RuleAssistantProps> = ({ dn, props }) => {
 
 function getRuleScriptsCode(snippets: RuleAssistantSnippet[])
 {
-    let script = 
+    const script = 
         snippets.map(x => getRuleScriptSnippetCode(x))
             .join('\n');
     return script;
