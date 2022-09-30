@@ -1768,6 +1768,13 @@
   dependencies:
     the-lodash "^2.0.9"
 
+"@kubevious/entity-meta@^1.0.70":
+  version "1.0.70"
+  resolved "https://registry.yarnpkg.com/@kubevious/entity-meta/-/entity-meta-1.0.70.tgz#79c4e77a932359ee4071189b1e5b0c79008831fa"
+  integrity sha512-0advYa5akw1fw+3UuKlN5quwqeQrEy8k+tOogxULKBf8yfr0hmbMm1vSDmwbRhi/i1xeZfKrmS1zbjzBK4bV5Q==
+  dependencies:
+    the-lodash "^2.0.9"
+
 "@kubevious/http-client@^1.0.19":
   version "1.0.19"
   resolved "https://registry.yarnpkg.com/@kubevious/http-client/-/http-client-1.0.19.tgz#2f0cdde936225f30e1689e69ee4727d152a56ffd"
@@ -1788,10 +1795,10 @@
     the-logger "^2.0.14"
     the-promise "^2.0.13"
 
-"@kubevious/ui-components@^1.0.242":
-  version "1.0.242"
-  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.242.tgz#0bdd0cf11ed0da14570289e3c9b36263965d0cad"
-  integrity sha512-25ZWsy3GkfppxREksXdcLC3lzk+YRx5SzsE2U+xbUF2pVLtq7gtqJfKix2cUV6Q8303EZvD2qgcxdiPRd5iGgA==
+"@kubevious/ui-components@^1.0.247":
+  version "1.0.247"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-components/-/ui-components-1.0.247.tgz#5a143239a2c84d5b66d1d5990ed9cf99383101c7"
+  integrity sha512-M1Ces4YpqeCH0bPH6a96Qr2pe6k67/S4DARTgbjyoRtzSZ84IrET7G9PGkkbMI19KKCMxjHGAF4mYf2BP307zA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "6.1.1"
     "@fortawesome/free-brands-svg-icons" "6.1.1"
@@ -1836,6 +1843,15 @@
   version "1.0.72"
   resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.72.tgz#16a21fcecfe706df86ec0ce4bb8c6067ae57ebff"
   integrity sha512-xY4gVP7ejlpopv139RG/inNy45MXD3R9Z6TpPCA1Ps+SPmpt5kPVRFPFuFRJ+dFQEyt57+DlLfB3JTJY/1Uo6Q==
+  dependencies:
+    "@kubevious/entity-meta" "^1.0.69"
+    "@kubevious/http-client" "^1.0.19"
+    the-promise "^2.0.13"
+
+"@kubevious/ui-middleware@^1.0.75":
+  version "1.0.75"
+  resolved "https://registry.yarnpkg.com/@kubevious/ui-middleware/-/ui-middleware-1.0.75.tgz#12e1d2ed1fb6f5e0a67e8747ca2a39d4c3e7f8e1"
+  integrity sha512-fwS88E4+7Mg4z7hHPjymPUOXxFneZgTDVvmU8YwiRV85YyFGEctjC5OVJmeHqAPmZFHRu3bt/ZeXde7D7bP13A==
   dependencies:
     "@kubevious/entity-meta" "^1.0.69"
     "@kubevious/http-client" "^1.0.19"
